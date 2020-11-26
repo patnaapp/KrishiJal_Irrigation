@@ -65,4 +65,6 @@
     <color name="group_button_dialog_pressed_holo_light">#ffffffff</color>
     <color name="group_button_dialog_focused_holo_light">#4699cc00</color>
     <color name="colorText">#6db425</color>
+    <color name="colorbackground">#EEEEEE</color>
+    <color name="back_color_white">#ffffff</color>
 </resources>
