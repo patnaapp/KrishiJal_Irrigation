@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Nalkup_Sinchaai_YojyaActivity">
+    <LinearLayout
+        android:layout_margin="6dp"
+        android:padding="8dp"
+        android:id="@+id/ll_sinchit"
+        android:background="@color/colorPrimaryLight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+              <LinearLayout
+            android:id="@+id/llll_sinchit"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
+                android:text="वर्तमान में उपलब्ध सिंचाई का श्रोत"/>
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_surface_water"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="पंचायत का नाम :-"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+
+                <Spinner
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/sp_panchayat"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/spinner_bg1"
+                    android:imeOptions="actionUnspecified"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#43D305"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_grnd_water"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="गाँव का नाम :-"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+
+                <Spinner
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/sp_groundwater"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/spinner_bg1"
+                    android:imeOptions="actionUnspecified"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#43D305"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_sarakari"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_sarkari"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="सरकारी"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+
+                <Spinner
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/sp_governement"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/spinner_bg1"
+                    android:imeOptions="actionUnspecified"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#43D305"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_niji"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_niji"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="निजी"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+
+                <Spinner
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/sp_private"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/spinner_bg1"
+                    android:imeOptions="actionUnspecified"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#43D305"/>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="कुल सिंचित क्षेत्र"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+                <LinearLayout
+                    android:weightSum="1"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:inputType="number"
+                        android:paddingLeft="8dp"
+                        android:hint="(एकड़ में)"
+                        android:layout_marginTop="4dp"
+                        android:id="@+id/edt_sincht_totArea_dec"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:maxLength="3"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/textboxshape3"
+                        android:imeOptions="actionUnspecified"
+                        android:paddingRight="20dp"
+                        android:textAppearance="?android:textAppearanceSmall"
+                        android:textColor="#43D305"/>
+
+                    <EditText
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="8dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="4dp"
+                        android:hint=" (डिसमील में)"
+                        android:id="@+id/edt_sincht_totArea_hec"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="40dp"
+
+                        android:background="@drawable/textboxshape3"
+                        android:imeOptions="actionUnspecified"
+                        android:paddingRight="20dp"
+                        android:textAppearance="?android:textAppearanceSmall"
+                        android:textColor="#43D305"/>
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="6dp"
+            android:padding="8dp"
+            android:id="@+id/ll_sinchit1"
+            android:background="@color/colorPrimaryLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                android:text="उपलब्ध सिंचाई श्रोत से दूरी एवं आच्छादित रकवा (Command Area) सिंचाई श्रोत से दूरी"/>
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_khata_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="खाता/खेसरा से दूरी (फीट में)"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+
+                <Spinner
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/sp_dist_khatakhesra"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/spinner_bg1"
+                    android:imeOptions="actionUnspecified"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#43D305"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_rakwa_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="आच्छादित रकवा (एकड़ में)"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+                <Spinner
+                    android:id="@+id/sp_rakwa"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/spinner_bg1"
+                    android:imeOptions="actionUnspecified"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#43D305" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
