@@ -27,8 +27,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@drawable/circular_shape_white"
-            android:src="@drawable/logo"
-            />
+            android:src="@drawable/logo" />
 
         <LinearLayout
             android:layout_marginTop="12dp"
