@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.Nalkup_Sinchaai_YojyaActivity">
     <LinearLayout
+        android:id="@+id/lin_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
         android:layout_margin="6dp"
         android:padding="8dp"
         android:id="@+id/ll_sinchit"
@@ -30,7 +37,7 @@
                 android:textStyle="normal"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_gravity="center_horizontal"
-                android:text="वर्तमान में उपलब्ध सिंचाई का श्रोत"/>
+                android:text="नलकूप सिंचाई योजना "/>
             <LinearLayout
                 android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
@@ -76,7 +83,7 @@
 
                 <Spinner
                     android:layout_marginTop="4dp"
-                    android:id="@+id/sp_groundwater"
+                    android:id="@+id/sp_village"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/spinner_bg1"
@@ -99,13 +106,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:text="सरकारी"
+                    android:text="नलकूप के मोटर / पंप के संचालन हेतु ऊर्जा का विकल्प (विधुत / सोलर ):-"
                     android:textColor="#000000"
                     android:textStyle="normal" />
 
                 <Spinner
                     android:layout_marginTop="4dp"
-                    android:id="@+id/sp_governement"
+                    android:id="@+id/sp_option_power"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/spinner_bg1"
@@ -113,7 +120,6 @@
                     android:paddingRight="20dp"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="#43D305"/>
-
             </LinearLayout>
 
             <LinearLayout
@@ -124,17 +130,17 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_niji"
+                    android:id="@+id/tv_nalkup_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:text="निजी"
+                    android:text="छिछला नलकूप की संख्या  :-"
                     android:textColor="#000000"
                     android:textStyle="normal" />
 
                 <Spinner
                     android:layout_marginTop="4dp"
-                    android:id="@+id/sp_private"
+                    android:id="@+id/sp_no_of_nalkup"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/spinner_bg1"
@@ -155,7 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:text="कुल सिंचित क्षेत्र"
+                    android:text="Agriculture feeder/Electric Supply Line के अंतिम बिंदु से प्रस्तावित पम्प के लोकेशन की दुरी (Pole Length):- "
                     android:textColor="#000000"
                     android:textStyle="normal" />
                 <LinearLayout
@@ -166,11 +172,11 @@
                     <EditText
                         android:inputType="number"
                         android:paddingLeft="8dp"
-                        android:hint="(एकड़ में)"
+                        android:hint=""
                         android:layout_marginTop="4dp"
                         android:id="@+id/edt_sincht_totArea_dec"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_weight="1"
                         android:maxLength="3"
                         android:layout_height="40dp"
                         android:layout_marginRight="5dp"
@@ -180,22 +186,6 @@
                         android:textAppearance="?android:textAppearanceSmall"
                         android:textColor="#43D305"/>
 
-                    <EditText
-                        android:inputType="numberDecimal"
-                        android:paddingLeft="8dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="4dp"
-                        android:hint=" (डिसमील में)"
-                        android:id="@+id/edt_sincht_totArea_hec"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:layout_height="40dp"
-
-                        android:background="@drawable/textboxshape3"
-                        android:imeOptions="actionUnspecified"
-                        android:paddingRight="20dp"
-                        android:textAppearance="?android:textAppearanceSmall"
-                        android:textColor="#43D305"/>
                 </LinearLayout>
 
 
@@ -212,16 +202,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:textStyle="normal"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="center_horizontal"
-                android:textAlignment="center"
-                android:text="उपलब्ध सिंचाई श्रोत से दूरी एवं आच्छादित रकवा (Command Area) सिंचाई श्रोत से दूरी"/>
-
             <LinearLayout
                 android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
@@ -233,7 +213,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:text="खाता/खेसरा से दूरी (फीट में)"
+                    android:text="मोटर पम्प  का पावर (H P) :-"
                     android:textColor="#000000"
                     android:textStyle="normal" />
 
@@ -249,6 +229,60 @@
                     android:textColor="#43D305"/>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="डिस्ट्रीब्यूटशन  पाइप का व्यास (इंच  में )तथा लम्बाई (मी ० )"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+            <LinearLayout
+                android:weightSum="1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:inputType="number"
+                    android:paddingLeft="8dp"
+                    android:hint="(इंच  में )"
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/edt_pipe_Perimeter_inch"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:maxLength="3"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/textboxshape3"
+                    android:imeOptions="actionUnspecified"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#43D305"/>
+
+                <EditText
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="8dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="4dp"
+                    android:hint="(मी ० )"
+                    android:id="@+id/edt_pipe_lingth_meter"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="40dp"
+
+                    android:background="@drawable/textboxshape3"
+                    android:imeOptions="actionUnspecified"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#43D305"/>
+            </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_marginTop="8dp"
@@ -261,15 +295,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:text="आच्छादित रकवा (एकड़ में)"
+                    android:text="अनुमानित  कमाण्ड एरिया (हेक्टेर में )"
                     android:textColor="#000000"
                     android:textStyle="normal" />
-                <Spinner
-                    android:id="@+id/sp_rakwa"
+                <EditText
+                    android:id="@+id/edt_apporx_command_area_hec"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="4dp"
-                    android:background="@drawable/spinner_bg1"
+                    android:background="@drawable/textboxshape3"
+                    android:imeOptions="actionUnspecified"
+                    android:paddingRight="20dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#43D305" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_yojna"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="योजना अनुमानित लागत (लाख में )"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+                <Spinner
+                    android:id="@+id/edt_yojna_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/textboxshape3"
                     android:imeOptions="actionUnspecified"
                     android:paddingRight="20dp"
                     android:textAppearance="?android:textAppearanceSmall"
@@ -279,5 +339,38 @@
 
         </LinearLayout>
 
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/lin_main"
+        android:id="@+id/lin_btn"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_marginRight="2dp"
+            android:id="@+id/btn_saveLocal"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#047091"
+            android:text="Save To Local"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+
+        <Button
+            android:layout_marginLeft="2dp"
+            android:id="@+id/btn_Upload_To_Server"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#047091"
+            android:text="Upload To Server"
+            android:textColor="#ffffff"
+
+            android:textSize="14sp" />
     </LinearLayout>
 </RelativeLayout>
