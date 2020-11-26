@@ -1,18 +1,1340 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="bih.in.krishijal_irrigation.ui.MainActivity">
+    android:background="@color/colorbackground">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/id_logo"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:padding="6dp"
+            android:src="@drawable/water"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/circular_shape_white"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toStartOf="@+id/id_logout"
+            android:layout_toLeftOf="@+id/id_logout"
+            android:layout_toRightOf="@+id/id_logo"
+            android:text="कृषि - जल"
+            android:textColor="@color/back_color_white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/id_logout"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="2dp"
+            android:onClick="OnClick_goToLoginScreen"
+            android:src="@drawable/shutdown"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/circular_shape_white"/>
+    </RelativeLayout>
+
+    <!--    <FrameLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_below="@+id/header">-->
+
+    <!--        -->
+
+    <!--        -->
+    <!--    </FrameLayout>-->
+
+
+    <LinearLayout
+        android:id="@+id/ll_fill"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:layout_below="@+id/header"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_fill"
+        android:layout_above="@+id/ll_footer">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_background"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_height="30dp"></LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="6dp"
+                android:background="@drawable/shape_white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:text="सिंक्रोनाइज़ करे"/>
+
+                <LinearLayout
+                    android:layout_marginTop="8dp"
+                    android:weightSum="6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:onClick="OnClick_SyncNischay"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/downNischay"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:paddingTop="4dp"
+                            android:padding="5dp"
+                            android:onClick="OnClick_SyncNischay"
+                            android:src="@drawable/download"/>
+                        <TextView
+                            android:id="@+id/txtNisDown"
+                            android:layout_width="55dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/back_color_white"
+                            android:ellipsize="marquee"
+                            android:textIsSelectable="true"
+                            android:singleLine="true"
+                            android:text="निश्चय टाइप डाउनलोड करे"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/downVillage"
+                            android:layout_width="32dp"
+                            android:layout_height="36dp"
+                            android:tint="@color/colorPrimary"
+                            android:onClick="OnClick_SyncVillage"
+                            android:src="@drawable/download_2" />
+
+                        <TextView
+                            android:layout_marginTop="4dp"
+                            android:id="@+id/txtVillDown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGreyDark"
+                            android:ellipsize="marquee"
+                            android:textIsSelectable="true"
+                            android:text="ग्राम"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:onClick="OnClick_SyncWard"
+                        android:clickable="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/downWard"
+                            android:layout_width="32dp"
+                            android:layout_height="36dp"
+                            android:tint="@color/colorPrimary"
+                            android:onClick="OnClick_SyncWard"
+                            android:src="@drawable/download_2" />
+
+                        <TextView
+                            android:layout_marginTop="4dp"
+                            android:id="@+id/txtWardDown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGreyDark"
+                            android:ellipsize="marquee"
+                            android:textIsSelectable="true"
+                            android:text="वार्ड"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:onClick="OnClick_SyncYojana"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/downYojana"
+                            android:layout_width="32dp"
+                            android:layout_height="36dp"
+                            android:tint="@color/colorPrimary"
+                            android:onClick="OnClick_SyncYojana"
+                            android:src="@drawable/download_2" />
+
+                        <TextView
+                            android:layout_marginTop="4dp"
+                            android:id="@+id/txtYojDown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGreyDark"
+                            android:ellipsize="marquee"
+                            android:textIsSelectable="true"
+                            android:text="योजना"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:onClick="OnClick_SyncPayMode"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/downPayMode"
+                            android:layout_width="32dp"
+                            android:layout_height="36dp"
+                            android:tint="@color/colorPrimary"
+                            android:onClick="OnClick_SyncPayMode"
+                            android:src="@drawable/download_2" />
+
+                        <TextView
+                            android:layout_marginTop="4dp"
+                            android:id="@+id/txtPayDown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGreyDark"
+                            android:ellipsize="marquee"
+                            android:textIsSelectable="true"
+                            android:text="पे-मोड"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:onClick="OnClick_SyncPayJal"
+                        android:visibility="visible"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/downPayJal"
+                            android:layout_width="32dp"
+                            android:layout_height="36dp"
+                            android:tint="@color/colorPrimary"
+                            android:onClick="OnClick_SyncPayJal"
+                            android:src="@drawable/download_2" />
+
+                        <TextView
+                            android:layout_marginTop="4dp"
+                            android:id="@+id/txtPJalDown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGreyDark"
+                            android:ellipsize="marquee"
+                            android:textIsSelectable="true"
+                            android:textStyle="bold"
+                            android:text="पे जल"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:visibility="visible"
+                        android:onClick="OnClick_SyncGaliNaali"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/downGaliNaali"
+                            android:layout_width="32dp"
+                            android:layout_height="36dp"
+                            android:tint="@color/colorPrimary"
+                            android:onClick="OnClick_SyncGaliNaali"
+                            android:src="@drawable/download_2" />
+
+                        <TextView
+                            android:layout_marginTop="4dp"
+                            android:id="@+id/txtGaliNaaliDown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGreyDark"
+                            android:ellipsize="marquee"
+                            android:textIsSelectable="true"
+                            android:textStyle="bold"
+                            android:text="गली नाली"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="अन्य रिपोर्ट"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/shape_white"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:onClick="OnClick_WardYojanaDetails"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:padding="4dp"
+                        android:onClick="OnClick_WardYojanaDetails"
+                        android:src="@drawable/viewrec"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="वार्ड-योजना विवरण"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:textSize="13dp"
+                        android:onClick="OnClick_WardYojanaDetails"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/shape_white"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:onClick="OnClick_viewReport"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:padding="4dp"
+                        android:onClick="OnClick_viewReport"
+                        android:src="@drawable/viewrec"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="कार्य प्रगति रिपोर्ट"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:textSize="13dp"
+                        android:onClick="OnClick_viewReport"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/shape_white"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:onClick="OnClick_SendFeedback"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:padding="4dp"
+                        android:onClick="OnClick_SendFeedback"
+                        android:src="@drawable/viewrec"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="सुझाव/समस्या भेजें"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:textSize="13dp"
+                        android:onClick="OnClick_SendFeedback"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:id="@+id/lnWardVisitRec"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/shape_white"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:onClick="OnClick_WardReport"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:padding="4dp"
+                        android:onClick="OnClick_WardReport"
+                        android:src="@drawable/viewrec"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="वार्ड-दौरा की स्थिति"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:textSize="13dp"
+                        android:onClick="OnClick_WardReport"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel1"
+                android:layout_marginTop="56dp"
+                android:background="@drawable/shape_white"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <RelativeLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:text="मुख्य मंत्री ग्रामीण पेय जल निश्चय योजना"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_payJal_menu"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_arrow_drop_down_black_24dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pay_jal_submenu"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rel1"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/ll_voucher_pay_jal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="वाउचर एंट्री"
+                            android:textColor="@color/colorGreyDark"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/colorGrey"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbl41"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="नलकूप सिचाई योजना "
+                            android:textColor="@color/colorGreyDark"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <RelativeLayout
+                                android:id="@+id/rl_nalkup_new"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <ImageView
+                                    android:id="@+id/iv_nalkup_new"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/new_entry" />
+
+                                <TextView
+                                    android:id="@+id/tv_nalkup_new"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_nalkup_new"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="नई प्रविष्टि दर्ज करे "
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl_nalkup_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <TextView
+                                    android:id="@+id/nalkup_edit"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_marginLeft="-15dp"
+                                    android:layout_toRightOf="@+id/tv_nalkup_edit"
+                                    android:background="@drawable/circular_shape_red"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/iv_nalkup_edit"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/edit_entry" />
+
+                                <TextView
+                                    android:id="@+id/tv_nalkup_edit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_nalkup_edit"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="सुधार करे"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl_nalkup_upload"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <TextView
+                                    android:id="@+id/nalkup_upload"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_toRightOf="@+id/iv_nalkup_upload"
+                                    android:background="@drawable/circular_shape_red"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/iv_nalkup_upload"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/ic_cloud_upload" />
+
+                                <TextView
+                                    android:id="@+id/tv_nalkup_upload"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_nalkup_upload"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="अपलोड"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbl4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="उदबह सिचाई योजना "
+                            android:textColor="@color/colorGreyDark"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <RelativeLayout
+                                android:id="@+id/rl_udvah_new"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <ImageView
+                                    android:id="@+id/iv_udvah_new"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/new_entry" />
+
+                                <TextView
+                                    android:id="@+id/tv_udvah_new"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_udvah_new"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="नई प्रविष्टि दर्ज करे "
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl_udvah_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <TextView
+                                    android:id="@+id/udvah_edit"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_marginLeft="-15dp"
+                                    android:layout_toRightOf="@+id/tv_udvah_edit"
+                                    android:background="@drawable/circular_shape_red"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/iv_udvah_edit"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/edit_entry" />
+
+                                <TextView
+                                    android:id="@+id/tv_udvah_edit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_udvah_edit"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="सुधार करे"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl_udvah_upload"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <TextView
+                                    android:id="@+id/udvah_upload"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_toRightOf="@+id/iv_udvah_upload"
+                                    android:background="@drawable/circular_shape_red"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/iv_udvah_upload"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/ic_cloud_upload" />
+
+                                <TextView
+                                    android:id="@+id/tv_udvah_upload"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_udvah_upload"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="अपलोड"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbl44"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="आहर -  सिचाई योजना "
+                            android:textColor="@color/colorGreyDark"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <RelativeLayout
+                                android:id="@+id/rl_aahar_new"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <ImageView
+                                    android:id="@+id/aahar_new"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/new_entry" />
+
+                                <TextView
+                                    android:id="@+id/tv_aahar_new"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/aahar_new"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="नई प्रविष्टि दर्ज करे "
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl_aahar_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <TextView
+                                    android:id="@+id/aahar_edit"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_marginLeft="-15dp"
+                                    android:layout_toRightOf="@+id/tv_aahar_edit"
+                                    android:background="@drawable/circular_shape_red"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/iv_aahar_edit"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/edit_entry" />
+
+                                <TextView
+                                    android:id="@+id/tv_aahar_edit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_aahar_edit"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="सुधार करे"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl_aahar_upload"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <TextView
+                                    android:id="@+id/aahar_upload"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_toRightOf="@+id/iv_aahar_upload"
+                                    android:background="@drawable/circular_shape_red"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/iv_aahar_upload"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/ic_cloud_upload" />
+
+                                <TextView
+                                    android:id="@+id/tv_aahar_upload"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_aahar_upload"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="अपलोड"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <RelativeLayout
+                                android:id="@+id/rel_otherentry11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <ImageView
+                                    android:id="@+id/iv_other_entry11"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/new_entry" />
+
+                                <TextView
+                                    android:id="@+id/tv_other_entry11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_other_entry11"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="रिपोर्ट "
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/maujaentry11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:visibility="gone"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+
+
+                                <ImageView
+                                    android:id="@+id/iv_entrymauja11"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/edit_entry" />
+
+                                <TextView
+                                    android:id="@+id/tv_ps_entrymauja11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_entrymauja11"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="मौजा  का विवरण "
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/uploadmauja11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="6dp"
+                                android:visibility="gone"
+                                android:layout_weight="1"
+                                android:background="@drawable/cardshape"
+                                android:gravity="center_horizontal"
+                                android:padding="4dp">
+
+                                <TextView
+                                    android:id="@+id/lblcount411"
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_toRightOf="@+id/iv_ps_upload_mauja11"
+                                    android:background="@drawable/circular_shape_red"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/iv_ps_upload_mauja11"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:padding="4dp"
+                                    android:src="@drawable/ic_cloud_upload" />
+
+                                <TextView
+                                    android:id="@+id/tv_ps_upload_mauja11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/iv_ps_upload_mauja11"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_margin="4dp"
+                                    android:text="अपलोड "
+                                    android:textColor="@android:color/black"
+                                    android:textSize="13sp"
+                                    android:textStyle="normal" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:padding="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_below="@+id/header"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/buttonbackshape_new">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/ll_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PANADM SARMASTPUR"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="visible"
+            android:id="@+id/ll_dst_blk_pnc"
+            android:layout_below="@+id/ll_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_db"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textAllCaps="false"
+                        android:layout_gravity="center"
+                        android:id="@+id/district"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="जिला"
+                        android:textColor="@color/colorGreyDark"
+                        android:textSize="14sp"/>
+
+                    <TextView
+
+                        android:gravity="center"
+                        android:textAllCaps="false"
+                        android:id="@+id/tv_district"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:textColor="#1700a9"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textAllCaps="false"
+                        android:layout_gravity="center"
+                        android:id="@+id/block"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="अंचल "
+                        android:textColor="@color/colorGreyDark"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/tv_block"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:textColor="#1700a9"
+                        android:textSize="13sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textAllCaps="false"
+                        android:layout_gravity="center"
+                        android:id="@+id/txtpanchayat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="पंचायत"
+                        android:textColor="@color/colorGreyDark"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:gravity="center"
+                        android:textAllCaps="false"
+                        android:id="@+id/txt_panchayat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:textColor="#1700a9"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:id="@+id/ll_panchyt"
+                android:layout_below="@+id/ll_db"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/panchayat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="गाँव"
+                    android:textColor="@color/colorGreyDark"
+                    android:textSize="12sp"/>
+
+                <Spinner
+                    android:background="@drawable/spinner_bg1"
+                    android:id="@+id/spinnerVillage"
+                    android:layout_width="fill_parent"
+                    android:layout_height="35dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:textColor="#1700a9"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_dst_blk_pnc"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:id="@+id/rl_sync_panchayat"
+                android:layout_marginRight="4dp"
+                android:padding="6dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_white">
+
+                <ImageView
+                    android:id="@+id/iv_sync"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_toLeftOf="@+id/tv_sync"
+                    android:clickable="true"
+                    android:src="@drawable/synmain"/>
+
+                <TextView
+                    android:id="@+id/tv_sync"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sync Village"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:onClick="OnClick_Help"
+                android:layout_marginLeft="4dp"
+                android:id="@+id/ll_help"
+                android:padding="6dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_white">
+
+                <ImageView
+                    android:id="@+id/imghowto"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_toLeftOf="@+id/tv_about"
+                    android:src="@drawable/help1"/>
+
+                <TextView
+                    android:id="@+id/tv_about"
+                    android:layout_marginLeft="4dp"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ऐप का उपयोग"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:padding="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll_footer"
+        android:background="@color/colorPrimary"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/lblfooter"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Services provided by: NIC Bihar"/>
+    </LinearLayout>
+
+
+</RelativeLayout>
