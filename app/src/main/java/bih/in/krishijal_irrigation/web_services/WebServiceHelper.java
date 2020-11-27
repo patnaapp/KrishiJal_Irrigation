@@ -12,17 +12,10 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-import bih.in.krishijal_irrigation.entity.District;
-import bih.in.krishijal_irrigation.entity.PanchayatEntity;
-import bih.in.krishijal_irrigation.entity.PlantationDetail;
-import bih.in.krishijal_irrigation.entity.PlantationReportEntity;
-import bih.in.krishijal_irrigation.entity.PlantationSiteEntity;
-import bih.in.krishijal_irrigation.entity.SanrachnaTypeEntity;
-import bih.in.krishijal_irrigation.entity.SignUp;
+import bih.in.krishijal_irrigation.entity.PanchayatData;
 import bih.in.krishijal_irrigation.entity.UserDetails;
 import bih.in.krishijal_irrigation.entity.Versioninfo;
 import bih.in.krishijal_irrigation.entity.VillageListEntity;
-import bih.in.krishijal_irrigation.entity.ward;
 
 public class WebServiceHelper {
 
@@ -144,21 +137,21 @@ public class WebServiceHelper {
         return fieldList;
     }
 
-    public static ArrayList<PanchayatEntity> getPanchayatList(String DistCode, String BlockCode) {
+    public static ArrayList<PanchayatData> getPanchayatList(String DistCode, String BlockCode) {
 
         SoapObject res1;
-        res1=getServerData(GETPANCHAYATLIST, PanchayatEntity.PanchayatEntity_CLASS,"DistCode", "BlockCode", DistCode, BlockCode);
+        res1=getServerData(GETPANCHAYATLIST, PanchayatData.PanchayatData_CLASS,"DistCode", "BlockCode", DistCode, BlockCode);
         int TotalProperty=0;
         if(res1!=null) TotalProperty= res1.getPropertyCount();
 
-        ArrayList<PanchayatEntity> fieldList = new ArrayList<PanchayatEntity>();
+        ArrayList<PanchayatData> fieldList = new ArrayList<PanchayatData>();
 
         for (int i = 0; i < TotalProperty; i++) {
             if (res1.getProperty(i) != null) {
                 Object property = res1.getProperty(i);
                 if (property instanceof SoapObject) {
                     SoapObject final_object = (SoapObject) property;
-                    PanchayatEntity villageData= new PanchayatEntity(final_object);
+                    PanchayatData villageData= new PanchayatData(final_object);
                     fieldList.add(villageData);
                 }
             } else

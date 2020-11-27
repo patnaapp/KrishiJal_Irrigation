@@ -7,12 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,14 +17,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import bih.in.krishijal_irrigation.entity.Block;
-import bih.in.krishijal_irrigation.entity.District;
 import bih.in.krishijal_irrigation.entity.PanchayatData;
-import bih.in.krishijal_irrigation.entity.PanchayatEntity;
-import bih.in.krishijal_irrigation.entity.SectorWeb;
 import bih.in.krishijal_irrigation.entity.UserDetails;
 import bih.in.krishijal_irrigation.entity.VillageListEntity;
-import bih.in.krishijal_irrigation.entity.ward;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     //private static String DB_PATH = "";
@@ -337,13 +328,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 userInfo.setUserroleId(cur.getString(cur.getColumnIndex("RoleId")));
                 userInfo.setUserrole(cur.getString(cur.getColumnIndex("Role")));
                 userInfo.setAuthenticated(true);
-//                userInfo.setDistrictCode(cur.getString(cur.getColumnIndex("DistCode")));
-//                userInfo.setDistName(cur.getString(cur.getColumnIndex("DistName")));
-//                userInfo.setBlockCode(cur.getString(cur.getColumnIndex("BlockCode")));
-//                userInfo.setBlockName(cur.getString(cur.getColumnIndex("BlockName")));
-//                userInfo.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
-//                userInfo.setPanchayatName(cur.getString(cur.getColumnIndex("PanchayatName")));
-            }
+       }
 
             cur.close();
             db.close();
@@ -375,22 +360,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
                 userInfo = new UserDetails();
 //                userInfo.setUserId(cur.getString(cur.getColumnIndex("UserID")));
-//                userInfo.setUserId(cur.getString(cur.getColumnIndex("UserName")));
-//                userInfo.setPassword(cur.getString(cur.getColumnIndex("UserPassword")));
-//
-////                userInfo.setPassword(cur.getString(cur.getColumnIndex("MobileNo")));
-////                userInfo.setPassword(cur.getString(cur.getColumnIndex("Email")));
-//
-//                userInfo.setRoleId(cur.getString(cur.getColumnIndex("RoleId")));
-//                userInfo.setRoleName(cur.getString(cur.getColumnIndex("Role")));
-//                //userInfo.setAuthenticated(true);
-//                userInfo.setDistCode(cur.getString(cur.getColumnIndex("DistCode")));
-//                userInfo.setDistName(cur.getString(cur.getColumnIndex("DistName")));
-//                userInfo.setDivisionCode(cur.getString(cur.getColumnIndex("DivisionCode")));
-//                userInfo.setDivisionName(cur.getString(cur.getColumnIndex("DivisionName")));
-//                userInfo.setZoneCode(cur.getString(cur.getColumnIndex("ZoneCode")));
-//                userInfo.setZoneName(cur.getString(cur.getColumnIndex("ZoneName")));
-            }
+        }
 
             cur.close();
             db.close();
@@ -466,7 +436,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public long setDistrictToLocal(ArrayList<District> list) {
+
+
+    public long setPanchayatDataToLocal(UserDetails userInfo, ArrayList<PanchayatData> list) {
         // String tableName = type == "pond" ? "PondInspectionDetail" : "WellInspectionDetail";
 
         long c = -1;
@@ -482,62 +454,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return -1;
         }
 
-        ArrayList<District> info = list;
-
-
-        if (info != null) {
-            try {
-                SQLiteDatabase db = this.getReadableDatabase();
-
-                ContentValues values = new ContentValues();
-
-                for (int i = 0; i < info.size(); i++) {
-
-                    values.put("DistCode", info.get(i).get_DistCode());
-                    values.put("DistName", info.get(i).get_DistName());
-                    values.put("DistCode3", info.get(i).get_DistNameHN());
-                    values.put("Zone", info.get(i).get_DistNameHN());
-                    values.put("Circle", info.get(i).get_DistNameHN());
-
-
-                    String[] whereArgs = new String[]{String.valueOf(info.get(i).get_DistCode())};
-
-                    c = db.update("DistrictMwrd", values, "DistCode=?", whereArgs);
-
-                    if(c != 1){
-                        c = db.insert("DistrictMwrd", null, values);
-                    }
-
-
-
-                }
-                db.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return c;
-            }
-        }
-        return c;
-    }
-
-    public long setPanchayatDataToLocal(UserDetails userInfo, ArrayList<PanchayatEntity> list) {
-        // String tableName = type == "pond" ? "PondInspectionDetail" : "WellInspectionDetail";
-
-        long c = -1;
-
-        DataBaseHelper dh = new DataBaseHelper(myContext);
-        try {
-            dh.createDataBase();
-
-
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-            return -1;
-        }
-
-        ArrayList<PanchayatEntity> info = list;
+        ArrayList<PanchayatData> info = list;
 
 
         if (info != null) {
@@ -553,7 +470,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     values.put("PACName", info.get(i).getAreaType());
 
                     values.put("BlockCode", userInfo.getBlockCode());
-                    //values.put("Block Name", userInfo.getBlockName());
                     values.put("DistrictCode", userInfo.getDistrictCode());
                     values.put("DistrictName", userInfo.getDistName());
                     values.put("PartNo", "2");
@@ -579,153 +495,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public String getWellEncrhmntUpdatedDataCount(){
-        String pondCount = "0", wellCount = "0";
-        String[] params = new String[]{"1"};
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor curPond = db.rawQuery("Select * from CoWellEncroachmentReport WHERE isUpdated=?", params);
-
-            pondCount = String.valueOf(curPond.getCount());
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-
-        return pondCount;
-    }
-
-    public String getPondEncrhmntUpdatedDataCount(){
-        String pondCount = "0", wellCount = "0";
-        String[] params = new String[]{"1"};
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor curPond = db.rawQuery("Select * from CoPondEncroachmentReport WHERE isUpdated=?", params);
-            pondCount = String.valueOf(curPond.getCount());
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-
-        return pondCount;
-    }
-
-    public String getSchemeInspectionUpdatedDataCount(){
-        String pondCount = "0";
-        String[] params = new String[]{"1"};
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor curPond = db.rawQuery("Select * from SurfaceSchemeDetail WHERE Updated=?", params);
-
-            pondCount = String.valueOf(curPond.getCount());
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-
-        return pondCount;
-    }
-
-    public int getSchemeDataCount(){
-        int pondCount = 0;
-        String[] params = new String[]{"0"};
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor curPond = db.rawQuery("Select * from SurfaceSchemeDetail WHERE Updated=?", params);
-
-            pondCount = curPond.getCount();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-
-        return pondCount;
-    }
-
-    public String getPlantationUpdatedDataCount(){
-        //ArrayList<String> List = new ArrayList<String>();
-        String pondCount = "0";
-        String[] params = new String[]{"1"};
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor curPond = db.rawQuery("Select * from PlantationDetail WHERE isUpdated=?", params);
-
-            pondCount = String.valueOf(curPond.getCount());
-            //wellCount = String.valueOf(curWell.getCount());
-
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-
-        return pondCount;
-    }
-
-    public String getWellUpdatedDataCount(){
-        String wellCount = "0";
-        String[] params = new String[]{"1"};
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            //Cursor curPond = db.rawQuery("Select * from PondInspectionDetail WHERE isUpdated=?", params);
-
-            Cursor curWell = db.rawQuery("Select * from WellInspectionDetail WHERE isUpdated=?", params);
-
-
-            wellCount = String.valueOf(curWell.getCount());
-
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-
-        return wellCount;
-    }
-
-    public String getManregadDataCount(){
-        String wellCount = "0";
-        String[] params = new String[]{"1"};
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            //Cursor curPond = db.rawQuery("Select * from PondInspectionDetail WHERE isUpdated=?", params);
-
-            Cursor curWell = db.rawQuery("Select * from Menrega_Rural_Dev_Dept WHERE isUpdated=?", params);
-
-
-            wellCount = String.valueOf(curWell.getCount());
-
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-
-        return wellCount;
-    }
-
-    public String getOtherSchemeDataCount(){
-        String wellCount = "0";
-        String[] params = new String[]{"1"};
-        try{
-            SQLiteDatabase db = this.getReadableDatabase();
-            //Cursor curPond = db.rawQuery("Select * from PondInspectionDetail WHERE isUpdated=?", params);
-
-            Cursor curWell = db.rawQuery("Select * from OtherDept_Of_Rural_Dev_Dept WHERE isUpdated=?", params);
-
-
-            wellCount = String.valueOf(curWell.getCount());
-
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-
-        return wellCount;
-    }
 
     public static String getCurrentDate() {
         Calendar cal = Calendar.getInstance();
@@ -760,212 +529,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public long deletePendingUpload3(String pid, String userId) {
-        long c = -1;
-
-        try {
-
-            SQLiteDatabase db = this.getWritableDatabase();
-            String[] DeleteWhere = {String.valueOf(pid), userId};
-            c = db.delete("SevikaSahaika", "slno=? and userId=?", DeleteWhere);
-
-            db.close();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            return c;
-        }
-        return c;
-    }
 
 
-    public int getNumberOfPendingData(String userId) {
-
-        int x = 0;
-        try {
-
-            SQLiteDatabase db = this.getReadableDatabase();
-            String[] whereArgs = {userId};
-            Cursor cur = db.rawQuery("Select slno from Inspection where Latitude IS NOT NULL and Longitude IS NOT NULL and UploadBy =?", whereArgs);
-            x = cur.getCount();
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-        return x;
-
-    }
-
-    public int getNumberTotalOfPendingData(String userId) {
-
-        int x = 0;
-        try {
-
-            SQLiteDatabase db = this.getReadableDatabase();
-            String[] whereArgs = {userId};
-            Cursor cur = db.rawQuery("Select slno from UploadData where EntryBy =?", whereArgs);
-            x = cur.getCount();
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-        return x;
-
-    }
-
-    public int getNumberOfPendingData2(String userId) {
-
-        int x = 0;
-        try {
-
-            SQLiteDatabase db = this.getReadableDatabase();
-            String[] whereArgs = {userId};
-            Cursor cur = db.rawQuery("Select sl_no from UploadDataforGps where Latitude IS NOT NULL and Longitude IS NOT NULL and userId=? ", whereArgs);
-            x = cur.getCount();
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-        return x;
-
-    }
-    public int getNumberOfPendingData2GPS(String userId) {
-
-        int x = 0;
-        try {
-
-            SQLiteDatabase db = this.getReadableDatabase();
-            String[] whereArgs = {userId};
-            Cursor cur = db.rawQuery("Select sl_no from UploadDataforGps where userId=? ", whereArgs);
-            x = cur.getCount();
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-        return x;
-
-    }
-
-    public int getNumberOfPendingData3() {
-
-        int x = 0;
-        try {
-
-            SQLiteDatabase db = this.getReadableDatabase();
-            String[] whereArgs = {null, null};
-            Cursor cur = db.rawQuery("Select * from myVoutcher", null);
-            x = cur.getCount();
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-        return x;
-
-    }
-
-    public long setDistrictDataLocalUserWise(ArrayList<District> distlist, String userid) {
-
-        long c = -1;
-        ArrayList<District> dist = distlist;
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        if (dist != null) {
-            try {
-                for (int i = 0; i < dist.size(); i++) {
-                    values.put("Code", dist.get(i).get_DistCode());
-                    values.put("Name", dist.get(i).get_DistName());
-                    values.put("userid", userid);
-                    String[] param = {dist.get(i).get_DistCode()};
-                    //long update = db.update("DistDetail", values, "Code = ?", param);
-                    //  if (!(update > 0))
-                    c = db.insert("DistDetailUserBy", null, values);
-                }
-                db.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return c;
-            }
-        }
-        return c;
-    }
-
-    public long setBlockDataForDist(ArrayList<Block> blocklist, String distCode) {
-
-        long c = -1;
-        ArrayList<Block> block = blocklist;
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        db.execSQL("Delete from Block");
-        if (block.size() > 0) {
-            try {
-
-
-                for (int i = 0; i < block.size(); i++) {
-
-                    values.put("Code", block.get(i).getBlockCode());
-                    values.put("Name", block.get(i).getBlockName());
-                    values.put("District_Code", distCode);
-                  /*  String[] param={block.get(i).getCode()};
-                    long update = db.update("Block", values, "Code = ?", param);
-                    if (!(update>0))*/
-                    c = db.insert("Block", null, values);
-                }
-                db.close();
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return c;
-            }
-        }
-        return c;
-    }
-    public long setSectorDataLocal(ArrayList<SectorWeb> sectorWebArrayList, String blockCode) {
-
-        long c = -1;
-        ArrayList<SectorWeb> sectorWebs = sectorWebArrayList;
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        db.execSQL("Delete from Sector");
-        if (sectorWebs.size() > 0) {
-            try {
-
-
-                for (int i = 0; i < sectorWebs.size(); i++) {
-                    values.put("Code", sectorWebs.get(i).getCode());
-                    values.put("Name", sectorWebs.get(i).getValue());
-                    values.put("Block_Code", blockCode);
-                    /*String[] param={sectorWebs.get(i).getCode()};
-                    long update = db.update("Sector", values, "Code = ?", param);
-                    if (!(update>0))*/
-                    c = db.insert("Sector", null, values);
-
-                }
-                db.close();
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return c;
-            }
-        }
-        return c;
-    }
 
     public String getPanchayatName(String pcode, Context context) {
         DataBaseHelper helper = new DataBaseHelper(context);
@@ -991,83 +556,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public String getDistrictName(String dcode, Context context) {
-        DataBaseHelper helper = new DataBaseHelper(context);
-        SQLiteDatabase db = helper.getReadableDatabase();
-
-        String name = "";
-
-        String[] whereArgs = new String[]{dcode};
-        Cursor c = db.rawQuery(
-                "select * from District where Code=?",
-                whereArgs);
-
-        if (c.getCount() > 0) {
-            c.moveToNext();
-            name = c.getString(c.getColumnIndex("Name"));
-
-        }
-        c.close();
-        return name;
-
-    }
 
 
-    public String getBlockName(String bcode, Context context) {
-        DataBaseHelper helper = new DataBaseHelper(context);
-        SQLiteDatabase db = helper.getReadableDatabase();
-
-        String name = "";
-
-        String[] whereArgs = new String[]{bcode};
-        Cursor c = db.rawQuery(
-                "select * from Block where Code=?",
-                whereArgs);
-
-        if (c.getCount() > 0) {
-            c.moveToNext();
-            name = c.getString(c.getColumnIndex("Name"));
-
-        }
-        c.close();
-        return name;
-
-    }
-
-
-    public ArrayList<ward> getWardList(String Pan_Code) {
-        ArrayList<ward> deptList = new ArrayList<ward>();
-        try {
-
-            SQLiteDatabase db = this.getReadableDatabase();
-            String[] params = new String[] { Pan_Code };
-
-            Cursor cur = db
-                    .rawQuery(
-                            "SELECT * from Ward WHERE PanchayatCode= ?", params);
-            int x = cur.getCount();
-
-            while (cur.moveToNext()) {
-
-                ward dept = new ward();
-                dept.setWardCode(cur.getString(cur.getColumnIndex("WardCode")));
-                dept.setWardname(cur.getString(cur.getColumnIndex("WardName")));
-                dept.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
-                dept.setAreaType(cur.getString(cur.getColumnIndex("AreaType")));
-
-                deptList.add(dept);
-            }
-
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // TODO: handle exception
-
-        }
-        return deptList;
-    }
 
     public ArrayList<VillageListEntity> getVillageList(String Pan_Code) {
         ArrayList<VillageListEntity> deptList = new ArrayList<VillageListEntity>();
@@ -1140,177 +630,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<PanchayatData> getPanchaytAreawise(String blockCode, String areaType) {
-        ArrayList<PanchayatData> panchayatList = new ArrayList<PanchayatData>();
-        try {
 
-            SQLiteDatabase db = this.getReadableDatabase();
-            String[] params = new String[] { blockCode, areaType };
-
-            Cursor cur = db
-                    .rawQuery(
-                            "SELECT PanchayatCode,PanchayatName,DistrictCode,BlockCode,PACName from Panchayat WHERE BlockCode = ? AND PACName = ? ORDER BY PanchayatName",
-                            params);
-            int x = cur.getCount();
-
-            while (cur.moveToNext()) {
-
-                PanchayatData panchayat = new PanchayatData();
-                panchayat.setPcode(cur.getString(cur.getColumnIndex("PanchayatCode")));
-                panchayat.setPname(cur.getString(cur.getColumnIndex("PanchayatName")));
-                panchayat.setBcode(cur.getString(cur.getColumnIndex("BlockCode")));
-                panchayat.setDcode(cur.getString(cur.getColumnIndex("DistrictCode")));
-                panchayat.setAreaType(cur.getString(cur.getColumnIndex("PACName")));
-
-                panchayatList.add(panchayat);
-            }
-
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // TODO: handle exception
-
-        }
-        return panchayatList;
-    }
-
-
-    public ArrayList<District> getDistrict() {
-        ArrayList<District> districtList = new ArrayList<District>();
-        try {
-
-            SQLiteDatabase db = this.getReadableDatabase();
-
-            Cursor cur = db
-                    .rawQuery(
-                            "SELECT DistCode,DistName,DistCode3,Zone,Circle from DistrictMwrd ORDER BY DistName",
-                            null);
-            int x = cur.getCount();
-
-            while (cur.moveToNext()) {
-
-                District district = new District();
-                district.set_DistCode(cur.getString(cur.getColumnIndex("DistCode")));
-                district.set_DistName(cur.getString(cur.getColumnIndex("DistName")));
-                district.setDistCode3(cur.getString(cur.getColumnIndex("DistCode3")));
-                district.setZone(cur.getString(cur.getColumnIndex("Zone")));
-                district.setCircle(cur.getString(cur.getColumnIndex("Circle")));
-
-                districtList.add(district);
-            }
-
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // TODO: handle exception
-
-        }
-        return districtList;
-    }
-
-    public ArrayList<District> getDistrictUserBy() {
-        //CREATE TABLE "DistDetail" ( `Code` TEXT NOT NULL, `Name` TEXT, `slno`
-        // INTEGER, PRIMARY KEY(`Code`) )
-        ArrayList<District> districtList = new ArrayList<District>();
-
-        try {
-
-            SQLiteDatabase db = this.getReadableDatabase();
-
-            Cursor cur = db
-                    .rawQuery(
-                            "SELECT Code,Name from DistDetailUserBy ORDER BY Name",
-                            null);
-            int x = cur.getCount();
-
-            while (cur.moveToNext()) {
-
-                District district = new District();
-                district.set_DistCode(cur.getString(cur
-                        .getColumnIndex("Code")));
-                district.set_DistName(cur.getString(cur
-                        .getColumnIndex("Name")));
-
-                districtList.add(district);
-            }
-
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-
-        }
-        return districtList;
-
-    }
-
-    public ArrayList<Block> getBlock(String distCode) {
-
-        ArrayList<Block> blockList = new ArrayList<Block>();
-//CREATE TABLE `Block` ( `slno` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-// `District_Code` TEXT, `Code` TEXT, `Name` TEXT )
-        try {
-
-            SQLiteDatabase db = this.getReadableDatabase();
-            String[] params = new String[] { distCode };
-            Cursor cur = db
-                    .rawQuery(
-                            "SELECT BlockCode,DistCode,BlockName from Blocks WHERE DistCode = ? ORDER BY BlockName ",
-                            params);
-            int x = cur.getCount();
-
-            while (cur.moveToNext()) {
-
-                Block block = new Block();
-                block.setBlockCode(cur.getString(cur
-                        .getColumnIndex("BlockCode")));
-                block.setBlockName(cur.getString(cur
-                        .getColumnIndex("BlockName")));
-                block.setDistCode(cur.getString(cur
-                        .getColumnIndex("DistCode")));
-
-                blockList.add(block);
-            }
-
-            cur.close();
-            db.close();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-
-        }
-        return blockList;
-
-    }
-    public ArrayList<PanchayatData> getPanchayatLocal(String blkId) {
-        //CREATE TABLE `Panchayat1` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `DistCode` TEXT,
-        // `BlockCode` TEXT, `PanchayatCode` TEXT, `PanchayatName` TEXT )
-        ArrayList<PanchayatData> pdetail = new ArrayList<PanchayatData>();
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cur = db.rawQuery("SELECT * FROM  Panchayat1 where BlockCode='" + blkId + "' order by PanchayatName", null);
-            int x = cur.getCount();
-            while (cur.moveToNext()) {
-                PanchayatData panchayat = new PanchayatData();
-                panchayat.setPcode(cur.getString(cur.getColumnIndex("PanchayatCode")));
-                panchayat.setPname((cur.getString(cur.getColumnIndex("PanchayatName"))));
-                pdetail.add(panchayat);
-            }
-            cur.close();
-            db.close();
-        }
-        catch (Exception e) {
-        }
-        return pdetail;
-    }
-
-    public String getPostWhereConditionForStudentListForAttendance1(String finyr, String schemeid, String fund_id, String scheme_type, String distid) {
+  /*  public String getPostWhereConditionForStudentListForAttendance1(String finyr, String schemeid, String fund_id, String scheme_type, String distid) {
 
         String subWhere=" ";
 
@@ -1337,6 +658,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         Log.e("SUBQUERY",subWhere);
         return subWhere;
-    }
+    }*/
     
 }
