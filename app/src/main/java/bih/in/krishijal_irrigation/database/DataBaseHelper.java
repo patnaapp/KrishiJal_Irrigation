@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import bih.in.krishijal_irrigation.entity.InspectionDetailsModel;
 import bih.in.krishijal_irrigation.entity.PanchayatData;
 import bih.in.krishijal_irrigation.entity.UserDetails;
 import bih.in.krishijal_irrigation.entity.VillageListEntity;
@@ -659,5 +660,61 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Log.e("SUBQUERY",subWhere);
         return subWhere;
     }*/
-    
+
+
+
+
+  // new tables
+
+    public long InsertInspectionDetail(InspectionDetailsModel vdata) {
+
+        long c = -1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        //c = db.delete("VillageList", null, null);
+        ContentValues values = new ContentValues();
+        try {
+
+            values.put("InspectionId", vdata.getInspectionId());
+            values.put("SchemeCode", vdata.getSchemeCode());
+            values.put("DistCode", vdata.getDistCode());
+            values.put("BlockCode", vdata.getBlockCode());
+            values.put("PanchayatCode", vdata.getPanchayatCode());
+            values.put("DistName", vdata.getDistName());
+            values.put("BlockName", vdata.getBlockName());
+            values.put("PanchayatName", vdata.getPanchayatName());
+            values.put("VILLCODE", vdata.getVILLCODE());
+            values.put("EnergyTypeId", vdata.getEnergyTypeId());
+            values.put("EnergyTypeName", vdata.getEnergyTypeName());
+            values.put("NoofNalkup", vdata.getNoofNalkup());
+            values.put("NoOfPole", vdata.getNoOfPole());
+            values.put("Motor_Pump_Power", vdata.getMotor_Pump_Power());
+            values.put("DistributionChannelLength", vdata.getDistributionChannelLength());
+            values.put("DistributionPipeDiamater", vdata.getDistributionPipeDiamater());
+            values.put("DistributionPipeLength", vdata.getDistributionPipeLength());
+            values.put("ApproxCommandArea", vdata.getApproxCommandArea());
+            values.put("SchemeApproxAmt", vdata.getSchemeApproxAmt());
+            values.put("WaterSourceId", vdata.getWaterSourceId());
+            values.put("WaterAvailable_Kharif", vdata.getWaterAvailable_Kharif());
+            values.put("WaterAvailable_Rabi", vdata.getWaterAvailable_Rabi());
+            values.put("WaterAvailable_Garma", vdata.getWaterAvailable_Garma());
+            values.put("DistributionPaenLength", vdata.getDistributionPaenLength());
+            values.put("EnergyTypeName", vdata.getEnergyTypeName());
+            values.put("Photo", vdata.getPhoto());
+
+            String[] whereArgs = new String[]{vdata.getInspectionId()};
+            c = db.update("tbl_InspectionDetails", values, "InspectionId=?", whereArgs);
+
+            if (!(c > 0)) {
+
+                c = db.insert("tbl_InspectionDetails", null, values);
+            }
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return c;
+        }
+
+        return c;
+    }
 }

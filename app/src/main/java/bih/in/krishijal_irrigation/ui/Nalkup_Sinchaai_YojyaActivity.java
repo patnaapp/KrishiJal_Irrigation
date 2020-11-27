@@ -8,11 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import bih.in.krishijal_irrigation.R;
 import bih.in.krishijal_irrigation.database.DataBaseHelper;
+import bih.in.krishijal_irrigation.entity.InspectionDetailsModel;
 import bih.in.krishijal_irrigation.entity.PanchayatData;
 import bih.in.krishijal_irrigation.entity.VillageListEntity;
 
@@ -23,6 +25,8 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
     ArrayList<VillageListEntity>VillageList=new ArrayList<>();
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
     DataBaseHelper dataBaseHelper;
+    InspectionDetailsModel inspectionDetailsModel;
+    String panchayat_Id="",Vill_Id="",Dist_Id="",BlockId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,29 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
         edt_pipe_lingth_meter=(EditText)findViewById(R.id.edt_pipe_lingth_meter);
         edt_apporx_command_area_hec=(EditText)findViewById(R.id.edt_apporx_command_area_hec);
         edt_yojna_price=(EditText)findViewById(R.id.edt_yojna_price);
+    }
+
+
+    private void InsertData(){
+        long id = 0;
+        inspectionDetailsModel.setDistCode(Dist_Id);
+        inspectionDetailsModel.setBlockCode(BlockId);
+        inspectionDetailsModel.setPanchayatCode(panchayat_Id);
+        inspectionDetailsModel.setVILLCODE(Vill_Id);
+
+        // inspectionDetailsModel.setDistributionChannelLength(Flag_IsDataWrong);
+
+        String userid= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("USER_ID", "");
+       // inspectionDetailsModel.set_EntryBy(userid.toLowerCase());
+
+        id = new DataBaseHelper(Nalkup_Sinchaai_YojyaActivity.this).InsertInspectionDetail(inspectionDetailsModel);
+
+        if (id > 0) {
+            Toast.makeText(getApplicationContext(), "डेटा सफलतापूर्वक सहेजा गया", Toast.LENGTH_LONG).show();
+
+        } else {
+            Toast.makeText(getApplicationContext(), "डेटा सहेजा नहीं गया", Toast.LENGTH_LONG).show();
+        }
     }
 
 
