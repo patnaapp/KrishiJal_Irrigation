@@ -60,7 +60,7 @@ public class LoginActivity extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userName = (EditText) findViewById(R.id.et_username);
+              /*  userName = (EditText) findViewById(R.id.et_username);
                 userPass = (EditText) findViewById(R.id.et_password);
                 param = new String[2];
                 param[0] = userName.getText().toString();
@@ -72,7 +72,9 @@ public class LoginActivity extends Activity {
                     Toast.makeText(LoginActivity.this, "Enter Valid Password", Toast.LENGTH_SHORT).show();
                 }else{
                     new LoginTask(param[0], param[1]).execute(param);
-                }
+                }*/
+              Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+              startActivity(intent);
 
             }
         });
@@ -278,8 +280,7 @@ public class LoginActivity extends Activity {
     }
 
     public void start() {
-        //getUserDetail();
-        //new SyncPanchayatData().execute("");
+
         Intent iUserHome = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(iUserHome);
         finish();
