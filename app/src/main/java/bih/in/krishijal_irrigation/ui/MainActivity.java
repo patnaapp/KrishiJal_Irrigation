@@ -20,7 +20,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         inilization();
-        rl_nalkup_new.setOnClickListener(this);
+
     }
     public void inilization(){
         rl_nalkup_new=(RelativeLayout)findViewById(R.id.rl_nalkup_new);
@@ -43,6 +43,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         tv_username=(TextView)findViewById(R.id.tv_username);
         tv_district=(TextView)findViewById(R.id.tv_district);
         tv_block=(TextView)findViewById(R.id.tv_block);
+
+        rl_nalkup_new.setOnClickListener(this);
+        rl_udvah_new.setOnClickListener(this);
+        rl_aahar_new.setOnClickListener(this);
     }
 
     @Override
@@ -52,6 +56,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Intent intent=new Intent(getApplicationContext(),Nalkup_Sinchaai_YojyaActivity.class);
             startActivity(intent);
             //handle multiple view click events
+        }else  if (view.getId()==R.id.rl_udvah_new){
+            Intent intent=new Intent(getApplicationContext(),Udvah_Sinchaai_YojnaActivity.class);
+            startActivity(intent);
+        }else  if (view.getId()==R.id.rl_aahar_new){
+            Intent intent=new Intent(getApplicationContext(),Aahar_Sinchaai_YojyaActivity.class);
+            startActivity(intent);
         }
 
 
