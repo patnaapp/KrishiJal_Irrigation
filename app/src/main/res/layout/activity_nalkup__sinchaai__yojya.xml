@@ -337,7 +337,6 @@
                     android:paddingRight="20dp"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="#43D305" />
-
             </LinearLayout>
 
         </LinearLayout>
@@ -468,6 +467,33 @@
                     android:text="लोकेशन ले"
                     android:textColor="#FFFFFF" />
 
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <FrameLayout
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/textboxshape1"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp">
+                    <ImageView
+                        android:id="@+id/take_photo"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp">
+
+                    </ImageView>
+                    <TextView
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:text="Take Cammand Area Photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </TextView>
+                </FrameLayout>
 
             </LinearLayout>
 

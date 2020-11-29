@@ -1,13 +1,11 @@
 package bih.in.krishijal_irrigation.utility;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
 import androidx.core.app.ActivityCompat;
-
 
 public class MarshmallowPermission {
 
@@ -19,15 +17,17 @@ public class MarshmallowPermission {
   {
 		try
 		{
+
 		if(Build.VERSION.SDK_INT>=23)
 		{
-		  if (ActivityCompat.checkSelfPermission(context, permission)
+		  if (ActivityCompat.checkSelfPermission(context,permission)
 	                == PackageManager.PERMISSION_GRANTED) {
 		
 			this.result=0;
 		  }
 		  else
 		  {
+			
 			  ActivityCompat.requestPermissions((Activity) context,
 		                new String[]{permission},
 		               state);
