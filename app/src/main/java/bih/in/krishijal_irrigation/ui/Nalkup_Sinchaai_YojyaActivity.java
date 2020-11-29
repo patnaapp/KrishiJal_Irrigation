@@ -1,9 +1,13 @@
 package bih.in.krishijal_irrigation.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,6 +22,8 @@ import bih.in.krishijal_irrigation.entity.InspectionDetailsModel;
 import bih.in.krishijal_irrigation.entity.PanchayatData;
 import bih.in.krishijal_irrigation.entity.VillageListEntity;
 
+import bih.in.krishijal_irrigation.utility.GpsTracker;
+
 public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
     LinearLayout ll;
     Spinner sp_panchayat,sp_village,sp_option_power,sp_dist_khatakhesra;
@@ -27,14 +33,20 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
     InspectionDetailsModel inspectionDetailsModel;
     String panchayat_Id="",Vill_Id="",Dist_Id="",BlockId="";
-    String _edt_no_of_nalkup="",_edt_pole_length="",_edt_pipe_Perimeter_inch="",_edt_pipe_lingth_meter="",_edt_apporx_command_area_hec="",_edt_yojna_price="";
-
+    private GpsTracker gpsTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nalkup__sinchaai__yojya);
         Initialization();
         dataBaseHelper=new DataBaseHelper(getApplicationContext());
+        try {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -140,14 +152,16 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
         }
 
     }
-    public void setvalue(){
-        _edt_no_of_nalkup=edt_no_of_nalkup.getText().toString();
-        _edt_pole_length=edt_pole_length.getText().toString();
-        _edt_pipe_Perimeter_inch=edt_pipe_Perimeter_inch.getText().toString();
-        _edt_pipe_lingth_meter=edt_pipe_lingth_meter.getText().toString();
-        _edt_apporx_command_area_hec=edt_apporx_command_area_hec.getText().toString();
-        _edt_yojna_price=edt_yojna_price.getText().toString();
-
+    //Gps
+    public void getLocation(View view){
+        gpsTracker = new GpsTracker(Nalkup_Sinchaai_YojyaActivity.this);
+        if(gpsTracker.canGetLocation()){
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
+        }else{
+            gpsTracker.showSettingsAlert();
+        }
+      //  return latitude
     }
 
 }
