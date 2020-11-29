@@ -27,6 +27,7 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
     InspectionDetailsModel inspectionDetailsModel;
     String panchayat_Id="",Vill_Id="",Dist_Id="",BlockId="";
+    String _edt_no_of_nalkup="",_edt_pole_length="",_edt_pipe_Perimeter_inch="",_edt_pipe_lingth_meter="",_edt_apporx_command_area_hec="",_edt_yojna_price="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +138,15 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
             sp_panchayat.setSelection(((ArrayAdapter<String>)spinnerAdapter1).getPosition(Village_code));
 
         }
+
+    }
+    public void setvalue(){
+        _edt_no_of_nalkup=edt_no_of_nalkup.getText().toString();
+        _edt_pole_length=edt_pole_length.getText().toString();
+        _edt_pipe_Perimeter_inch=edt_pipe_Perimeter_inch.getText().toString();
+        _edt_pipe_lingth_meter=edt_pipe_lingth_meter.getText().toString();
+        _edt_apporx_command_area_hec=edt_apporx_command_area_hec.getText().toString();
+        _edt_yojna_price=edt_yojna_price.getText().toString();
 
     }
 

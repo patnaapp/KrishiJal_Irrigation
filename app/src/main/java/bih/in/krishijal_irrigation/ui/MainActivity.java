@@ -63,7 +63,5 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Intent intent=new Intent(getApplicationContext(),Aahar_Sinchaai_YojyaActivity.class);
             startActivity(intent);
         }
-
-
     }
 }

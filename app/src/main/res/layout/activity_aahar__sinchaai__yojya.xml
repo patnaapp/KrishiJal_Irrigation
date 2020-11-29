@@ -314,7 +314,7 @@
                             android:textStyle="normal" />
 
                         <Button
-                            android:id="@+id/btn_location_lnr_1"
+                            android:id="@+id/btn_aahar_location"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_weight="0.7"
@@ -346,7 +346,7 @@
                             android:textStyle="normal" />
 
                         <Button
-                            android:id="@+id/btn_location_lnr_11"
+                            android:id="@+id/btn_distribution_paien"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_weight="0.7"
@@ -375,7 +375,7 @@
                             android:textStyle="normal" />
 
                         <Button
-                            android:id="@+id/btn_location_lnr_1111"
+                            android:id="@+id/btn_distribution_pipe"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_weight="0.7"

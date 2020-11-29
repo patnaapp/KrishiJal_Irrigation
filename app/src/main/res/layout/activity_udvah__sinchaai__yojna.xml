@@ -332,7 +332,7 @@
 
                     <EditText
                         android:id="@+id/edt_distribution_pipe_inch"
-                        android:layout_width="0dp"
+                        android:layout_width="192dp"
                         android:layout_height="40dp"
                         android:layout_marginTop="4dp"
                         android:layout_marginRight="5dp"
