@@ -56,11 +56,12 @@ public class LoginActivity extends Activity {
 
         Button loginBtn = (Button) findViewById(R.id.btn_login);
         TextView signUpBtn = (TextView) findViewById(R.id.tv_signup);
+        localDBHelper=new DataBaseHelper(LoginActivity.this);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  userName = (EditText) findViewById(R.id.et_username);
+                userName = (EditText) findViewById(R.id.et_username);
                 userPass = (EditText) findViewById(R.id.et_password);
                 param = new String[2];
                 param[0] = userName.getText().toString();
@@ -72,9 +73,9 @@ public class LoginActivity extends Activity {
                     Toast.makeText(LoginActivity.this, "Enter Valid Password", Toast.LENGTH_SHORT).show();
                 }else{
                     new LoginTask(param[0], param[1]).execute(param);
-                }*/
-              Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-              startActivity(intent);
+                }
+              //Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+              //startActivity(intent);
 
             }
         });
@@ -141,7 +142,7 @@ public class LoginActivity extends Activity {
                 userDetails.setAuthenticated(true);
                 return userDetails;
             } else {
-                return WebServiceHelper.Login(username, password,"");
+                return WebServiceHelper.Login(username, password);
             }
 
         }
@@ -158,7 +159,7 @@ public class LoginActivity extends Activity {
                 alertDialog.show();
 
             } else if (!(result != null)) {
-                AlertDialog.Builder ab = new AlertDialog.Builder(context);
+                AlertDialog.Builder ab = new AlertDialog.Builder(LoginActivity.this);
                 ab.setTitle(getResources().getString(R.string.server_down_title));
                 ab.setMessage(getResources().getString(R.string.server_down_text));
                 ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -273,10 +274,10 @@ public class LoginActivity extends Activity {
         editor.commit();
         //PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("USER_ID", uid).commit();
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("uid", uid).commit();
-        localDBHelper = new DataBaseHelper(getApplicationContext());
-        //long c = localDBHelper.insertUserDetails(details);
+        localDBHelper = new DataBaseHelper(LoginActivity.this);
+        long c = localDBHelper.insertUserDetails(details);
 
-        return 0;
+        return c;
     }
 
     public void start() {

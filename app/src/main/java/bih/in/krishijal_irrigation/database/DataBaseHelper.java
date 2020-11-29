@@ -35,7 +35,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public DataBaseHelper(Context context) {
 
-        super(context, DB_NAME, null, 2);
+        super(context, DB_NAME, null, 1);
         if (android.os.Build.VERSION.SDK_INT >= 4.2) {
 
 
@@ -249,7 +249,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         try {
 
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cur = db.rawQuery("Select * from UserLogin", null);
+            Cursor cur = db.rawQuery("Select * from UserDetail", null);
 
             x = cur.getCount();
 
@@ -261,7 +261,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return x;
     }
 
-    public long insertSurfaceUserDetails(UserDetails result) {
+    public long insertUserDetails(UserDetails result) {
 
         long c = 0;
         try {
@@ -270,35 +270,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             ContentValues values = new ContentValues();
 
+            values.put("IsMobileUpdated", result.getIsMobileUpdated());
+            values.put("Password", result.getPassword());
             values.put("UserID", result.getUserID());
-            values.put("UserName", result.getName());
-            values.put("UserPassword", result.getPassword());
-            //values.put("IMEI", result.getIMEI());
-            values.put("RoleId", result.getUserroleId());
-            values.put("Role", result.getUserrole());
-
-            values.put("MobileNo", result.getMobileNo());
-            values.put("Email", result.getEmail());
-
+            values.put("DistrictCode", result.getDistrictCode());
+            values.put("DistName", result.getDistName());
+            values.put("BlockCode", result.getBlockCode());
+            values.put("BlockName", result.getBlockName());
+            values.put("PanchayatCode", result.getPanchayatCode());
+            values.put("PanchayatName", result.getPanchayatName());
+            values.put("Userrole", result.getUserrole());
+            values.put("Name", result.getName());
 
             String[] whereArgs = new String[]{result.getUserID()};
 
             c = db.update("UserDetail", values, "UserID=? ", whereArgs);
 
-            if (!(c > 0)) {
-
+            if (!(c > 0))
+            {
                 //c = db.insert("UserDetail", null, values);
-                c = db.insertWithOnConflict("UserDetail", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                c = db.insertWithOnConflict("UserDetail", null, values,SQLiteDatabase.CONFLICT_REPLACE);
             }
 
             db.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             // TODO: handle exception
         }
         return c;
-
     }
+
 
     public UserDetails getSurfaceUserDetails(String userId, String pass) {
 

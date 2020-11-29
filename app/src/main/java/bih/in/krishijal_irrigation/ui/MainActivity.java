@@ -10,16 +10,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import bih.in.krishijal_irrigation.R;
+import bih.in.krishijal_irrigation.utility.CommonPref;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     RelativeLayout rl_nalkup_new,rl_nalkup_edit,rl_nalkup_upload,rl_udvah_new,rl_udvah_edit,rl_udvah_upload,rl_aahar_new,rl_aahar_edit,rl_aahar_upload;
     TextView nalkup_edit,nalkup_upload,udvah_edit,udvah_upload,aahar_edit,aahar_upload,tv_username,tv_district,tv_block;
+    String DistName="",BlockName="",UserName="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         inilization();
+        DistName= CommonPref.getUserDetails(MainActivity.this).getDistName();
+        BlockName= CommonPref.getUserDetails(MainActivity.this).getBlockName();
+        UserName= CommonPref.getUserDetails(MainActivity.this).getName();
+
+        tv_username.setText(UserName);
+        tv_district.setText(DistName);
+        tv_block.setText(BlockName);
+
 
     }
     public void inilization(){

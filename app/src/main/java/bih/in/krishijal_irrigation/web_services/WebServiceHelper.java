@@ -20,13 +20,13 @@ import bih.in.krishijal_irrigation.entity.VillageListEntity;
 public class WebServiceHelper {
 
     //public static final String SERVICENAMESPACE = "http://minorirrigation.bihar.gov.in/";
-    public static final String SERVICENAMESPACE = "http://tempuri.org/";
+    public static final String SERVICENAMESPACE = "http://10.133.20.159/";
 
-    public static final String SERVICEURL1 = "http://minorirrigation.bihar.gov.in/tubewell/webservice.asmx";
+    public static final String SERVICEURL1 = "http://10.133.20.159/testservice/kjalwebservice.asmx";
 
 
     public static final String APPVERSION_METHOD = "getAppLatest";
-    public static final String AUTHENTICATE_METHOD = "Login";
+    public static final String AUTHENTICATE_METHOD = "Authenticate";
 
 
 
@@ -95,10 +95,10 @@ public class WebServiceHelper {
 
     }
 
-    public static UserDetails Login(String User_ID, String Pwd, String userType) {
+    public static UserDetails Login(String User_ID, String Pwd) {
         try {
             SoapObject res1;
-            res1=getServerData(AUTHENTICATE_METHOD, UserDetails.getUserClass(),"user_ID","Password","user_type",User_ID,Pwd, userType);
+            res1=getServerData(AUTHENTICATE_METHOD, UserDetails.getUserClass(),"UserID","Password",User_ID,Pwd);
             if (res1 != null) {
                 return new UserDetails(res1);
             } else
