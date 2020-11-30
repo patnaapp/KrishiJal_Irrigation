@@ -19,9 +19,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import bih.in.krishijal_irrigation.R;
 
 import bih.in.krishijal_irrigation.database.DataBaseHelper;
+import bih.in.krishijal_irrigation.entity.PanchayatData;
 import bih.in.krishijal_irrigation.entity.UserDetails;
 import bih.in.krishijal_irrigation.utility.CommonPref;
 import bih.in.krishijal_irrigation.utility.GlobalVariables;
@@ -205,7 +208,8 @@ public class LoginActivity extends Activity {
                             long c = setLoginStatus(GlobalVariables.LoggedUser);
 
                             if (c > 0) {
-                                start();
+                                //start();
+                                new GetPanchayat().execute();
                             }
                             else {
                                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.authentication_failed),
@@ -242,7 +246,8 @@ public class LoginActivity extends Activity {
                             editor.putString("uid", uid);
                             editor.putString("pass", pass);
                             editor.commit();
-                            start();
+                            //start();
+                            new GetPanchayat().execute();
 
                         } else {
 
@@ -285,6 +290,51 @@ public class LoginActivity extends Activity {
         Intent iUserHome = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(iUserHome);
         finish();
+    }
+    private class GetPanchayat extends AsyncTask<String, Void, ArrayList<PanchayatData>> {
+        private final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+
+        private final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+
+        @Override
+        protected void onPreExecute() {
+
+            this.dialog.setCanceledOnTouchOutside(false);
+            this.dialog.setMessage("Loading Panchayat...");
+            this.dialog.show();
+        }
+
+        @Override
+        protected ArrayList<PanchayatData> doInBackground(String...arg) {
+
+
+
+
+            return WebServiceHelper.getPanchayat(CommonPref.getUserDetails(LoginActivity.this).getBlockCode());
+
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<PanchayatData> result) {
+
+            DataBaseHelper helper=new DataBaseHelper(getApplicationContext());
+
+            long i = localDBHelper.setPanchayatLocal(result,CommonPref.getUserDetails(LoginActivity.this).getBlockCode());
+
+            if(i>0)
+            {
+              start();
+
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.loading_fail),Toast.LENGTH_SHORT).show();
+
+
+            }
+
+
+        }
     }
 
 }

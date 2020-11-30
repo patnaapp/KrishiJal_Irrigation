@@ -48,7 +48,7 @@ public class WebServiceHelper {
     private static final String GETPLANATATIONSITELIST = "getPlantationSite";
     private static final String GETSANRACHNATYPELIST = "getTypesOfSanrchnaList";
     private static final String GETWARDLIST = "getWardList";
-    private static final String GETPANCHAYATLIST = "getPanchayatList";
+    private static final String GETPANCHAYATLIST = "getPanchayat";
     private static final String GETDISTRICTLIST = "Districts_Select";
 
     static String rest;
@@ -137,10 +137,10 @@ public class WebServiceHelper {
         return fieldList;
     }
 
-    public static ArrayList<PanchayatData> getPanchayatList(String DistCode, String BlockCode) {
+    public static ArrayList<PanchayatData> getPanchayatList(String BlockCode) {
 
         SoapObject res1;
-        res1=getServerData(GETPANCHAYATLIST, PanchayatData.PanchayatData_CLASS,"DistCode", "BlockCode", DistCode, BlockCode);
+        res1=getServerData(GETPANCHAYATLIST, PanchayatData.PanchayatData_CLASS,"BlockCode",BlockCode);
         int TotalProperty=0;
         if(res1!=null) TotalProperty= res1.getPropertyCount();
 
@@ -229,5 +229,29 @@ public class WebServiceHelper {
             return null;
         }
         return res1;
+    }
+    public static ArrayList<PanchayatData> getPanchayat(String Block_Code) {
+
+        SoapObject res1;
+        res1=getServerData(GETPANCHAYATLIST,PanchayatData.PanchayatData_CLASS,"BlockCode",Block_Code);
+        int TotalProperty=0;
+        if(res1!=null) TotalProperty= res1.getPropertyCount();
+        ArrayList<PanchayatData> fieldList = new ArrayList<PanchayatData>();
+
+        for (int i = 0; i < TotalProperty; i++) {
+            if (res1.getProperty(i) != null) {
+                Object property = res1.getProperty(i);
+                if (property instanceof SoapObject) {
+                    SoapObject final_object = (SoapObject) property;
+                    PanchayatData sm = new PanchayatData(final_object);
+                    fieldList.add(sm);
+                }
+            } else
+                return fieldList;
+        }
+
+
+
+        return fieldList;
     }
 }
