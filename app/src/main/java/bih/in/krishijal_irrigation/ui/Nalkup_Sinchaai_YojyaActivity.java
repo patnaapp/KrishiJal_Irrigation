@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import bih.in.krishijal_irrigation.entity.VillageListEntity;
 
 import bih.in.krishijal_irrigation.utility.GpsTracker;
 
-public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
+public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity implements View.OnClickListener{
     LinearLayout ll;
     Spinner sp_panchayat,sp_village,sp_option_power,sp_dist_khatakhesra;
     EditText edt_no_of_nalkup,edt_pole_length,edt_pipe_Perimeter_inch,edt_pipe_lingth_meter,edt_apporx_command_area_hec,edt_yojna_price;
@@ -34,6 +36,8 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
     InspectionDetailsModel inspectionDetailsModel;
     String panchayat_Id="",Vill_Id="",Dist_Id="",BlockId="";
     private GpsTracker gpsTracker;
+    TextView txt_location_Agri,txt_location_nalkup,txt_location_dist_pipe,txt_location_command;
+    Button btn_location_Agri,btn_location_nalkup,btn_location_dist_pipe,btn_location_command;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +51,23 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
         } catch (Exception e){
             e.printStackTrace();
         }
+        btn_location_Agri.setOnClickListener(this);
+        btn_location_nalkup.setOnClickListener(this);
+        btn_location_dist_pipe.setOnClickListener(this);
+        btn_location_command.setOnClickListener(this);
+
     }
 
 
     private void Initialization(){
+        btn_location_Agri=(Button)findViewById(R.id.btn_location_Agri);
+        btn_location_nalkup=(Button)findViewById(R.id.btn_location_nalkup);
+        btn_location_dist_pipe=(Button)findViewById(R.id.btn_location_dist_pipe);
+        btn_location_command=(Button)findViewById(R.id.btn_location_command);
+        txt_location_Agri=(TextView) findViewById(R.id.txt_location_Agri);
+        txt_location_nalkup=(TextView) findViewById(R.id.txt_location_nalkup);
+        txt_location_dist_pipe=(TextView) findViewById(R.id.txt_location_dist_pipe);
+        txt_location_command=(TextView) findViewById(R.id.txt_location_command);
         sp_panchayat=(Spinner)findViewById(R.id.sp_panchayat);
         sp_village=(Spinner)findViewById(R.id.sp_village);
         sp_option_power=(Spinner)findViewById(R.id.sp_option_power);
@@ -69,6 +86,10 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
         inspectionDetailsModel.setDistCode(Dist_Id);
         inspectionDetailsModel.setBlockCode(BlockId);
         inspectionDetailsModel.setPanchayatCode(panchayat_Id);
+        inspectionDetailsModel.setEnergyTypeId(Vill_Id);
+        inspectionDetailsModel.setEnergyTypeName(Vill_Id);
+
+        inspectionDetailsModel.setVILLCODE(Vill_Id);
         inspectionDetailsModel.setVILLCODE(Vill_Id);
 
         // inspectionDetailsModel.setDistributionChannelLength(Flag_IsDataWrong);
@@ -153,15 +174,35 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity {
 
     }
     //Gps
-    public void getLocation(View view){
+    public String getLocation(View view){
         gpsTracker = new GpsTracker(Nalkup_Sinchaai_YojyaActivity.this);
+        String location="";
+        double latitude=0.00;
+        double longitude=0.00;
         if(gpsTracker.canGetLocation()){
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
+             latitude = gpsTracker.getLatitude();
+             longitude = gpsTracker.getLongitude();
         }else{
             gpsTracker.showSettingsAlert();
         }
-      //  return latitude
+        location= String.valueOf((latitude)+","+String.valueOf(longitude));
+        if(view==btn_location_Agri){
+            txt_location_Agri.setText(location);
+        }else if(view==btn_location_nalkup){
+            txt_location_nalkup.setText(location);
+        }
+
+        return location;
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view.getId()==R.id.btn_location_Agri){
+            getLocation(btn_location_Agri);
+
+        }else if(view.getId()==R.id.btn_location_nalkup){
+            getLocation(btn_location_nalkup);
+        }else if(view.getId()==R.id.btn_location_dist_pipe);
+        { getLocation(btn_location_dist_pipe); }
+    }
 }
