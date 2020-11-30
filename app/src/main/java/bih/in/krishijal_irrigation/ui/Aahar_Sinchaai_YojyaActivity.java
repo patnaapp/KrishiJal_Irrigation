@@ -58,7 +58,7 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
     String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="",water_facility_Code="",water_facility_Name="";
     String _edt_pipe_length="",_edt_distribution_pipe_inch="",_edt_distribution_pipe_lambai="",_edt_command_area="",_edt_yojna_lagat;
     CheckBox chk_kharif,chk_rabi,chk_garma;
-    String kharif="N",rabi="N",garma="N";
+    String kharif="N",rabi="N",garma="N",Dist_Name="",BlockName="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,9 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
             }
         });
         Dist_Id=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getDistrictCode();
+        Dist_Name=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getDistName();
         BlockId=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getBlockCode();
+        BlockName=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getBlockName();
         setPanchayat(BlockId);
         sp_panchayat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -144,20 +146,25 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
     }
     private void InsertData(){
         long id = 0;
+        inspectionDetailsModel.setDistName(Dist_Name);
         inspectionDetailsModel.setDistCode(Dist_Id);
+        inspectionDetailsModel.setBlockName(BlockName);
         inspectionDetailsModel.setBlockCode(BlockId);
+        inspectionDetailsModel.setPanchayatName(panchayat_Name);
         inspectionDetailsModel.setPanchayatCode(panchayat_Id);
+        inspectionDetailsModel.setVillageName(Vill_Name);
         inspectionDetailsModel.setVILLCODE(Vill_Id);
-        inspectionDetailsModel.setVILLCODE(water_facility_Code);
-        inspectionDetailsModel.setVILLCODE(_edt_pipe_length);
-        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
-        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
-        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
-        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
-        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
-        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
-        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
-        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
+        inspectionDetailsModel.setWaterAvailable_Kharif(kharif);
+        inspectionDetailsModel.setWaterAvailable_Rabi(rabi);
+        inspectionDetailsModel.setWaterAvailable_Garma(garma);
+        inspectionDetailsModel.setDistributionChannelLength(_edt_pipe_length);
+        inspectionDetailsModel.setDistributionPipeDiamater(_edt_distribution_pipe_inch);
+        inspectionDetailsModel.setDistributionPipeLength(_edt_distribution_pipe_lambai);
+        inspectionDetailsModel.setApproxCommandArea(_edt_command_area);
+        inspectionDetailsModel.setSchemeApproxAmt(_edt_yojna_lagat);
+        inspectionDetailsModel.setEntry_By(CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getUserID());
+        inspectionDetailsModel.setSchemeCode("3");
+        //inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
 
 
         // inspectionDetailsModel.setDistributionChannelLength(Flag_IsDataWrong);
@@ -165,7 +172,7 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
         String userid= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("USER_ID", "");
         // inspectionDetailsModel.set_EntryBy(userid.toLowerCase());
 
-        id = new DataBaseHelper(Aahar_Sinchaai_YojyaActivity.this).InsertInspectionDetail(inspectionDetailsModel);
+        id = new DataBaseHelper(Aahar_Sinchaai_YojyaActivity.this).InsertInspectionDetailAahar(inspectionDetailsModel);
 
         if (id > 0) {
             Toast.makeText(getApplicationContext(), "डेटा सफलतापूर्वक सहेजा गया", Toast.LENGTH_LONG).show();
