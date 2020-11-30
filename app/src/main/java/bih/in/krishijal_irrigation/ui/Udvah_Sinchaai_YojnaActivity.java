@@ -285,7 +285,7 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
 
         // inspectionDetailsModel.set_EntryBy(userid.toLowerCase());
 
-        id = new DataBaseHelper(Udvah_Sinchaai_YojnaActivity.this).InsertInspectionDetail(inspectionDetailsModel);
+        id = new DataBaseHelper(Udvah_Sinchaai_YojnaActivity.this).InsertInspectionUdvahDetail(inspectionDetailsModel);
 
         if (id > 0)
         {
