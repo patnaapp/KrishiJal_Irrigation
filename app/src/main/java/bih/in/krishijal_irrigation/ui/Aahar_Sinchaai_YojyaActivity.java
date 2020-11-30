@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +35,7 @@ import bih.in.krishijal_irrigation.entity.VillageListEntity;
 import bih.in.krishijal_irrigation.utility.CommonPref;
 import bih.in.krishijal_irrigation.utility.GlobalVariables;
 import bih.in.krishijal_irrigation.utility.Utiilties;
+import bih.in.krishijal_irrigation.web_services.WebServiceHelper;
 
 public class Aahar_Sinchaai_YojyaActivity extends Activity {
     Spinner sp_panchayat,sp_village,spn_water_available;
@@ -91,6 +93,7 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
                     PanchayatData panchayatData = PanchayatList.get(arg2 - 1);
                     panchayat_Id = panchayatData.getPcode();
                     panchayat_Name = panchayatData.getPname();
+                    setVillageSpinnerData(panchayat_Id);
                 }else {
                     panchayat_Id = "";
                     panchayat_Name = "";
@@ -142,19 +145,40 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
             Toast.makeText(getApplicationContext(), "डेटा सहेजा नहीं गया", Toast.LENGTH_LONG).show();
         }
     }
+//    public void loadVillageSpinnerdata() {
+//        VillageList = dataBaseHelper.getVillageList(panchayat_Id);
+//        ArrayList<String> array = new ArrayList<>();
+//        array.add("-चयन करे-");
+//
+//        int position= -1;
+//        for (VillageListEntity block : VillageList) {
+//            array.add(block.getVillName());
+//
+//            if(block.getVillCode().equals(entryInfo.getVillage_Code())){
+//                position = VillageList.indexOf(block);
+//            }
+//        }
+//
+//        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, array);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        sp_village.setAdapter(adapter);
+//
+//        if(position >= 0){
+//            sp_village.setSelection(position+1);
+//        }
+//    }
 
 
-
-    private void setVillage(String blockcode)
+    private void loadVillageSpinnerdata()
     {
-        VillageList = dataBaseHelper.getVillageList(blockcode);
+        VillageList = dataBaseHelper.getVillageList(panchayat_Id);
         ArrayList<String> VillageListString = new ArrayList<>();
         ArrayList<String> VillageListint = new ArrayList<>();
 
         if (VillageList.size() > 0)
         {
-            VillageListString.add("--Choose--");
-            VillageListint.add("--Choose--");
+            VillageListString.add("--चयन करे--");
+            VillageListint.add("--चयन करे--");
         }
 
         for (int i = 0; i < VillageList.size(); i++)
@@ -185,8 +209,8 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
 
         if (PanchayatList.size() > 0)
         {
-            PanchayatListString.add("--Choose--");
-            PanchayatListint.add("--Choose--");
+            PanchayatListString.add("--चयन करे--");
+            PanchayatListint.add("--चयन करे--");
         }
 
         for (int i = 0; i < PanchayatList.size(); i++)
@@ -217,5 +241,60 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
         _edt_command_area=edt_command_area.getText().toString();
         _edt_yojna_lagat=edt_yojna_lagat.getText().toString();
     }
+
+    public void setVillageSpinnerData(String Pancode) {
+        DataBaseHelper placeData = new DataBaseHelper(Aahar_Sinchaai_YojyaActivity.this);
+        VillageList = dataBaseHelper.getVillageList(Pancode);
+        if(VillageList.size()<=0)
+        {
+            new SyncVillageData(Pancode).execute();
+        }
+        else {
+            loadVillageSpinnerdata();//loadSHGSpinnerData(SHGList);
+        }
+
+    }
+    private class SyncVillageData extends AsyncTask<String, Void, ArrayList<VillageListEntity>> {
+        String PanCode="";
+        public SyncVillageData(String panCode) {
+
+            this.PanCode = panCode;
+
+        }
+        private final ProgressDialog dialog = new ProgressDialog(Aahar_Sinchaai_YojyaActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            //dialog.setCanceledOnTouchOutside(false);
+            dialog.setMessage("ग्राम लोड हो रहा है...");
+            this.dialog.show();
+        }
+
+        @Override
+        protected ArrayList<VillageListEntity> doInBackground(String...arg) {
+
+            return WebServiceHelper.getVillageListData(panchayat_Id);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<VillageListEntity> result) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            DataBaseHelper helper=new DataBaseHelper(getApplicationContext());
+
+            long i= helper.setVillageDataToLocal(result,panchayat_Id);
+
+            if(i>0)
+            {
+                loadVillageSpinnerdata();
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), "Failed to update village",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
 }

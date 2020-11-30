@@ -116,7 +116,7 @@ public class WebServiceHelper {
     public static ArrayList<VillageListEntity> getVillageListData(String BlockCode) {
 
         SoapObject res1;
-        res1=getServerData(GETVILLAGELIST, VillageListEntity.VillageList_CLASS,"blockCode",BlockCode);
+        res1=getServerData(GETVILLAGELIST, VillageListEntity.VillageList_CLASS,"PanchayatCode",BlockCode);
         int TotalProperty=0;
         if(res1!=null) TotalProperty= res1.getPropertyCount();
 

@@ -572,7 +572,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             Cursor cur = db
                     .rawQuery(
-                            "SELECT * from VillageList WHERE PanchayatCode= ?", params);
+                            "SELECT * from VillageList WHERE PanCode= ?", params);
             int x = cur.getCount();
 
             while (cur.moveToNext()) {
@@ -580,8 +580,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 VillageListEntity dept = new VillageListEntity();
                 dept.setVillCode(cur.getString(cur.getColumnIndex("VillageCode")));
                 dept.setVillName(cur.getString(cur.getColumnIndex("VillageName")));
-                dept.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
-                dept.setBlockCode(cur.getString(cur.getColumnIndex("BLOCKCODE")));
+                dept.setPanchayatCode(cur.getString(cur.getColumnIndex("PanCode")));
+                //dept.setBlockCode(cur.getString(cur.getColumnIndex("BLOCKCODE")));
 
                 deptList.add(dept);
             }
@@ -759,6 +759,60 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     if(c != 1){
                         c = db.insert("Panchayat", null, values);
                     }
+
+                }
+                db.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return c;
+            }
+        }
+        return c;
+    }
+    public long setVillageDataToLocal(ArrayList<VillageListEntity> list,String Pan_Code) {
+        // String tableName = type == "pond" ? "PondInspectionDetail" : "WellInspectionDetail";
+
+        long c = -1;
+
+        DataBaseHelper dh = new DataBaseHelper(myContext);
+        try {
+            dh.createDataBase();
+
+
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+            return -1;
+        }
+
+        ArrayList<VillageListEntity> info = list;
+
+
+        if (info != null) {
+            try {
+                SQLiteDatabase db = this.getReadableDatabase();
+
+                ContentValues values = new ContentValues();
+
+                for (int i = 0; i < info.size(); i++) {
+
+                    values.put("VillageCode", info.get(i).getVillCode());
+                    values.put("VillageName", info.get(i).getVillName());
+                    values.put("PanCode", Pan_Code);
+                    //values.put("BLOCKCODE", info.get(i).getBlockCode());
+
+                    String[] whereArgs = new String[]{String.valueOf(info.get(i).getVillCode())};
+
+                    c = db.update("VillageList", values, "VillageCode=?", whereArgs);
+
+                    if(c != 1){
+                        c = db.insert("VillageList", null, values);
+                    }
+
+                    //Log.e("Panchayat", info.get(i).getPanchayatCode());
+                    //Log.e("VillageCode", info.get(i).getVillCode());
+                    Log.e("C", String.valueOf(c));
 
                 }
                 db.close();

@@ -19,8 +19,8 @@ public class VillageListEntity implements KvmSerializable, Serializable {
 
     public VillageListEntity(SoapObject res1) {
 
-        this.BlockCode=res1.getProperty("BlockCode").toString();
-        this.PanchayatCode=res1.getProperty("PanchayatCode").toString();
+        //this.BlockCode=res1.getProperty("BlockCode").toString();
+        //this.PanchayatCode=res1.getProperty("PanchayatCode").toString();
         this.VillCode=res1.getProperty("VILLCODE").toString();
         this.villName=res1.getProperty("VILLNAME").toString();
     }
