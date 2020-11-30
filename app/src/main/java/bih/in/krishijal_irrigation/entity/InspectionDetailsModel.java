@@ -17,8 +17,8 @@ public class InspectionDetailsModel {
     private String NoOfPole;
     private String Motor_Pump_Power;
     private String DistributionChannelLength;
-    private String DistributionPipeDiamater;
-    private String DistributionPipeLength;
+    private String DistributionPipeDiamater_inch;
+    private String DistributionPipeLength_meter;
     private String ApproxCommandArea;
     private String SchemeApproxAmt;
     private String WaterSourceId;
@@ -33,6 +33,9 @@ public class InspectionDetailsModel {
     private String Latitude;
     private String Longitude;
     private String photo;
+    private String pumplocation_distance;
+    private String Distributionpipelngth_inch;
+    private String Distributionpipelngth_mtr;
 
     public String getInspectionId() {
         return InspectionId;
@@ -154,20 +157,20 @@ public class InspectionDetailsModel {
         DistributionChannelLength = distributionChannelLength;
     }
 
-    public String getDistributionPipeDiamater() {
-        return DistributionPipeDiamater;
+    public String getDistributionPipeDiamater_inch() {
+        return DistributionPipeDiamater_inch;
     }
 
-    public void setDistributionPipeDiamater(String distributionPipeDiamater) {
-        DistributionPipeDiamater = distributionPipeDiamater;
+    public void setDistributionPipeDiamater_inch(String distributionPipeDiamater_inch) {
+        DistributionPipeDiamater_inch = distributionPipeDiamater_inch;
     }
 
-    public String getDistributionPipeLength() {
-        return DistributionPipeLength;
+    public String getDistributionPipeLength_meter() {
+        return DistributionPipeLength_meter;
     }
 
-    public void setDistributionPipeLength(String distributionPipeLength) {
-        DistributionPipeLength = distributionPipeLength;
+    public void setDistributionPipeLength_meter(String distributionPipeLength_meter) {
+        DistributionPipeLength_meter = distributionPipeLength_meter;
     }
 
     public String getApproxCommandArea() {
@@ -280,5 +283,29 @@ public class InspectionDetailsModel {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getPumplocation_distance() {
+        return pumplocation_distance;
+    }
+
+    public void setPumplocation_distance(String pumplocation_distance) {
+        this.pumplocation_distance = pumplocation_distance;
+    }
+
+    public String getDistributionpipelngth_inch() {
+        return Distributionpipelngth_inch;
+    }
+
+    public void setDistributionpipelngth_inch(String distributionpipelngth_inch) {
+        Distributionpipelngth_inch = distributionpipelngth_inch;
+    }
+
+    public String getDistributionpipelngth_mtr() {
+        return Distributionpipelngth_mtr;
+    }
+
+    public void setDistributionpipelngth_mtr(String distributionpipelngth_mtr) {
+        Distributionpipelngth_mtr = distributionpipelngth_mtr;
     }
 }
