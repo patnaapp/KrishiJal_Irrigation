@@ -272,7 +272,7 @@ public class SplashActivity extends Activity {
 
                 CommonPref.setCheckUpdate(getApplicationContext(), System.currentTimeMillis());
 
-                if (versioninfo.getAdminMsg().trim().length() > 0 && !versioninfo.getAdminMsg().trim().equalsIgnoreCase("anyType{}")) {
+                if (versioninfo.getAdminMsg().trim().length() > 0 && !versioninfo.getAdminMsg().trim().equalsIgnoreCase("anyType{}") && versioninfo.isVerUpdated()) {
 
                     ab.setTitle(versioninfo.getAdminTitle());
                     ab.setMessage(Html.fromHtml(versioninfo.getAdminMsg()));
