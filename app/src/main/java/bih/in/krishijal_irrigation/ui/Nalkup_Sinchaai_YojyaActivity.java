@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,7 +39,9 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity implements 
     String panchayat_Id="",Vill_Id="",Dist_Id="",BlockId="";
     private GpsTracker gpsTracker;
     TextView txt_location_Agri,txt_location_nalkup,txt_location_dist_pipe,txt_location_command;
-    Button btn_location_Agri,btn_location_nalkup,btn_location_dist_pipe,btn_location_command;
+    Button btn_location_Agri,btn_location_nalkup,btn_location_dist_pipe,btn_location_command,save_basic_detail;
+    LinearLayout lin_location;
+    ImageView take_photo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +59,17 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity implements 
         btn_location_nalkup.setOnClickListener(this);
         btn_location_dist_pipe.setOnClickListener(this);
         btn_location_command.setOnClickListener(this);
+        save_basic_detail.setOnClickListener(this);
+        take_photo.setOnClickListener(this);
 
     }
 
 
     private void Initialization(){
+        take_photo=(ImageView)findViewById(R.id.take_photo);
+        lin_location=(LinearLayout)findViewById(R.id.lin_location);
         btn_location_Agri=(Button)findViewById(R.id.btn_location_Agri);
+        save_basic_detail=(Button)findViewById(R.id.save_basic_detail);
         btn_location_nalkup=(Button)findViewById(R.id.btn_location_nalkup);
         btn_location_dist_pipe=(Button)findViewById(R.id.btn_location_dist_pipe);
         btn_location_command=(Button)findViewById(R.id.btn_location_command);
@@ -201,8 +210,15 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity implements 
             getLocation(btn_location_Agri);
 
         }else if(view.getId()==R.id.btn_location_nalkup){
-            getLocation(btn_location_nalkup);
-        }else if(view.getId()==R.id.btn_location_dist_pipe);
+            getLocation(btn_location_nalkup); }else if(view.getId()==R.id.btn_location_dist_pipe);
         { getLocation(btn_location_dist_pipe); }
+        if(view.getId()==R.id.save_basic_detail){
+            InsertData();
+            lin_location.setVisibility(View.VISIBLE);
+
+        }
+        if(view.getId()==R.id.take_photo){
+
+        }
     }
 }
