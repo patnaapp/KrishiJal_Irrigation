@@ -17,9 +17,9 @@ public class PanchayatData {
     public PanchayatData(SoapObject sobj)
     {
 
-        this.Pcode=sobj.getProperty("Panchayat_Code").toString();
-        this.Pname=sobj.getProperty("Panchayat").toString();
-        this.AreaType=sobj.getProperty("AreaType").toString();
+        this.Pcode=sobj.getProperty("Panchayat_CODE").toString();
+        this.Pname=sobj.getProperty("Panchayat_NAME").toString();
+        this.AreaType=sobj.getProperty("Panchayat_NAME_HN").toString();
     }
 
     public String getAreaType() {

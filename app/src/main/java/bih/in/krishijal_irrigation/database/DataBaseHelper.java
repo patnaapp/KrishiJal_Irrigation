@@ -606,7 +606,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             Cursor cur = db
                     .rawQuery(
-                            "SELECT PanchayatCode,PanchayatName,DistrictCode,BlockCode,PACName from Panchayat WHERE BlockCode = ? ORDER BY PanchayatName",
+                            "SELECT * from Panchayat WHERE BlockCode = ? ORDER BY PanchayatName",
                             params);
             int x = cur.getCount();
 
@@ -718,6 +718,55 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return c;
         }
 
+        return c;
+    }
+    public long setPanchayatLocal(ArrayList<PanchayatData> list) {
+        // String tableName = type == "pond" ? "PondInspectionDetail" : "WellInspectionDetail";
+
+        long c = -1;
+
+        DataBaseHelper dh = new DataBaseHelper(myContext);
+        try {
+            dh.createDataBase();
+
+
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+            return -1;
+        }
+
+        ArrayList<PanchayatData> info = list;
+
+
+        if (info != null) {
+            try {
+                SQLiteDatabase db = this.getReadableDatabase();
+
+                ContentValues values = new ContentValues();
+
+                for (int i = 0; i < info.size(); i++) {
+
+                    values.put("PanchayatCode", info.get(i).getPcode());
+                    values.put("PanchayatName", info.get(i).getPname());
+                    values.put("PanchayatNameHnd", info.get(i).getAreaType());
+
+                    String[] whereArgs = new String[]{String.valueOf(info.get(i).getPcode())};
+
+                    c = db.update("Panchayat", values, "PanchayatCode=?", whereArgs);
+
+                    if(c != 1){
+                        c = db.insert("Panchayat", null, values);
+                    }
+
+                }
+                db.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return c;
+            }
+        }
         return c;
     }
 }

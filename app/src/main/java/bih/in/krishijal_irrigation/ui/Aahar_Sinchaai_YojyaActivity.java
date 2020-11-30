@@ -16,6 +16,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -78,6 +79,25 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
                 //getLocation();
             }
         });
+//        spn_sub_facility_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> arg0, View arg1,
+//                                       int arg2, long arg3) {
+//                if (arg2 > 0) {
+//
+//                    SubFacilityType facilityType = SubFacilityList.get(arg2 - 1);
+//                    Sub_FacilityType_Code = facilityType.getSubFacilityType_Code();
+//                    Sub_FacilityType_Name = facilityType.getSubFacilityType_Name();
+//                }else {
+//                    Sub_FacilityType_Code = "";
+//                    Sub_FacilityType_Name = "";
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> arg0) {
+//            }
+//        });
     }
     private void InsertData(){
         long id = 0;
