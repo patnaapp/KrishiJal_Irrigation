@@ -46,11 +46,12 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
     private final int UPDATE_LATLNG = 2;
     private final int UPDATE_ADDRESS = 1;
     private ProgressDialog dialog;
+    String water_facility[] = {"-चयन करे-","खरीफ","रबी","गरमा"};
     ArrayList<VillageListEntity> VillageList=new ArrayList<>();
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
     DataBaseHelper dataBaseHelper;
     InspectionDetailsModel inspectionDetailsModel;
-    String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="";
+    String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="",water_facility_Code="",water_facility_Name="";
     String _edt_pipe_length="",_edt_distribution_pipe_inch="",_edt_distribution_pipe_lambai="",_edt_command_area="",_edt_yojna_lagat;
 
     @Override
@@ -84,6 +85,9 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
         });
         BlockId=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getBlockCode();
         setPanchayat(BlockId);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, water_facility);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spn_water_available.setAdapter(adapter);
         sp_panchayat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -116,6 +120,32 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
                 }else {
                     Vill_Id = "";
                     Vill_Name = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+        spn_water_available.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+
+                    water_facility_Name = water_facility[arg2].toString();
+                    if (water_facility_Name.equalsIgnoreCase("खरीफ")) {
+                        water_facility_Code = "1";
+                    }
+                    else if (water_facility_Name.equalsIgnoreCase("रबी")) {
+                        water_facility_Code = "2";
+                    }
+                    else if (water_facility_Name.equalsIgnoreCase("गरमा")) {
+                        water_facility_Code = "3";
+                    }
+                }else {
+                    water_facility_Code = "";
+                    water_facility_Name = "";
                 }
             }
 
