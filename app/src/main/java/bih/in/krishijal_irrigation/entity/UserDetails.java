@@ -30,6 +30,7 @@ public class UserDetails implements KvmSerializable, Serializable {
     private String Userrole = "";
     private String UserroleId = "";
     private String Name = "";
+    private String IsMobileUpdated = "";
 
 
     public UserDetails() {
@@ -37,19 +38,18 @@ public class UserDetails implements KvmSerializable, Serializable {
 
     @SuppressWarnings("deprecation")
     public UserDetails(SoapObject obj) {
-        this.setAuthenticated(Boolean.parseBoolean(obj.getProperty("IS_authenticate").toString()));
-        this.setUserID(obj.getProperty("ID").toString());
-        //this.setPassword(obj.getProperty("Password").toString());
-
+        this.setAuthenticated(Boolean.parseBoolean(obj.getProperty("isAuthenticated").toString()));
+        this.setIsMobileUpdated(obj.getProperty("IsMobileUpdated").toString());
+        this.setPassword(obj.getProperty("Password").toString());
+        this.setUserID(obj.getProperty("UserID").toString());
+        this.setDistrictCode(obj.getProperty("DistrictCode").toString());
+        this.setDistName(obj.getProperty("DistName").toString());
+        this.setBlockCode(obj.getProperty("BlockCode").toString());
+        this.setBlockName(obj.getProperty("BlockName").toString());
+        this.setPanchayatCode(obj.getProperty("PanchayatCode").toString());
+        this.setPanchayatName(obj.getProperty("PanchayatName").toString());
+        this.setUserrole(obj.getProperty("Userrole").toString());
         this.setName(obj.getProperty("Name").toString());
-        this.setMobileNo(obj.getProperty("Phone").toString());
-        this.setEmail(obj.getProperty("Email").toString());
-//        this.setDistrictCode(obj.getProperty("DistrictCode").toString());
-//        this.setDistName(obj.getProperty("DistName").toString());
-//        this.setBlockCode(obj.getProperty("BlockCode").toString());
-//        this.setBlockName(obj.getProperty("BlockName").toString());
-//        this.setPanchayatCode(obj.getProperty("PanchayatCode").toString());
-//        this.setPanchayatName(obj.getProperty("PanchayatName").toString());
 //        //this.setDegignation(obj.getProperty("Degignation").toString());
 //        this.setUserrole(obj.getProperty("Userrole").toString());
 //        this.setName(obj.getProperty("Name").toString());
@@ -431,6 +431,14 @@ public class UserDetails implements KvmSerializable, Serializable {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getIsMobileUpdated() {
+        return IsMobileUpdated;
+    }
+
+    public void setIsMobileUpdated(String isMobileUpdated) {
+        IsMobileUpdated = isMobileUpdated;
     }
 }
 
