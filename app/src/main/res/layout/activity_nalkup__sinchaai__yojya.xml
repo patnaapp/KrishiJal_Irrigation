@@ -367,7 +367,7 @@
                     android:textStyle="normal" />
 
                 <Button
-                    android:id="@+id/btn_location_lnr_1"
+                    android:id="@+id/btn_location_Agri"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_weight="0.7"
@@ -375,8 +375,12 @@
                     android:text="लोकेशन ले"
                     android:textColor="#FFFFFF" />
 
-
             </LinearLayout>
+            <TextView
+                android:text="loc"
+                android:id="@+id/txt_location_Agri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TextView>
 
 
             <LinearLayout
@@ -399,7 +403,7 @@
                     android:textStyle="normal" />
 
                 <Button
-                    android:id="@+id/btn_location_lnr_11"
+                    android:id="@+id/btn_location_nalkup"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_weight="0.7"
@@ -409,6 +413,11 @@
 
 
             </LinearLayout>
+            <TextView
+                android:text="loc"
+                android:id="@+id/txt_location_nalkup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TextView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -429,7 +438,7 @@
                     android:textStyle="normal" />
 
                 <Button
-                    android:id="@+id/btn_location_lnr_11111111"
+                    android:id="@+id/btn_location_dist_pipe"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_weight="0.7"
@@ -439,6 +448,11 @@
 
 
             </LinearLayout>
+            <TextView
+                android:text="loc"
+                android:id="@+id/txt_location_dist_pipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TextView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -459,7 +473,7 @@
                     android:textStyle="normal" />
 
                 <Button
-                    android:id="@+id/btn_location_lnr_111111"
+                    android:id="@+id/btn_location_command"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_weight="0.7"
@@ -469,6 +483,11 @@
 
 
             </LinearLayout>
+            <TextView
+                android:text="loc"
+                android:id="@+id/txt_location_command"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TextView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
