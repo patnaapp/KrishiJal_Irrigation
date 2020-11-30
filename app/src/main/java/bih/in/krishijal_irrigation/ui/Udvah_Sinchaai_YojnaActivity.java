@@ -109,7 +109,9 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
+            public void onNothingSelected(AdapterView<?> arg0)
+            {
+
             }
         });
         spn_jalshrot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -194,7 +196,8 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
             }
         });
     }
-    private void InsertData(){
+    private void InsertData()
+    {
         long id = 0;
         inspectionDetailsModel.setDistCode(Dist_Id);
         inspectionDetailsModel.setBlockCode(BlockId);
@@ -208,10 +211,12 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
 
         id = new DataBaseHelper(Udvah_Sinchaai_YojnaActivity.this).InsertInspectionDetail(inspectionDetailsModel);
 
-        if (id > 0) {
+        if (id > 0)
+        {
             Toast.makeText(getApplicationContext(), "डेटा सफलतापूर्वक सहेजा गया", Toast.LENGTH_LONG).show();
-
-        } else {
+        }
+        else
+        {
             Toast.makeText(getApplicationContext(), "डेटा सहेजा नहीं गया", Toast.LENGTH_LONG).show();
         }
     }
@@ -338,31 +343,34 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         }
 
     }
-    private class SyncVillageData extends AsyncTask<String, Void, ArrayList<VillageListEntity>> {
+    private class SyncVillageData extends AsyncTask<String, Void, ArrayList<VillageListEntity>>
+    {
         String PanCode="";
-        public SyncVillageData(String panCode) {
-
+        public SyncVillageData(String panCode)
+        {
             this.PanCode = panCode;
-
         }
         private final ProgressDialog dialog = new ProgressDialog(Udvah_Sinchaai_YojnaActivity.this);
 
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             //dialog.setCanceledOnTouchOutside(false);
             dialog.setMessage("ग्राम लोड हो रहा है...");
             this.dialog.show();
         }
 
         @Override
-        protected ArrayList<VillageListEntity> doInBackground(String...arg) {
-
+        protected ArrayList<VillageListEntity> doInBackground(String...arg)
+        {
             return WebServiceHelper.getVillageListData(panchayat_Id);
         }
 
         @Override
-        protected void onPostExecute(ArrayList<VillageListEntity> result) {
-            if (dialog.isShowing()) {
+        protected void onPostExecute(ArrayList<VillageListEntity> result)
+        {
+            if (dialog.isShowing())
+            {
                 dialog.dismiss();
             }
             DataBaseHelper helper=new DataBaseHelper(getApplicationContext());
