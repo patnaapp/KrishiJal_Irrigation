@@ -692,8 +692,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("NoOfPole", vdata.getNoOfPole());
             values.put("Motor_Pump_Power", vdata.getMotor_Pump_Power());
             values.put("DistributionChannelLength", vdata.getDistributionChannelLength());
-            values.put("DistributionPipeDiamater", vdata.getDistributionPipeDiamater());
-            values.put("DistributionPipeLength", vdata.getDistributionPipeLength());
+            values.put("DistributionPipeDiamater", vdata.getDistributionpipelngth_inch());
+            values.put("DistributionPipeLength", vdata.getDistributionPipeLength_meter());
             values.put("ApproxCommandArea", vdata.getApproxCommandArea());
             values.put("SchemeApproxAmt", vdata.getSchemeApproxAmt());
             values.put("WaterSourceId", vdata.getWaterSourceId());
