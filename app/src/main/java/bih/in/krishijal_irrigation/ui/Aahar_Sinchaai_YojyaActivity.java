@@ -20,7 +20,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,8 +40,8 @@ import bih.in.krishijal_irrigation.utility.GlobalVariables;
 import bih.in.krishijal_irrigation.utility.Utiilties;
 import bih.in.krishijal_irrigation.web_services.WebServiceHelper;
 
-public class Aahar_Sinchaai_YojyaActivity extends Activity {
-    Spinner sp_panchayat,sp_village,spn_water_available;
+public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnClickListener {
+    Spinner sp_panchayat,sp_village;
     EditText edt_pipe_length,edt_distribution_pipe_inch,edt_distribution_pipe_lambai,edt_command_area,edt_yojna_lagat;
     Button btn_aahar_location;
     LocationManager mlocManager = null;
@@ -50,9 +53,12 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
     ArrayList<VillageListEntity> VillageList=new ArrayList<>();
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
     DataBaseHelper dataBaseHelper;
+    RadioGroup rg_types_water;
     InspectionDetailsModel inspectionDetailsModel;
     String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="",water_facility_Code="",water_facility_Name="";
     String _edt_pipe_length="",_edt_distribution_pipe_inch="",_edt_distribution_pipe_lambai="",_edt_command_area="",_edt_yojna_lagat;
+    CheckBox chk_kharif,chk_rabi,chk_garma;
+    String kharif="N",rabi="N",garma="N";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +71,21 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
     public  void initialization(){
         sp_panchayat=(Spinner)findViewById(R.id.sp_panchayat);
         sp_village=(Spinner)findViewById(R.id.sp_village);
-        spn_water_available=(Spinner)findViewById(R.id.spn_water_available);
+
 
         edt_pipe_length=(EditText)findViewById(R.id.edt_pipe_length);
         edt_distribution_pipe_inch=(EditText)findViewById(R.id.edt_distribution_pipe_inch);
         edt_distribution_pipe_lambai=(EditText)findViewById(R.id.edt_distribution_pipe_lambai);
         edt_command_area=(EditText)findViewById(R.id.edt_command_area);
         edt_yojna_lagat=(EditText)findViewById(R.id.edt_yojna_lagat);
+
+        chk_kharif=(CheckBox) findViewById(R.id.chk_kharif);
+        chk_rabi=(CheckBox) findViewById(R.id.chk_rabi);
+        chk_garma=(CheckBox) findViewById(R.id.chk_garma);
+
+        chk_kharif.setOnClickListener(this);
+        chk_rabi.setOnClickListener(this);
+        chk_garma.setOnClickListener(this);
 
         btn_aahar_location=(Button) findViewById(R.id.btn_aahar_location);
 
@@ -83,11 +97,9 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
                 //getLocation();
             }
         });
+        Dist_Id=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getDistrictCode();
         BlockId=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getBlockCode();
         setPanchayat(BlockId);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, water_facility);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spn_water_available.setAdapter(adapter);
         sp_panchayat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -127,32 +139,8 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-        spn_water_available.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
-                if (arg2 > 0) {
 
-                    water_facility_Name = water_facility[arg2].toString();
-                    if (water_facility_Name.equalsIgnoreCase("खरीफ")) {
-                        water_facility_Code = "1";
-                    }
-                    else if (water_facility_Name.equalsIgnoreCase("रबी")) {
-                        water_facility_Code = "2";
-                    }
-                    else if (water_facility_Name.equalsIgnoreCase("गरमा")) {
-                        water_facility_Code = "3";
-                    }
-                }else {
-                    water_facility_Code = "";
-                    water_facility_Name = "";
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
     }
     private void InsertData(){
         long id = 0;
@@ -160,6 +148,17 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
         inspectionDetailsModel.setBlockCode(BlockId);
         inspectionDetailsModel.setPanchayatCode(panchayat_Id);
         inspectionDetailsModel.setVILLCODE(Vill_Id);
+        inspectionDetailsModel.setVILLCODE(water_facility_Code);
+        inspectionDetailsModel.setVILLCODE(_edt_pipe_length);
+        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
+        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
+        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
+        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
+        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
+        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
+        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
+        inspectionDetailsModel.setVILLCODE(_edt_distribution_pipe_inch);
+
 
         // inspectionDetailsModel.setDistributionChannelLength(Flag_IsDataWrong);
 
@@ -284,6 +283,40 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
         }
 
     }
+
+    @Override
+    public void onClick(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.chk_kharif:
+                if (checked) {
+                    // Do your coding
+                    kharif = "Y";
+                } else {
+                    kharif = "N";
+                }
+                break;
+
+            case R.id.chk_rabi:
+                if (checked) {
+                    // Do your coding
+                    rabi = "Y";
+                } else {
+                    rabi = "N";
+                }
+                break;
+            case R.id.chk_garma:
+                if (checked) {
+                    // Do your coding
+                    garma = "Y";
+                } else {
+                    garma = "N";
+                }
+                break;
+        }
+    }
+
     private class SyncVillageData extends AsyncTask<String, Void, ArrayList<VillageListEntity>> {
         String PanCode="";
         public SyncVillageData(String panCode) {

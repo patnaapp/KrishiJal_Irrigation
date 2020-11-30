@@ -96,35 +96,50 @@
                         android:textColor="#43D305" />
 
                 </LinearLayout>
-
                 <LinearLayout
-                    android:id="@+id/ll_sarakari"
+                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_sarkari"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="13sp"
                         android:text="आहर में जल की उपलब्धता"
                         android:textColor="#000000"
-                        android:textSize="13sp"
                         android:textStyle="normal" />
 
-                    <Spinner
-                        android:id="@+id/spn_water_available"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/spinner_bg1"
-                        android:imeOptions="actionUnspecified"
-                        android:paddingRight="20dp"
-                        android:textAppearance="?android:textAppearanceSmall"
-                        android:textColor="#43D305" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chk_kharif"
+                            android:text="खरीफ"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chk_rabi"
+                            android:text="रबी"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chk_garma"
+                            android:text="गरमा"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/ll_niji"
