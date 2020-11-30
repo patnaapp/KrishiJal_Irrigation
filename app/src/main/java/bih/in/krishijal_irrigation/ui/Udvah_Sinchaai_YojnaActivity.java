@@ -31,7 +31,10 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
     DataBaseHelper dataBaseHelper;
     InspectionDetailsModel inspectionDetailsModel;
-    String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="";
+    String jalshrot[] = {"-चयन करे-","नदी","तालाब","आहर","झील","अन्य"};
+    String water_facility[] = {"-चयन करे-","खरीफ","रबी","गरमा"};
+    String motarpump[] = {"-चयन करे-","बिद्युत","सोलर"};
+    String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="",Jalshrot_id,Jalshrot_name,water_facility_Code="",water_facility_Name="",motarpump_sanchalan_code="",motarpump_sanchalan_Name="";
     String _edt_sincht_totArea_dec="",_edt_motor_power="",_edt_distribution_length="",_edt_distribution_pipe_inch="",_edt_distribution_pipe_meter="",_edt_apporx_command_area_hec="",_edt_yojna_lagat="";
 
     @Override
@@ -59,6 +62,17 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
 
         BlockId= CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getBlockCode();
         setPanchayat(BlockId);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, jalshrot);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spn_jalshrot.setAdapter(adapter);
+
+        ArrayAdapter adapter1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, water_facility);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spn_jalshrot_available.setAdapter(adapter1);
+
+        ArrayAdapter adapter2 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, motarpump);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spn_motarpump_sanchalan.setAdapter(adapter2);
         sp_panchayat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -91,6 +105,87 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
                 }else {
                     Vill_Id = "";
                     Vill_Name = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+        spn_jalshrot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+
+                    Jalshrot_name = jalshrot[arg2].toString();
+                    if (Jalshrot_name.equalsIgnoreCase("नदी")) {
+                        Jalshrot_id = "1";
+                    }
+                    else if (Jalshrot_name.equalsIgnoreCase("तालाब")) {
+                        Jalshrot_id = "2";
+                    }
+                    else if (Jalshrot_name.equalsIgnoreCase("आहर")) {
+                        Jalshrot_id = "3";
+                    }
+                    else if (Jalshrot_name.equalsIgnoreCase("झील")) {
+                        Jalshrot_id = "4";
+                    }
+                    else if (Jalshrot_name.equalsIgnoreCase("अन्य")) {
+                        Jalshrot_id = "5";
+                    }
+                }else {
+                    Jalshrot_id = "";
+                    Jalshrot_name = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+        spn_jalshrot_available.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+
+                    water_facility_Name = water_facility[arg2].toString();
+                    if (water_facility_Name.equalsIgnoreCase("खरीफ")) {
+                        water_facility_Code = "1";
+                    }
+                    else if (water_facility_Name.equalsIgnoreCase("रबी")) {
+                        water_facility_Code = "2";
+                    }
+                    else if (water_facility_Name.equalsIgnoreCase("गरमा")) {
+                        water_facility_Code = "3";
+                    }
+                }else {
+                    water_facility_Code = "";
+                    water_facility_Name = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+        spn_motarpump_sanchalan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+
+                    motarpump_sanchalan_Name = water_facility[arg2].toString();
+                    if (motarpump_sanchalan_Name.equalsIgnoreCase("बिद्युत")) {
+                        motarpump_sanchalan_code = "1";
+                    }
+                    else if (motarpump_sanchalan_Name.equalsIgnoreCase("सोलर")) {
+                        motarpump_sanchalan_code = "2";
+                    }
+                }else {
+                    water_facility_Code = "";
+                    motarpump_sanchalan_code = "";
                 }
             }
 
