@@ -59,6 +59,7 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
     String _edt_pipe_length="",_edt_distribution_pipe_inch="",_edt_distribution_pipe_lambai="",_edt_command_area="",_edt_yojna_lagat;
     CheckBox chk_kharif,chk_rabi,chk_garma;
     String kharif="N",rabi="N",garma="N",Dist_Name="",BlockName="";
+    Button btn_saveLocal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
         edt_distribution_pipe_lambai=(EditText)findViewById(R.id.edt_distribution_pipe_lambai);
         edt_command_area=(EditText)findViewById(R.id.edt_command_area);
         edt_yojna_lagat=(EditText)findViewById(R.id.edt_yojna_lagat);
+        btn_saveLocal=(Button) findViewById(R.id.btn_saveLocal);
 
         chk_kharif=(CheckBox) findViewById(R.id.chk_kharif);
         chk_rabi=(CheckBox) findViewById(R.id.chk_rabi);
@@ -141,11 +143,21 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+        btn_saveLocal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String isvalid = validateRecordBeforeSaving();
+                if (isvalid.equalsIgnoreCase("yes")) {
+                    InsertData();
+                }
+            }
+        });
 
 
     }
     private void InsertData(){
         long id = 0;
+        InspectionDetailsModel inspectionDetailsModel=new InspectionDetailsModel();
         inspectionDetailsModel.setDistName(Dist_Name);
         inspectionDetailsModel.setDistCode(Dist_Id);
         inspectionDetailsModel.setBlockName(BlockName);
@@ -364,6 +376,69 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
                 Toast.makeText(getApplicationContext(), "Failed to update village",Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    private String validateRecordBeforeSaving() {
+        String isvalid = "no";
+
+        if ((sp_panchayat != null && sp_panchayat.getSelectedItem() != null)) {
+            if ((String) sp_panchayat.getSelectedItem() != "--चयन करे--") {
+                isvalid = "yes";
+            } else {
+                Toast.makeText(Aahar_Sinchaai_YojyaActivity.this, "कृपया पंचायत का चयन करे", Toast.LENGTH_LONG).show();
+
+                sp_panchayat.requestFocus();
+                return "no";
+            }
+        }
+            if ((sp_village != null && sp_village.getSelectedItem() != null)) {
+                if ((String) sp_village.getSelectedItem() != "--चयन करे--") {
+                    isvalid = "yes";
+                } else {
+                    Toast.makeText(Aahar_Sinchaai_YojyaActivity.this, "कृपया गाँव का चयन करे", Toast.LENGTH_LONG).show();
+
+                    sp_village.requestFocus();
+                    return "no";
+                }
+            }
+
+        if (!(chk_kharif.isChecked()|| chk_rabi.isChecked()|| chk_garma.isChecked())) {
+
+            Toast.makeText(Aahar_Sinchaai_YojyaActivity.this, "कृपया आहर में जल की उपलब्धता का चयन करे", Toast.LENGTH_LONG).show();
+            //et_habitation_name.requestFocus();
+            return "no";
+        }
+
+
+        if (edt_pipe_length.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Aahar_Sinchaai_YojyaActivity.this, "कृपया पूर्व में निर्मित डिस्ट्रीब्यूशन पाइन की लम्बाई(मी०) में डाले", Toast.LENGTH_LONG).show();
+            edt_pipe_length.requestFocus();
+            return "no";
+        }
+        if (edt_distribution_pipe_inch.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Aahar_Sinchaai_YojyaActivity.this, "कृपया डिस्ट्रीब्यूशन पाइप का ब्यास (इंच में) डाले", Toast.LENGTH_LONG).show();
+            edt_distribution_pipe_inch.requestFocus();
+            return "no";
+        }
+        if (edt_distribution_pipe_lambai.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Aahar_Sinchaai_YojyaActivity.this, "कृपया डिस्ट्रीब्यूशन पाइप का ब्यास (लम्बाई में) डाले", Toast.LENGTH_LONG).show();
+            edt_distribution_pipe_lambai.requestFocus();
+            return "no";
+        }
+        if (edt_command_area.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Aahar_Sinchaai_YojyaActivity.this, "कृपया अनुमानित कमांड एरिया (हे०) में डाले", Toast.LENGTH_LONG).show();
+            edt_command_area.requestFocus();
+            return "no";
+        }
+        if (edt_yojna_lagat.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Aahar_Sinchaai_YojyaActivity.this, "कृपया योजना की अनुमानित लागत (लाख ₹) में डाले", Toast.LENGTH_LONG).show();
+            edt_yojna_lagat.requestFocus();
+            return "no";
+        }
+
+
+
+
+        return isvalid;
     }
 
 
