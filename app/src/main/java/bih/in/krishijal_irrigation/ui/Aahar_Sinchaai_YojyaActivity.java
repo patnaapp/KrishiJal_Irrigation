@@ -31,6 +31,7 @@ import bih.in.krishijal_irrigation.database.DataBaseHelper;
 import bih.in.krishijal_irrigation.entity.InspectionDetailsModel;
 import bih.in.krishijal_irrigation.entity.PanchayatData;
 import bih.in.krishijal_irrigation.entity.VillageListEntity;
+import bih.in.krishijal_irrigation.utility.CommonPref;
 import bih.in.krishijal_irrigation.utility.GlobalVariables;
 import bih.in.krishijal_irrigation.utility.Utiilties;
 
@@ -47,7 +48,7 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
     DataBaseHelper dataBaseHelper;
     InspectionDetailsModel inspectionDetailsModel;
-    String panchayat_Id="",Vill_Id="",Dist_Id="",BlockId="";
+    String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="";
     String _edt_pipe_length="",_edt_distribution_pipe_inch="",_edt_distribution_pipe_lambai="",_edt_command_area="",_edt_yojna_lagat;
 
     @Override
@@ -79,25 +80,46 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
                 //getLocation();
             }
         });
-//        spn_sub_facility_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> arg0, View arg1,
-//                                       int arg2, long arg3) {
-//                if (arg2 > 0) {
-//
-//                    SubFacilityType facilityType = SubFacilityList.get(arg2 - 1);
-//                    Sub_FacilityType_Code = facilityType.getSubFacilityType_Code();
-//                    Sub_FacilityType_Name = facilityType.getSubFacilityType_Name();
-//                }else {
-//                    Sub_FacilityType_Code = "";
-//                    Sub_FacilityType_Name = "";
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> arg0) {
-//            }
-//        });
+        BlockId=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getBlockCode();
+        setPanchayat(BlockId);
+        sp_panchayat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+
+                    PanchayatData panchayatData = PanchayatList.get(arg2 - 1);
+                    panchayat_Id = panchayatData.getPcode();
+                    panchayat_Name = panchayatData.getPname();
+                }else {
+                    panchayat_Id = "";
+                    panchayat_Name = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+        sp_village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+
+                    VillageListEntity villageListEntity = VillageList.get(arg2 - 1);
+                    Vill_Id = villageListEntity.getVillCode();
+                    Vill_Name = villageListEntity.getVillName();
+                }else {
+                    Vill_Id = "";
+                    Vill_Name = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
     }
     private void InsertData(){
         long id = 0;
@@ -167,10 +189,10 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity {
             PanchayatListint.add("--Choose--");
         }
 
-        for (int i = 0; i < VillageList.size(); i++)
+        for (int i = 0; i < PanchayatList.size(); i++)
         {
-            PanchayatListString.add(VillageList.get(i).getVillName());
-            PanchayatListint.add(VillageList.get(i).getVillCode());
+            PanchayatListString.add(PanchayatList.get(i).getPname());
+            PanchayatListint.add(PanchayatList.get(i).getPcode());
         }
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, PanchayatListString);

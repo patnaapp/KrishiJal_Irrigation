@@ -616,8 +616,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 panchayat.setPcode(cur.getString(cur.getColumnIndex("PanchayatCode")));
                 panchayat.setPname(cur.getString(cur.getColumnIndex("PanchayatName")));
                 panchayat.setBcode(cur.getString(cur.getColumnIndex("BlockCode")));
-                panchayat.setDcode(cur.getString(cur.getColumnIndex("DistrictCode")));
-                panchayat.setAreaType(cur.getString(cur.getColumnIndex("PACName")));
+                //panchayat.setDcode(cur.getString(cur.getColumnIndex("DistrictCode")));
+                //panchayat.setAreaType(cur.getString(cur.getColumnIndex("PACName")));
 
                 panchayatList.add(panchayat);
             }
@@ -720,7 +720,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return c;
     }
-    public long setPanchayatLocal(ArrayList<PanchayatData> list) {
+    public long setPanchayatLocal(ArrayList<PanchayatData> list,String Blk_Code) {
         // String tableName = type == "pond" ? "PondInspectionDetail" : "WellInspectionDetail";
 
         long c = -1;
@@ -750,6 +750,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     values.put("PanchayatCode", info.get(i).getPcode());
                     values.put("PanchayatName", info.get(i).getPname());
                     values.put("PanchayatNameHnd", info.get(i).getAreaType());
+                    values.put("BlockCode", Blk_Code);
 
                     String[] whereArgs = new String[]{String.valueOf(info.get(i).getPcode())};
 

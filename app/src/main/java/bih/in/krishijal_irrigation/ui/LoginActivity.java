@@ -319,7 +319,7 @@ public class LoginActivity extends Activity {
 
             DataBaseHelper helper=new DataBaseHelper(getApplicationContext());
 
-            long i = localDBHelper.setPanchayatLocal(result);
+            long i = localDBHelper.setPanchayatLocal(result,CommonPref.getUserDetails(LoginActivity.this).getBlockCode());
 
             if(i>0)
             {
