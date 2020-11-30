@@ -33,6 +33,7 @@ public class InspectionDetailsModel {
     private String Latitude;
     private String Longitude;
     private String photo;
+    private String Entry_By;
 
     public String getInspectionId() {
         return InspectionId;
@@ -280,5 +281,13 @@ public class InspectionDetailsModel {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getEntry_By() {
+        return Entry_By;
+    }
+
+    public void setEntry_By(String entry_By) {
+        Entry_By = entry_By;
     }
 }
