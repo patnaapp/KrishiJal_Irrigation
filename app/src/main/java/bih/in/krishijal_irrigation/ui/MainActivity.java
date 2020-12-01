@@ -4,23 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import bih.in.krishijal_irrigation.R;
+import bih.in.krishijal_irrigation.database.DataBaseHelper;
 import bih.in.krishijal_irrigation.utility.CommonPref;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     RelativeLayout rl_nalkup_new,rl_nalkup_edit,rl_nalkup_upload,rl_udvah_new,rl_udvah_edit,rl_udvah_upload,rl_aahar_new,rl_aahar_edit,rl_aahar_upload;
     TextView nalkup_edit,nalkup_upload,udvah_edit,udvah_upload,aahar_edit,aahar_upload,tv_username,tv_district,tv_block;
     String DistName="",BlockName="",UserName="";
+    DataBaseHelper dataBaseHelper;
+    long AaharCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dataBaseHelper= new DataBaseHelper(MainActivity.this);
         inilization();
         DistName= CommonPref.getUserDetails(MainActivity.this).getDistName();
         BlockName= CommonPref.getUserDetails(MainActivity.this).getBlockName();
@@ -73,5 +78,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Intent intent=new Intent(getApplicationContext(),Aahar_Sinchaai_YojyaActivity.class);
             startActivity(intent);
         }
+    }
+    private void showPending() {
+        AaharCount = dataBaseHelper.countAaharDetail(MainActivity.this,CommonPref.getUserDetails(MainActivity.this).getUserID());
+
+        if (AaharCount > 0) {
+            aahar_edit.setText(String.valueOf(AaharCount));
+            aahar_upload.setText(String.valueOf(AaharCount));
+        }else {
+            aahar_edit.setText("0");
+            aahar_upload.setText("0");
+        }
+    }
+    @Override
+    public void onResume() {
+        // TODO Auto-generated method stub
+        showPending();
+        super.onResume();
+
+
     }
 }

@@ -30,7 +30,7 @@ import bih.in.krishijal_irrigation.utility.CommonPref;
 import bih.in.krishijal_irrigation.web_services.WebServiceHelper;
 
 public class Udvah_Sinchaai_YojnaActivity extends Activity {
-    Spinner sp_panchayat,sp_village,spn_jalshrot,spn_jalshrot_available,spn_motarpump_sanchalan;
+    Spinner sp_panchayat,sp_village,spn_jalshrot,spn_jalshrot_available,spn_motarpump_sanchalan,spn_motarpump_power;
     EditText edt_pump_loc_dist,edt_motor_power_hp,edt_distribution_length,edt_distribution_pipe_inch,edt_distribution_pipe_meter,edt_apporx_command_area_hec,edt_yojna_lagat;
     ArrayList<VillageListEntity> VillageList=new ArrayList<>();
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
@@ -39,11 +39,12 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
     String jalshrot[] = {"-चयन करे-","नदी","तालाब","आहर","झील","अन्य"};
     String water_facility[] = {"-चयन करे-","खरीफ","रबी","गरमा"};
     String motarpump[] = {"-चयन करे-","बिद्युत","सोलर"};
+    String motarpump_hp[] = {"-चयन करे-","1 HP","2 HP","3 HP","4 HP","5 HP"};
     String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="",Jalshrot_id,Jalshrot_name,water_facility_Code="",water_facility_Name="",motarpump_sanchalan_code="",motarpump_sanchalan_Name="";
     String _edt_pum_loc_distnce="",_edt_motor_power_hp="",_edt_distribution_length="",_edt_distribution_pipe_inch="",_edt_distribution_pipe_meter="",_edt_apporx_command_area_hec="",_edt_yojna_lagat="";
     Button save_basic_detail_udvah;
     CheckBox chk_kharif,chk_rabi,chk_garma;
-    String _water_avlbl_kharif="N",_water_avlbl_rabi="N",_water_avlbl_garma="N",chk_string="N";
+    String motarpump_power_code="",motarpump_power_name="",_water_avlbl_kharif="N",_water_avlbl_rabi="N",_water_avlbl_garma="N",chk_string="N";
 
 
     @Override
@@ -64,7 +65,7 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         spn_motarpump_sanchalan=(Spinner)findViewById(R.id.spn_motarpump_sanchalan);
 
         edt_pump_loc_dist=(EditText) findViewById(R.id.edt_pump_loc_dist);
-        edt_motor_power_hp=(EditText) findViewById(R.id.edt_motor_power_hp);
+        //edt_motor_power_hp=(EditText) findViewById(R.id.edt_motor_power_hp);
         edt_distribution_length=(EditText) findViewById(R.id.edt_distribution_length);
         edt_distribution_pipe_inch=(EditText) findViewById(R.id.edt_distribution_pipe_inch);
         edt_distribution_pipe_meter=(EditText) findViewById(R.id.edt_distribution_pipe_meter);
@@ -212,6 +213,38 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+        spn_motarpump_power.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+
+                    motarpump_power_name = motarpump_hp[arg2].toString();
+                    if (motarpump_power_name.equalsIgnoreCase("1 HP")) {
+                        motarpump_power_code = "1";
+                    }
+                    else if (motarpump_power_name.equalsIgnoreCase("2 HP")) {
+                        motarpump_power_code = "2";
+                    }
+                    else if (motarpump_power_name.equalsIgnoreCase("3 HP")) {
+                        motarpump_power_code = "3";
+                    }
+                    else if (motarpump_power_name.equalsIgnoreCase("4 HP")) {
+                        motarpump_power_code = "4";
+                    }
+                    else if (motarpump_power_name.equalsIgnoreCase("5 HP")) {
+                        motarpump_power_code = "5";
+                    }
+                }else {
+                    motarpump_power_code = "";
+                    motarpump_power_name = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
 
         save_basic_detail_udvah.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,7 +307,7 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         inspectionDetailsModel.setWaterAvailable_Rabi(_water_avlbl_rabi);
         inspectionDetailsModel.setWaterAvailable_Garma(_water_avlbl_garma);
         inspectionDetailsModel.setPumplocation_distance(_edt_pum_loc_distnce);
-        inspectionDetailsModel.setMotor_Pump_Power(_edt_motor_power_hp);
+        inspectionDetailsModel.setMotor_Pump_Power(motarpump_power_code);
         inspectionDetailsModel.setDistributionChannelLength(_edt_distribution_length);
         inspectionDetailsModel.setDistributionpipelngth_inch(_edt_distribution_pipe_inch);
         inspectionDetailsModel.setDistributionpipelngth_mtr(_edt_distribution_pipe_meter);
@@ -335,7 +368,7 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
     public void setvalue()
     {
         _edt_pum_loc_distnce=edt_pump_loc_dist.getText().toString();
-        _edt_motor_power_hp=edt_motor_power_hp.getText().toString();
+        //_edt_motor_power_hp=edt_motor_power_hp.getText().toString();
         _edt_distribution_length=edt_distribution_length.getText().toString();
         _edt_distribution_pipe_inch=edt_distribution_pipe_inch.getText().toString();
         _edt_distribution_pipe_meter=edt_distribution_pipe_meter.getText().toString();
@@ -508,17 +541,17 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
             validate = false;
         }
 
-        if(_edt_motor_power_hp.equalsIgnoreCase("")){
-            edt_motor_power_hp.setError("Please enter motor power");
-            Toast.makeText(getApplicationContext(), "Please enter motor power", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-        if(Integer.parseInt(_edt_motor_power_hp)<1 && Integer.parseInt(_edt_motor_power_hp)>5)
-        {
-
-            Toast.makeText(getApplicationContext(), "Motor power should not be more than 5 hp", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
+//        if(_edt_motor_power_hp.equalsIgnoreCase("")){
+//            edt_motor_power_hp.setError("Please enter motor power");
+//            Toast.makeText(getApplicationContext(), "Please enter motor power", Toast.LENGTH_LONG).show();
+//            validate = false;
+//        }
+//        if(Integer.parseInt(_edt_motor_power_hp)<1 && Integer.parseInt(_edt_motor_power_hp)>5)
+//        {
+//
+//            Toast.makeText(getApplicationContext(), "Motor power should not be more than 5 hp", Toast.LENGTH_LONG).show();
+//            validate = false;
+//        }
 
         if(_edt_distribution_length.equalsIgnoreCase(""))
         {

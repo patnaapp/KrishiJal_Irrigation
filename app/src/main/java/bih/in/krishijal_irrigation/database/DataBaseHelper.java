@@ -1,5 +1,6 @@
 package bih.in.krishijal_irrigation.database;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -27,7 +28,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static String DB_PATH = "/data/data/app.bih.in.nic.epacsmgmt/databases/";
     //private static String DB_NAME = "eCountingAC.sqlite";
     //private static String DB_NAME = "PACSDB1";
-    private static String DB_NAME = "krishijal.db";
+    private static String DB_NAME = "PACSDB1";
 
     private SQLiteDatabase myDataBase;
     private final Context myContext;
@@ -752,6 +753,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("DistributionPipeLength", vdata.getDistributionPipeLength());
             values.put("ApproxCommandArea", vdata.getApproxCommandArea());
             values.put("SchemeApproxAmt", vdata.getSchemeApproxAmt());
+            values.put("Entry_by", vdata.getEntry_By());
 
 
 //            values.put("EnergyTypeId", vdata.getEnergyTypeId());
@@ -764,11 +766,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //            values.put("Photo", vdata.getPhoto());
 
             String[] whereArgs = new String[]{vdata.getInspectionId()};
-            c = db.update("tbl_InspectionDetails", values, "InspectionId=?", whereArgs);
+            c = db.update("Inspection_Aahar", values, "InspectionId=?", whereArgs);
 
             if (!(c > 0)) {
 
-                c = db.insert("tbl_InspectionDetails", null, values);
+                c = db.insert("Inspection_Aahar", null, values);
             }
         }
 
@@ -986,5 +988,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             }
         }
         return c;
+    }
+    public  int countAaharDetail(Activity mContext, String userid){
+        Cursor cursor;
+        try {
+            DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
+            SQLiteDatabase sqLiteDatabase=dataBaseHelper.getReadableDatabase();
+            cursor=sqLiteDatabase.rawQuery("select InspectionId from Inspection_Aahar where Entry_by=?",new String[]{userid});
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+        return cursor.getCount();
     }
 }

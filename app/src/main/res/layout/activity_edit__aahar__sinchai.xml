@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.9"
+    tools:context=".ui.Edit_Aahar_SinchaiActivity">
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        />
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/footer"
+        >
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/ActivityHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="आहर -  सिचाई योजना"
+
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_Norecord"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/background_light"
+            android:gravity="center_vertical|center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FF4B4B"
+            android:textStyle="normal"
+            android:text="@string/no_record_found"
+            android:visibility="visible"/>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rv_data"/>
+
+    </LinearLayout>
+</RelativeLayout>

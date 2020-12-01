@@ -264,15 +264,15 @@
 
 
                     </LinearLayout>
-
-
                     <LinearLayout
+                        android:id="@+id/ll_motarpump_power"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_motarpump_power"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="मोटर / पंप का पावर (HP)"
@@ -280,49 +280,19 @@
                             android:textSize="13sp"
                             android:textStyle="normal" />
 
-                        <LinearLayout
+                        <Spinner
+                            android:id="@+id/spn_motarpump_power"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/edt_motor_power_hp"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/textboxshape3"
-                                android:hint="(HP में डाले)"
-                                android:imeOptions="actionUnspecified"
-                                android:inputType="number"
-                                android:maxLength="3"
-                                android:paddingLeft="8dp"
-                                android:paddingRight="20dp"
-                                android:textAppearance="?android:textAppearanceSmall"
-                                android:textColor="#43D305" />
-
-                            <EditText
-                                android:id="@+id/edt_distribution_pipe_lambai"
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:visibility="gone"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="4dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/textboxshape3"
-                                android:hint=" (लम्बाई में)"
-                                android:imeOptions="actionUnspecified"
-
-                                android:inputType="numberDecimal"
-                                android:paddingLeft="8dp"
-                                android:paddingRight="20dp"
-                                android:textAppearance="?android:textAppearanceSmall"
-                                android:textColor="#43D305" />
-                        </LinearLayout>
-
+                            android:layout_height="40dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/spinner_bg1"
+                            android:imeOptions="actionUnspecified"
+                            android:paddingRight="20dp"
+                            android:textAppearance="?android:textAppearanceSmall"
+                            android:textColor="#43D305" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/ll_niji11"
                         android:layout_width="match_parent"

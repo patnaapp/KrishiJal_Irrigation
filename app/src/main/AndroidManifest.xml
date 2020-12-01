@@ -43,16 +43,16 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ui.Udvah_Sinchaai_YojnaActivity"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ui.Edit_Aahar_SinchaiActivity"></activity>
+        <activity android:name=".ui.Udvah_Sinchaai_YojnaActivity" />
         <activity android:name=".ui.Aahar_Sinchaai_YojyaActivity" />
         <activity android:name=".ui.Nalkup_Sinchaai_YojyaActivity" />
         <activity android:name=".ui.SplashActivity">
