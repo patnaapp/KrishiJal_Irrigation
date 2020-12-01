@@ -35,6 +35,7 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity implements 
     ArrayList<VillageListEntity>VillageList=new ArrayList<>();
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
     DataBaseHelper dataBaseHelper;
+    DataBaseHelper dataBaseHelper1;
     InspectionDetailsModel inspectionDetailsModel;
     String panchayat_Id="",Vill_Id="",Dist_Id="",BlockId="";
     private GpsTracker gpsTracker;
