@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -35,15 +36,19 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
     ArrayList<VillageListEntity> VillageList=new ArrayList<>();
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
     DataBaseHelper dataBaseHelper;
+    ArrayList<InspectionDetailsModel>EntryList=new ArrayList<>();
     InspectionDetailsModel inspectionDetailsModel;
-    String jalshrot[] = {"-चयन करे-","नदी","तालाब","आहर","झील","अन्य"};
-    String water_facility[] = {"-चयन करे-","खरीफ","रबी","गरमा"};
-    String motarpump[] = {"-चयन करे-","बिद्युत","सोलर"};
-    String motarpump_hp[] = {"-चयन करे-","1 HP","2 HP","3 HP","4 HP","5 HP"};
-    String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="",Jalshrot_id,Jalshrot_name,water_facility_Code="",water_facility_Name="",motarpump_sanchalan_code="",motarpump_sanchalan_Name="";
+    String jalshrot[] = {"--चयन करे--","नदी","तालाब","आहर","झील","अन्य"};
+    String water_facility[] = {"--चयन करे--","खरीफ","रबी","गरमा"};
+    String motarpump[] = {"--चयन करे--","बिद्युत","सोलर"};
+    String motarpump_hp[] = {"--चयन करे--","1 HP","2 HP","3 HP","4 HP","5 HP"};
+    String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="",Jalshrot_id,Jalshrot_name,water_facility_Code="",motarpump_sanchalan_code="",motarpump_sanchalan_Name="";
     String _edt_pum_loc_distnce="",_edt_motor_power_hp="",_edt_distribution_length="",_edt_distribution_pipe_inch="",_edt_distribution_pipe_meter="",_edt_apporx_command_area_hec="",_edt_yojna_lagat="";
     Button save_basic_detail_udvah;
+    String keyid="";
+    boolean edit = false;
     CheckBox chk_kharif,chk_rabi,chk_garma;
+    String userid="",dist_id="",dist_name="",blk_id="",block_name="";
     String motarpump_power_code="",motarpump_power_name="",_water_avlbl_kharif="N",_water_avlbl_rabi="N",_water_avlbl_garma="N",chk_string="N";
 
 
@@ -55,6 +60,11 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         dataBaseHelper= new DataBaseHelper(Udvah_Sinchaai_YojnaActivity.this);
 
         initialization();
+        userid=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getUserID();
+        dist_id=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getDistrictCode();
+        dist_name=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getDistName();
+        blk_id=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getBlockCode();
+        block_name=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getBlockName();
     }
     public void initialization()
     {
@@ -63,6 +73,7 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         spn_jalshrot=(Spinner)findViewById(R.id.spn_jalshrot);
         spn_jalshrot_available=(Spinner)findViewById(R.id.spn_jalshrot_available);
         spn_motarpump_sanchalan=(Spinner)findViewById(R.id.spn_motarpump_sanchalan);
+        spn_motarpump_power=(Spinner)findViewById(R.id.spn_motarpump_power);
 
         edt_pump_loc_dist=(EditText) findViewById(R.id.edt_pump_loc_dist);
         //edt_motor_power_hp=(EditText) findViewById(R.id.edt_motor_power_hp);
@@ -89,6 +100,29 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         ArrayAdapter adapter2 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, motarpump);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn_motarpump_sanchalan.setAdapter(adapter2);
+
+        ArrayAdapter adapter3 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, motarpump_hp);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spn_motarpump_power.setAdapter(adapter3);
+
+        try {
+            if(keyid.equalsIgnoreCase("")) {
+                keyid = getIntent().getExtras().getString("KeyId");
+                String isEdit = "";
+                isEdit = getIntent().getExtras().getString("isEdit");
+                Log.d("kvfrgv", "" + keyid + "" + isEdit);
+                if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
+                    edit = true;
+                    ShowEditEntry(keyid);
+                    setPanchayat(BlockId);
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         sp_panchayat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3)
@@ -164,32 +198,7 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-        spn_jalshrot_available.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
-                if (arg2 > 0) {
 
-                    water_facility_Name = water_facility[arg2].toString();
-                    if (water_facility_Name.equalsIgnoreCase("खरीफ")) {
-                        water_facility_Code = "1";
-                    }
-                    else if (water_facility_Name.equalsIgnoreCase("रबी")) {
-                        water_facility_Code = "2";
-                    }
-                    else if (water_facility_Name.equalsIgnoreCase("गरमा")) {
-                        water_facility_Code = "3";
-                    }
-                }else {
-                    water_facility_Code = "";
-                    water_facility_Name = "";
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
         spn_motarpump_sanchalan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -245,13 +254,11 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-
         save_basic_detail_udvah.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if(validateData())
-                {
-                    setvalue();
+            public void onClick(View view) {
+                String isvalid = validateRecordBeforeSaving();
+                if (isvalid.equalsIgnoreCase("yes")) {
                     InsertData();
                 }
             }
@@ -293,35 +300,45 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
     }
     private void InsertData()
     {
-        String userid= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
-        String dist_id= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("dist_id", "");
-        String blk_id= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("blk_id", "");
+//        String userid= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
+//        String dist_id= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("dist_id", "");
+//        String blk_id= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("blk_id", "");
         long id = 0;
+        setvalue();
+        InspectionDetailsModel inspectionDetailsModel=new InspectionDetailsModel();
+        inspectionDetailsModel.setSchemeCode("2");
         inspectionDetailsModel.setDistCode(dist_id);
+        inspectionDetailsModel.setDistName(dist_name);
         inspectionDetailsModel.setBlockCode(blk_id);
+        inspectionDetailsModel.setBlockName(blk_id);
         inspectionDetailsModel.setPanchayatCode(panchayat_Id);
+        inspectionDetailsModel.setPanchayatName(panchayat_Name);
         inspectionDetailsModel.setVILLCODE(Vill_Id);
+        inspectionDetailsModel.setVillageName(Vill_Name);
         inspectionDetailsModel.setWaterSourceId(Jalshrot_id);
         inspectionDetailsModel.setWaterSourceName(Jalshrot_name);
         inspectionDetailsModel.setWaterAvailable_Kharif(_water_avlbl_kharif);
         inspectionDetailsModel.setWaterAvailable_Rabi(_water_avlbl_rabi);
         inspectionDetailsModel.setWaterAvailable_Garma(_water_avlbl_garma);
+        inspectionDetailsModel.setEnergyTypeId(motarpump_sanchalan_code);
+        inspectionDetailsModel.setEnergyTypeName(motarpump_sanchalan_Name);
         inspectionDetailsModel.setPumplocation_distance(_edt_pum_loc_distnce);
+        //inspectionDetailsModel.setEnergyTypeName(motarpump_sanchalan_Name);
         inspectionDetailsModel.setMotor_Pump_Power(motarpump_power_code);
+        inspectionDetailsModel.setMotor_Pump_PowerName(motarpump_power_name);
         inspectionDetailsModel.setDistributionChannelLength(_edt_distribution_length);
         inspectionDetailsModel.setDistributionpipelngth_inch(_edt_distribution_pipe_inch);
         inspectionDetailsModel.setDistributionpipelngth_mtr(_edt_distribution_pipe_meter);
         inspectionDetailsModel.setApproxCommandArea(_edt_apporx_command_area_hec);
         inspectionDetailsModel.setSchemeApproxAmt(_edt_yojna_lagat);
-
-        // inspectionDetailsModel.setDistributionChannelLength(Flag_IsDataWrong);
-
-        // inspectionDetailsModel.set_EntryBy(userid.toLowerCase());
-
+        inspectionDetailsModel.setEntry_By(userid);
         id = new DataBaseHelper(Udvah_Sinchaai_YojnaActivity.this).InsertInspectionUdvahDetail(inspectionDetailsModel);
 
         if (id > 0)
         {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
             Toast.makeText(getApplicationContext(), "डेटा सफलतापूर्वक सहेजा गया", Toast.LENGTH_LONG).show();
         }
         else
@@ -397,14 +414,9 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, VillageListString);
         ArrayAdapter<String> spinnerAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, VillageListint);
         sp_village.setAdapter(spinnerAdapter);
-        String Village_code = "";
-        Village_code = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("Spin_Vill_Code", "");
-
-        if (!Village_code.equalsIgnoreCase(""))
+        if(getIntent().hasExtra("KeyId"))
         {
-
-            sp_village.setSelection(((ArrayAdapter<String>)spinnerAdapter1).getPosition(Village_code));
-
+            sp_village.setSelection(((ArrayAdapter<String>) sp_village.getAdapter()).getPosition(Vill_Name));
         }
 
     }
@@ -429,14 +441,9 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, PanchayatListString);
         ArrayAdapter<String> spinnerAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, PanchayatListint);
         sp_panchayat.setAdapter(spinnerAdapter);
-        String Village_code = "";
-        Village_code = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("Spin_Vill_Code", "");
-
-        if (!Village_code.equalsIgnoreCase(""))
+        if(getIntent().hasExtra("KeyId"))
         {
-
-            sp_panchayat.setSelection(((ArrayAdapter<String>)spinnerAdapter1).getPosition(Village_code));
-
+            sp_panchayat.setSelection(((ArrayAdapter<String>) sp_panchayat.getAdapter()).getPosition(panchayat_Name));
         }
 
     }
@@ -499,106 +506,162 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         }
     }
 
-    private boolean validateData() {
-        View focusView = null;
-        boolean validate = true;
 
-        if(panchayat_Id.equalsIgnoreCase(""))
-        {
-            Toast.makeText(getApplicationContext(), "Please select Panchayat", Toast.LENGTH_LONG).show();
-            validate = false;
+    private String validateRecordBeforeSaving() {
+        String isvalid = "no";
+
+        if ((sp_panchayat != null && sp_panchayat.getSelectedItem() != null)) {
+            if ((String) sp_panchayat.getSelectedItem() != "--चयन करे--") {
+                isvalid = "yes";
+            } else {
+                Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया पंचायत का चयन करे", Toast.LENGTH_LONG).show();
+
+                sp_panchayat.requestFocus();
+                return "no";
+            }
+        }
+        if ((sp_village != null && sp_village.getSelectedItem() != null)) {
+            if ((String) sp_village.getSelectedItem() != "--चयन करे--") {
+                isvalid = "yes";
+            } else {
+                Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया गाँव का चयन करे", Toast.LENGTH_LONG).show();
+
+                sp_village.requestFocus();
+                return "no";
+            }
+        }
+        if ((spn_jalshrot != null && sp_village.getSelectedItem() != null)) {
+            if ((String) spn_jalshrot.getSelectedItem() != "--चयन करे--") {
+                isvalid = "yes";
+            } else {
+                Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया जलश्रोत का चयन करे", Toast.LENGTH_LONG).show();
+
+                spn_jalshrot.requestFocus();
+                return "no";
+            }
+        }
+
+        if (!(chk_kharif.isChecked()|| chk_rabi.isChecked()|| chk_garma.isChecked())) {
+
+            Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया जलश्रोत में जल की उपलब्धता का चयन करे", Toast.LENGTH_LONG).show();
+            //et_habitation_name.requestFocus();
+            return "no";
+        }
+        if ((spn_motarpump_sanchalan != null && spn_motarpump_sanchalan.getSelectedItem() != null)) {
+            if ((String) spn_jalshrot.getSelectedItem() != "--चयन करे--") {
+                isvalid = "yes";
+            } else {
+                Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया मोटर / पंप के संचालन हेतु उर्जा का विकल्प का चयन करे", Toast.LENGTH_LONG).show();
+
+                spn_motarpump_sanchalan.requestFocus();
+                return "no";
+            }
         }
 
 
-        if(Vill_Id.equalsIgnoreCase(""))
-        {
-            Toast.makeText(getApplicationContext(), "Please select village", Toast.LENGTH_LONG).show();
-            validate = false;
+        if (edt_pump_loc_dist.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया Agriculture feeder/Electric Supply Line के अंतिम बिंदु से प्रस्तावित पम्प के लोकेशन की दुरी (Pole Length) में डाले", Toast.LENGTH_LONG).show();
+            edt_pump_loc_dist.requestFocus();
+            return "no";
+        }
+        if ((spn_motarpump_power != null && spn_motarpump_power.getSelectedItem() != null)) {
+            if ((String) spn_jalshrot.getSelectedItem() != "--चयन करे--") {
+                isvalid = "yes";
+            } else {
+                Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया मोटर / पंप का पावर (HP) का चयन करे", Toast.LENGTH_LONG).show();
+
+                spn_motarpump_power.requestFocus();
+                return "no";
+            }
+        }
+        if (edt_distribution_length.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया डिस्ट्रीब्यूशन चैनल की लम्बाई (मी०) डाले", Toast.LENGTH_LONG).show();
+            edt_distribution_length.requestFocus();
+            return "no";
+        }
+        if (edt_distribution_pipe_inch.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "डिस्ट्रीब्यूटशन  पाइप का व्यास (इंच  में )", Toast.LENGTH_LONG).show();
+            edt_distribution_pipe_inch.requestFocus();
+            return "no";
+        }
+        if (edt_distribution_pipe_meter.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया डिस्ट्रीब्यूटशन  पाइप का लम्बाई (मी ० ) में डाले", Toast.LENGTH_LONG).show();
+            edt_distribution_pipe_meter.requestFocus();
+            return "no";
+        }
+        if (edt_apporx_command_area_hec.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया अनुमानित कमाण्ड एरिया (हेक्टेर में ) डाले", Toast.LENGTH_LONG).show();
+            edt_apporx_command_area_hec.requestFocus();
+            return "no";
+        }
+        if (edt_yojna_lagat.getText().toString().trim().length() <= 0) {
+            Toast.makeText(Udvah_Sinchaai_YojnaActivity.this, "कृपया योजना की अनुमानित लागत (लाख ₹) में डाले", Toast.LENGTH_LONG).show();
+            edt_yojna_lagat.requestFocus();
+            return "no";
         }
 
-        if(Jalshrot_name.equalsIgnoreCase(""))
+
+
+
+        return isvalid;
+    }
+    public void ShowEditEntry(String keyid) {
+        DataBaseHelper helper = new DataBaseHelper(getApplicationContext());
+        userid = (CommonPref.getUserDetails(this).getUserID());
+        EntryList=helper.getAllEntryUdvah(userid,keyid,"2");
+        for (InspectionDetailsModel goatSurveyEntity : EntryList)
         {
-            Toast.makeText(getApplicationContext(), "Please select jalshrot", Toast.LENGTH_LONG).show();
-            validate = false;
+
+            //next_button.setText("अपडेट करे");
+            panchayat_Name=goatSurveyEntity.getPanchayatName();
+            Vill_Name=goatSurveyEntity.getVillageName();
+            Jalshrot_name=goatSurveyEntity.getWaterSourceName();
+            spn_jalshrot.setSelection(((ArrayAdapter<String>) spn_jalshrot.getAdapter()).getPosition(Jalshrot_name));
+            String WaterAvailable_Kharif = goatSurveyEntity.getWaterAvailable_Kharif();
+            if (WaterAvailable_Kharif.equalsIgnoreCase("Y")) {
+                chk_kharif.setChecked(true);
+                _water_avlbl_kharif = "Y";
+            } else {
+                chk_kharif.setChecked(false);
+                _water_avlbl_kharif = "N";
+            }
+            String WaterAvailable_Rabi = goatSurveyEntity.getWaterAvailable_Rabi();
+            if (WaterAvailable_Rabi.equalsIgnoreCase("Y")) {
+                chk_rabi.setChecked(true);
+                WaterAvailable_Rabi = "Y";
+            } else {
+                chk_rabi.setChecked(false);
+                WaterAvailable_Rabi = "N";
+            }
+            String WaterAvailable_Garma = goatSurveyEntity.getWaterAvailable_Garma();
+            if (WaterAvailable_Garma.equalsIgnoreCase("Y")) {
+                chk_garma.setChecked(true);
+                WaterAvailable_Garma = "Y";
+            } else {
+                chk_garma.setChecked(false);
+                WaterAvailable_Garma = "N";
+            }
+            Jalshrot_name=goatSurveyEntity.getWaterSourceName();
+            spn_jalshrot.setSelection(((ArrayAdapter<String>) spn_jalshrot.getAdapter()).getPosition(Jalshrot_name));
+
+            motarpump_sanchalan_Name=goatSurveyEntity.getEnergyTypeName();
+            spn_motarpump_sanchalan.setSelection(((ArrayAdapter<String>) spn_motarpump_sanchalan.getAdapter()).getPosition(motarpump_sanchalan_Name));
+
+            edt_pump_loc_dist.setText(goatSurveyEntity.getPumplocation_distance());
+
+            motarpump_power_name=goatSurveyEntity.getMotor_Pump_PowerName();
+            spn_motarpump_power.setSelection(((ArrayAdapter<String>) spn_motarpump_power.getAdapter()).getPosition(motarpump_power_name));
+
+
+
+            edt_distribution_length.setText(goatSurveyEntity.getDistributionChannelLength());
+            edt_distribution_pipe_inch.setText(goatSurveyEntity.getDistributionpipelngth_inch());
+            edt_distribution_pipe_meter.setText(goatSurveyEntity.getDistributionpipelngth_mtr());
+            edt_apporx_command_area_hec.setText(goatSurveyEntity.getApproxCommandArea());
+            edt_yojna_lagat.setText(goatSurveyEntity.getSchemeApproxAmt());
+
+
         }
-
-        if(chk_string.equalsIgnoreCase("N"))
-        {
-            Toast.makeText(getApplicationContext(), "Please select atleast one season for water availability", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-
-        if(motarpump_sanchalan_Name.equalsIgnoreCase(""))
-        {
-            Toast.makeText(getApplicationContext(), "Please select motorpump energy type", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-
-        if(_edt_pum_loc_distnce.equalsIgnoreCase(""))
-        {
-            edt_pump_loc_dist.setError("Please distance of pump location");
-            Toast.makeText(getApplicationContext(), "Please distance of pump location", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-
-//        if(_edt_motor_power_hp.equalsIgnoreCase("")){
-//            edt_motor_power_hp.setError("Please enter motor power");
-//            Toast.makeText(getApplicationContext(), "Please enter motor power", Toast.LENGTH_LONG).show();
-//            validate = false;
-//        }
-//        if(Integer.parseInt(_edt_motor_power_hp)<1 && Integer.parseInt(_edt_motor_power_hp)>5)
-//        {
-//
-//            Toast.makeText(getApplicationContext(), "Motor power should not be more than 5 hp", Toast.LENGTH_LONG).show();
-//            validate = false;
-//        }
-
-        if(_edt_distribution_length.equalsIgnoreCase(""))
-        {
-            edt_distribution_length.setError("Please enter distribution channel length");
-            Toast.makeText(getApplicationContext(), "Please enter distribution channel length", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-
-        if(_edt_distribution_pipe_inch.equalsIgnoreCase(""))
-        {
-            edt_distribution_pipe_inch.setError("Please enter distribution channel length in inch");
-            Toast.makeText(getApplicationContext(), "Please enter distributuion pipe length in inch", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-
-//        if(_edt_distribution_pipe_inch.equalsIgnoreCase("")){
-//            Toast.makeText(getApplicationContext(), "Please distributuion pipe length in inch", Toast.LENGTH_LONG).show();
-//            validate = false;
-//        }
-
-        if(_edt_distribution_pipe_meter.equalsIgnoreCase(""))
-        {
-            edt_distribution_pipe_meter.setError("Please enter distribution channel length in meter");
-            Toast.makeText(getApplicationContext(), "Please distributuion pipe length in meter", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-
-        if(_edt_apporx_command_area_hec.equalsIgnoreCase(""))
-        {
-            edt_apporx_command_area_hec.setError("Please enter approx command area in heactare");
-            Toast.makeText(getApplicationContext(), "Please enter approx command area in heactare", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-
-        if(_edt_yojna_lagat.equalsIgnoreCase(""))
-        {
-            edt_yojna_lagat.setError("Please enter yojana lagat");
-            Toast.makeText(getApplicationContext(), "Please enter yojana lagat", Toast.LENGTH_LONG).show();
-            validate = false;
-        }
-
-        if(focusView != null && focusView.requestFocus())
-        {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-        return validate;
-
     }
 
 }

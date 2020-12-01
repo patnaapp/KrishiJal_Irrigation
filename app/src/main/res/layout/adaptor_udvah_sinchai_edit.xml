@@ -137,14 +137,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:padding="3dp">
 
                     <TextView
                         android:textStyle="normal"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:text="वार्ड"
+                        android:text="जलश्रोत "
                         android:textColor="@color/holo_button_normal"
                         android:textSize="13sp"/>
 
@@ -157,7 +157,40 @@
                         android:textSize="13sp"/>
 
                     <TextView
-                        android:id="@+id/tv_ward"
+                        android:id="@+id/tv_jalshrot"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:text="New Text"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:padding="3dp">
+
+                    <TextView
+                        android:textStyle="normal"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:text="मोटर / पंप का पावर (HP) "
+                        android:textColor="@color/holo_button_normal"
+                        android:textSize="13sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:textStyle="bold"
+                        android:text=":"
+                        android:textSize="13sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_power"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"

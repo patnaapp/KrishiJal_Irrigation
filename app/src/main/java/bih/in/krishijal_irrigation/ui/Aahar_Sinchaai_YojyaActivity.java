@@ -50,6 +50,7 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
     private final int UPDATE_LATLNG = 2;
     private final int UPDATE_ADDRESS = 1;
     private ProgressDialog dialog;
+    String keyid="";
     String water_facility[] = {"-चयन करे-","खरीफ","रबी","गरमा"};
     ArrayList<VillageListEntity> VillageList=new ArrayList<>();
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
@@ -59,8 +60,10 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
     String panchayat_Id="",panchayat_Name="",Vill_Id="",Vill_Name="",Dist_Id="",BlockId="",water_facility_Code="",water_facility_Name="";
     String _edt_pipe_length="",_edt_distribution_pipe_inch="",_edt_distribution_pipe_lambai="",_edt_command_area="",_edt_yojna_lagat;
     CheckBox chk_kharif,chk_rabi,chk_garma;
-    String kharif="N",rabi="N",garma="N",Dist_Name="",BlockName="";
+    String kharif="N",rabi="N",garma="N",Dist_Name="",BlockName="",userid="";
     Button btn_saveLocal;
+    boolean edit = false;
+    ArrayList<InspectionDetailsModel>EntryList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,19 +95,29 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
 
         btn_aahar_location=(Button) findViewById(R.id.btn_aahar_location);
 
-        btn_aahar_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //locationpoint="1";
-                //locationManager();
-                //getLocation();
-            }
-        });
+
         Dist_Id=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getDistrictCode();
         Dist_Name=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getDistName();
         BlockId=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getBlockCode();
         BlockName=CommonPref.getUserDetails(Aahar_Sinchaai_YojyaActivity.this).getBlockName();
         setPanchayat(BlockId);
+        try {
+            if(keyid.equalsIgnoreCase("")) {
+                keyid = getIntent().getExtras().getString("KeyId");
+                String isEdit = "";
+                isEdit = getIntent().getExtras().getString("isEdit");
+                Log.d("kvfrgv", "" + keyid + "" + isEdit);
+                if (Integer.parseInt(keyid) > 0 && isEdit.equals("Yes")) {
+                    edit = true;
+                    ShowEditEntry(keyid);
+                    setPanchayat(BlockId);
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         sp_panchayat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -158,6 +171,7 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
     }
     private void InsertData(){
         long id = 0;
+        setvalue();
         InspectionDetailsModel inspectionDetailsModel=new InspectionDetailsModel();
         inspectionDetailsModel.setDistName(Dist_Name);
         inspectionDetailsModel.setDistCode(Dist_Id);
@@ -242,14 +256,9 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, VillageListString);
         ArrayAdapter<String> spinnerAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, VillageListint);
         sp_village.setAdapter(spinnerAdapter);
-        String Village_code = "";
-        Village_code = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("Spin_Vill_Code", "");
-
-        if (!Village_code.equalsIgnoreCase(""))
+        if(getIntent().hasExtra("KeyId"))
         {
-
-            sp_village.setSelection(((ArrayAdapter<String>)spinnerAdapter1).getPosition(Village_code));
-
+            sp_village.setSelection(((ArrayAdapter<String>) sp_village.getAdapter()).getPosition(Vill_Name));
         }
 
     }
@@ -274,14 +283,9 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, PanchayatListString);
         ArrayAdapter<String> spinnerAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, PanchayatListint);
         sp_panchayat.setAdapter(spinnerAdapter);
-        String Village_code = "";
-        Village_code = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("Spin_Vill_Code", "");
-
-        if (!Village_code.equalsIgnoreCase(""))
+        if(getIntent().hasExtra("KeyId"))
         {
-
-            sp_panchayat.setSelection(((ArrayAdapter<String>)spinnerAdapter1).getPosition(Village_code));
-
+            sp_panchayat.setSelection(((ArrayAdapter<String>) sp_panchayat.getAdapter()).getPosition(panchayat_Name));
         }
 
     }
@@ -443,6 +447,49 @@ public class Aahar_Sinchaai_YojyaActivity extends Activity implements View.OnCli
 
 
         return isvalid;
+    }
+    public void ShowEditEntry(String keyid) {
+        DataBaseHelper helper = new DataBaseHelper(getApplicationContext());
+        userid = (CommonPref.getUserDetails(this).getUserID());
+        EntryList=helper.getAllEntryById(userid,keyid,"3");
+        for (InspectionDetailsModel goatSurveyEntity : EntryList)
+        {
+
+            //next_button.setText("अपडेट करे");
+            panchayat_Name=goatSurveyEntity.getPanchayatName();
+            Vill_Name=goatSurveyEntity.getVillageName();
+            String WaterAvailable_Kharif = goatSurveyEntity.getWaterAvailable_Kharif();
+            if (WaterAvailable_Kharif.equalsIgnoreCase("Y")) {
+                chk_kharif.setChecked(true);
+                kharif = "Y";
+            } else {
+                chk_kharif.setChecked(false);
+                kharif = "N";
+            }
+            String WaterAvailable_Rabi = goatSurveyEntity.getWaterAvailable_Rabi();
+            if (WaterAvailable_Rabi.equalsIgnoreCase("Y")) {
+                chk_rabi.setChecked(true);
+                rabi = "Y";
+            } else {
+                chk_rabi.setChecked(false);
+                rabi = "N";
+            }
+            String WaterAvailable_Garma = goatSurveyEntity.getWaterAvailable_Garma();
+            if (WaterAvailable_Garma.equalsIgnoreCase("Y")) {
+                chk_garma.setChecked(true);
+                garma = "Y";
+            } else {
+                chk_garma.setChecked(false);
+                garma = "N";
+            }
+            edt_pipe_length.setText(goatSurveyEntity.getDistributionChannelLength());
+            edt_distribution_pipe_inch.setText(goatSurveyEntity.getDistributionPipeDiamater());
+            edt_distribution_pipe_lambai.setText(goatSurveyEntity.getDistributionPipeLength());
+            edt_command_area.setText(goatSurveyEntity.getApproxCommandArea());
+            edt_yojna_lagat.setText(goatSurveyEntity.getSchemeApproxAmt());
+
+
+        }
     }
 
 
