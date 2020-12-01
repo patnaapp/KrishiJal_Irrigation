@@ -37,6 +37,9 @@ public class InspectionDetailsModel {
     private String Distributionpipelngth_inch;
     private String Distributionpipelngth_mtr;
     private String Entry_By;
+    private String EntryDate;
+    private String ChannelName;
+    private String PlotNo;
 
     public String getInspectionId() {
         return InspectionId;
@@ -316,5 +319,29 @@ public class InspectionDetailsModel {
 
     public void setEntry_By(String entry_By) {
         Entry_By = entry_By;
+    }
+
+    public String getEntryDate() {
+        return EntryDate;
+    }
+
+    public void setEntryDate(String entryDate) {
+        EntryDate = entryDate;
+    }
+
+    public String getChannelName() {
+        return ChannelName;
+    }
+
+    public void setChannelName(String channelName) {
+        ChannelName = channelName;
+    }
+
+    public String getPlotNo() {
+        return PlotNo;
+    }
+
+    public void setPlotNo(String plotNo) {
+        PlotNo = plotNo;
     }
 }
