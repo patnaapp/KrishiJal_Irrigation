@@ -13,9 +13,11 @@ public class InspectionDetailsModel {
     private String VillageName;
     private String SchemeCode;
     private String EnergyTypeId;
+    private String EnergyTypeName;
     private String NoofNalkup;
     private String NoOfPole;
     private String Motor_Pump_Power;
+    private String Motor_Pump_PowerName;
     private String DistributionChannelLength;
     private String DistributionPipeDiamater;
     private String DistributionPipeLength;
@@ -27,7 +29,7 @@ public class InspectionDetailsModel {
     private String WaterAvailable_Rabi;
     private String WaterAvailable_Garma;
     private String DistributionPaenLength;
-    private String EnergyTypeName;
+
     private String GPSTypeId;
     private String GPSTypeName;
     private String Latitude;
@@ -316,5 +318,13 @@ public class InspectionDetailsModel {
 
     public void setEntry_By(String entry_By) {
         Entry_By = entry_By;
+    }
+
+    public String getMotor_Pump_PowerName() {
+        return Motor_Pump_PowerName;
+    }
+
+    public void setMotor_Pump_PowerName(String motor_Pump_PowerName) {
+        Motor_Pump_PowerName = motor_Pump_PowerName;
     }
 }

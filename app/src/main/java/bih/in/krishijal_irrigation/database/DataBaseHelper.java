@@ -8,8 +8,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -845,36 +849,60 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("InspectionId", vdata.getInspectionId());
             values.put("SchemeCode", vdata.getSchemeCode());
             values.put("DistCode", vdata.getDistCode());
-            values.put("BlockCode", vdata.getBlockCode());
-            values.put("PanchayatCode", vdata.getPanchayatCode());
             values.put("DistName", vdata.getDistName());
+            values.put("BlockCode", vdata.getBlockCode());
             values.put("BlockName", vdata.getBlockName());
+            values.put("PanchayatCode", vdata.getPanchayatCode());
             values.put("PanchayatName", vdata.getPanchayatName());
             values.put("VILLCODE", vdata.getVILLCODE());
-            values.put("EnergyTypeId", vdata.getEnergyTypeId());
-            values.put("EnergyTypeName", vdata.getEnergyTypeName());
-            values.put("NoofNalkup", vdata.getNoofNalkup());
-            values.put("NoOfPole", vdata.getNoOfPole());
-            values.put("Motor_Pump_Power", vdata.getMotor_Pump_Power());
-            values.put("DistributionChannelLength", vdata.getDistributionChannelLength());
-            values.put("DistributionPipeDiamater", vdata.getDistributionpipelngth_inch());
-            values.put("DistributionPipeLength", vdata.getDistributionChannelLength());
-            values.put("ApproxCommandArea", vdata.getApproxCommandArea());
-            values.put("SchemeApproxAmt", vdata.getSchemeApproxAmt());
+            values.put("VillageName", vdata.getVillageName());
             values.put("WaterSourceId", vdata.getWaterSourceId());
+            values.put("WaterSourceName", vdata.getWaterSourceName());
             values.put("WaterAvailable_Kharif", vdata.getWaterAvailable_Kharif());
             values.put("WaterAvailable_Rabi", vdata.getWaterAvailable_Rabi());
             values.put("WaterAvailable_Garma", vdata.getWaterAvailable_Garma());
-            values.put("DistributionPaenLength", vdata.getDistributionPaenLength());
+            values.put("EnergyTypeId", vdata.getEnergyTypeId());
             values.put("EnergyTypeName", vdata.getEnergyTypeName());
-            values.put("Photo", vdata.getPhoto());
+            values.put("Pumplocation_distance", vdata.getPumplocation_distance());
+            //values.put("Pumplocation_distance", vdata.getPumplocation_distance());
+            values.put("Motor_Pump_Power", vdata.getMotor_Pump_Power());
+            values.put("Motor_Pump_PowerName", vdata.getMotor_Pump_PowerName());
+            values.put("DistributionChannelLength", vdata.getDistributionChannelLength());
+            values.put("DistributionPipeDiamater", vdata.getDistributionpipelngth_inch());
+            values.put("DistributionPipeLength_meter", vdata.getDistributionpipelngth_mtr());
+            values.put("ApproxCommandArea", vdata.getApproxCommandArea());
+            values.put("SchemeApproxAmt", vdata.getSchemeApproxAmt());
+            values.put("Entry_by", vdata.getEntry_By());
+
+
+
+
+
+
+
+
+//            values.put("NoofNalkup", vdata.getNoofNalkup());
+//            values.put("NoOfPole", vdata.getNoOfPole());
+//            values.put("Motor_Pump_Power", vdata.getMotor_Pump_Power());
+//            values.put("DistributionChannelLength", vdata.getDistributionChannelLength());
+//            values.put("DistributionPipeDiamater", vdata.getDistributionpipelngth_inch());
+//            values.put("DistributionPipeLength", vdata.getDistributionChannelLength());
+//            values.put("ApproxCommandArea", vdata.getApproxCommandArea());
+//            values.put("SchemeApproxAmt", vdata.getSchemeApproxAmt());
+//            values.put("WaterSourceId", vdata.getWaterSourceId());
+//            values.put("WaterAvailable_Kharif", vdata.getWaterAvailable_Kharif());
+//            values.put("WaterAvailable_Rabi", vdata.getWaterAvailable_Rabi());
+//            values.put("WaterAvailable_Garma", vdata.getWaterAvailable_Garma());
+//            values.put("DistributionPaenLength", vdata.getDistributionPaenLength());
+//            values.put("EnergyTypeName", vdata.getEnergyTypeName());
+//            values.put("Photo", vdata.getPhoto());
 
             String[] whereArgs = new String[]{vdata.getInspectionId()};
-            c = db.update("tbl_InspectionDetails", values, "InspectionId=?", whereArgs);
+            c = db.update("Inspection_Aahar", values, "InspectionId=?", whereArgs);
 
             if (!(c > 0)) {
 
-                c = db.insert("tbl_InspectionDetails", null, values);
+                c = db.insert("Inspection_Aahar", null, values);
             }
         }
 
@@ -989,16 +1017,244 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return c;
     }
-    public  int countAaharDetail(Activity mContext, String userid){
+    public  int countUdvahDetail(Activity mContext, String userid){
         Cursor cursor;
         try {
             DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
             SQLiteDatabase sqLiteDatabase=dataBaseHelper.getReadableDatabase();
-            cursor=sqLiteDatabase.rawQuery("select InspectionId from Inspection_Aahar where Entry_by=?",new String[]{userid});
+            cursor=sqLiteDatabase.rawQuery("select InspectionId from Inspection_Aahar where Entry_by=? AND SchemeCode=2",new String[]{userid});
         }catch (Exception e){
             e.printStackTrace();
             return 0;
         }
         return cursor.getCount();
+    }
+    public  int countAaharDetail(Activity mContext, String userid){
+        Cursor cursor;
+        try {
+            DataBaseHelper dataBaseHelper=new DataBaseHelper(mContext);
+            SQLiteDatabase sqLiteDatabase=dataBaseHelper.getReadableDatabase();
+            cursor=sqLiteDatabase.rawQuery("select InspectionId from Inspection_Aahar where Entry_by=? AND SchemeCode=3",new String[]{userid});
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+        return cursor.getCount();
+    }
+    public ArrayList<InspectionDetailsModel> getAaharDetail(String entry_by){
+        //PondInspectionDetail info = null;
+
+        ArrayList<InspectionDetailsModel> infoList = new ArrayList<InspectionDetailsModel>();
+
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cur;
+
+                String[] params = new String[]{entry_by};
+                cur = db.rawQuery("Select * from Inspection_Aahar WHERE Entry_by=? AND SchemeCode=3",params);
+
+            while (cur.moveToNext()) {
+
+                infoList.add(getNurseryObject(cur));
+            }
+
+            cur.close();
+            db.close();
+            this.getReadableDatabase().close();
+        } catch (Exception e) {
+            // TODO: handle exception
+            //info = null;
+            e.printStackTrace();
+        }
+        return infoList;
+    }
+    public ArrayList<InspectionDetailsModel> getUdvahDetail(String entry_by){
+        //PondInspectionDetail info = null;
+
+        ArrayList<InspectionDetailsModel> infoList = new ArrayList<InspectionDetailsModel>();
+
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cur;
+
+            String[] params = new String[]{entry_by};
+            cur = db.rawQuery("Select * from Inspection_Aahar WHERE Entry_by=? AND SchemeCode=2",params);
+
+            while (cur.moveToNext()) {
+
+                infoList.add(getudvah(cur));
+            }
+
+            cur.close();
+            db.close();
+            this.getReadableDatabase().close();
+        } catch (Exception e) {
+            // TODO: handle exception
+            //info = null;
+            e.printStackTrace();
+        }
+        return infoList;
+    }
+    public InspectionDetailsModel getNurseryObject(Cursor cur){
+        InspectionDetailsModel info = new InspectionDetailsModel();
+        info.setInspectionId(cur.getString(cur.getColumnIndex("InspectionId")));
+        //info.setSchemeCode(cur.getInt(cur.getColumnIndex("SchemeCode")));
+        info.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+        info.setDistCode(cur.getString(cur.getColumnIndex("DistCode")));
+        info.setDistName(cur.getString(cur.getColumnIndex("DistName")));
+        info.setBlockCode(cur.getString(cur.getColumnIndex("BlockCode")));
+        info.setBlockName(cur.getString(cur.getColumnIndex("BlockName")));
+        info.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
+        info.setPanchayatName(cur.getString(cur.getColumnIndex("PanchayatName")));
+        info.setVILLCODE(cur.getString(cur.getColumnIndex("VILLCODE")));
+        info.setVillageName(cur.getString(cur.getColumnIndex("VillageName")));
+        info.setWaterAvailable_Kharif(cur.getString(cur.getColumnIndex("WaterAvailable_Kharif")));
+        info.setWaterAvailable_Rabi(cur.getString(cur.getColumnIndex("WaterAvailable_Rabi")));
+        info.setWaterAvailable_Garma(cur.getString(cur.getColumnIndex("WaterAvailable_Garma")));
+        info.setDistributionChannelLength(cur.getString(cur.getColumnIndex("DistributionChannelLength")));
+        info.setDistributionPipeDiamater(cur.getString(cur.getColumnIndex("DistributionPipeDiamater")));
+        info.setDistributionPipeLength(cur.getString(cur.getColumnIndex("DistributionPipeLength")));
+        info.setApproxCommandArea(cur.getString(cur.getColumnIndex("ApproxCommandArea")));
+        info.setSchemeApproxAmt(cur.getString(cur.getColumnIndex("SchemeApproxAmt")));
+        info.setEntry_By(cur.getString(cur.getColumnIndex("Entry_by")));
+
+
+
+        return info;
+    }
+    public InspectionDetailsModel getudvah(Cursor cur){
+        InspectionDetailsModel info = new InspectionDetailsModel();
+        info.setInspectionId(cur.getString(cur.getColumnIndex("InspectionId")));
+        //info.setSchemeCode(cur.getInt(cur.getColumnIndex("SchemeCode")));
+        info.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+        info.setDistCode(cur.getString(cur.getColumnIndex("DistCode")));
+        info.setDistName(cur.getString(cur.getColumnIndex("DistName")));
+        info.setBlockCode(cur.getString(cur.getColumnIndex("BlockCode")));
+        info.setBlockName(cur.getString(cur.getColumnIndex("BlockName")));
+        info.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
+        info.setPanchayatName(cur.getString(cur.getColumnIndex("PanchayatName")));
+        info.setVILLCODE(cur.getString(cur.getColumnIndex("VILLCODE")));
+        info.setVillageName(cur.getString(cur.getColumnIndex("VillageName")));
+        info.setWaterSourceId(cur.getString(cur.getColumnIndex("VILLCODE")));
+        info.setWaterSourceName(cur.getString(cur.getColumnIndex("VILLCODE")));
+        info.setWaterAvailable_Kharif(cur.getString(cur.getColumnIndex("WaterAvailable_Kharif")));
+        info.setWaterAvailable_Rabi(cur.getString(cur.getColumnIndex("WaterAvailable_Rabi")));
+        info.setWaterAvailable_Garma(cur.getString(cur.getColumnIndex("WaterAvailable_Garma")));
+        info.setEnergyTypeId(cur.getString(cur.getColumnIndex("EnergyTypeId")));
+        info.setEnergyTypeName(cur.getString(cur.getColumnIndex("EnergyTypeName")));
+        info.setPumplocation_distance(cur.getString(cur.getColumnIndex("Pumplocation_distance")));
+        info.setMotor_Pump_Power(cur.getString(cur.getColumnIndex("Motor_Pump_Power")));
+        info.setMotor_Pump_PowerName(cur.getString(cur.getColumnIndex("Motor_Pump_PowerName")));
+        info.setDistributionChannelLength(cur.getString(cur.getColumnIndex("DistributionChannelLength")));
+        info.setDistributionpipelngth_inch(cur.getString(cur.getColumnIndex("DistributionPipeDiamater")));
+        info.setDistributionpipelngth_mtr(cur.getString(cur.getColumnIndex("DistributionPipeLength_meter")));
+        info.setApproxCommandArea(cur.getString(cur.getColumnIndex("ApproxCommandArea")));
+        info.setSchemeApproxAmt(cur.getString(cur.getColumnIndex("SchemeApproxAmt")));
+        info.setEntry_By(cur.getString(cur.getColumnIndex("Entry_by")));
+
+
+
+        return info;
+    }
+    public ArrayList<InspectionDetailsModel> getAllEntryById(String userid,String sno,String Scheme_code){
+        ArrayList<InspectionDetailsModel> goatSurveyEntities=new ArrayList<InspectionDetailsModel>();
+
+        try {
+
+            SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+            Cursor cur=sqLiteDatabase.rawQuery("select * from Inspection_Aahar where Entry_by=?"+" AND "+" InspectionId=? "+" AND "+" SchemeCode=? "+" ORDER BY " + "InspectionId " +"ASC",new String[]{userid,sno,Scheme_code});
+            int x = cur.getCount();
+
+            while (cur.moveToNext())
+            {
+                InspectionDetailsModel info = new InspectionDetailsModel();
+                info.setInspectionId(cur.getString(cur.getColumnIndex("InspectionId")));
+                //info.setSchemeCode(cur.getInt(cur.getColumnIndex("SchemeCode")));
+                info.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+                info.setDistCode(cur.getString(cur.getColumnIndex("DistCode")));
+                info.setDistName(cur.getString(cur.getColumnIndex("DistName")));
+                info.setBlockCode(cur.getString(cur.getColumnIndex("BlockCode")));
+                info.setBlockName(cur.getString(cur.getColumnIndex("BlockName")));
+                info.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
+                info.setPanchayatName(cur.getString(cur.getColumnIndex("PanchayatName")));
+                info.setVILLCODE(cur.getString(cur.getColumnIndex("VILLCODE")));
+                info.setVillageName(cur.getString(cur.getColumnIndex("VillageName")));
+                info.setWaterAvailable_Kharif(cur.getString(cur.getColumnIndex("WaterAvailable_Kharif")));
+                info.setWaterAvailable_Rabi(cur.getString(cur.getColumnIndex("WaterAvailable_Rabi")));
+                info.setWaterAvailable_Garma(cur.getString(cur.getColumnIndex("WaterAvailable_Garma")));
+                info.setDistributionChannelLength(cur.getString(cur.getColumnIndex("DistributionChannelLength")));
+                info.setDistributionPipeDiamater(cur.getString(cur.getColumnIndex("DistributionPipeDiamater")));
+                info.setDistributionPipeLength(cur.getString(cur.getColumnIndex("DistributionPipeLength")));
+                info.setApproxCommandArea(cur.getString(cur.getColumnIndex("ApproxCommandArea")));
+                info.setSchemeApproxAmt(cur.getString(cur.getColumnIndex("SchemeApproxAmt")));
+                info.setEntry_By(cur.getString(cur.getColumnIndex("Entry_by")));
+                goatSurveyEntities.add(info);
+
+            }
+
+            cur.close();
+            sqLiteDatabase.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+
+        }
+        return goatSurveyEntities ;
+    }
+    public ArrayList<InspectionDetailsModel> getAllEntryUdvah(String userid,String sno,String Scheme_code){
+        ArrayList<InspectionDetailsModel> goatSurveyEntities=new ArrayList<InspectionDetailsModel>();
+
+        try {
+
+            SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+            Cursor cur=sqLiteDatabase.rawQuery("select * from Inspection_Aahar where Entry_by=?"+" AND "+" InspectionId=? "+" AND "+" SchemeCode=? "+" ORDER BY " + "InspectionId " +"ASC",new String[]{userid,sno,Scheme_code});
+            int x = cur.getCount();
+
+            while (cur.moveToNext())
+            {
+                InspectionDetailsModel info = new InspectionDetailsModel();
+                info.setInspectionId(cur.getString(cur.getColumnIndex("InspectionId")));
+                //info.setSchemeCode(cur.getInt(cur.getColumnIndex("SchemeCode")));
+                info.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+                info.setDistCode(cur.getString(cur.getColumnIndex("DistCode")));
+                info.setDistName(cur.getString(cur.getColumnIndex("DistName")));
+                info.setBlockCode(cur.getString(cur.getColumnIndex("BlockCode")));
+                info.setBlockName(cur.getString(cur.getColumnIndex("BlockName")));
+                info.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
+                info.setPanchayatName(cur.getString(cur.getColumnIndex("PanchayatName")));
+                info.setVILLCODE(cur.getString(cur.getColumnIndex("VILLCODE")));
+                info.setVillageName(cur.getString(cur.getColumnIndex("VillageName")));
+                info.setWaterSourceId(cur.getString(cur.getColumnIndex("VILLCODE")));
+                info.setWaterSourceName(cur.getString(cur.getColumnIndex("VILLCODE")));
+                info.setWaterAvailable_Kharif(cur.getString(cur.getColumnIndex("WaterAvailable_Kharif")));
+                info.setWaterAvailable_Rabi(cur.getString(cur.getColumnIndex("WaterAvailable_Rabi")));
+                info.setWaterAvailable_Garma(cur.getString(cur.getColumnIndex("WaterAvailable_Garma")));
+                info.setEnergyTypeId(cur.getString(cur.getColumnIndex("EnergyTypeId")));
+                info.setEnergyTypeName(cur.getString(cur.getColumnIndex("EnergyTypeName")));
+                info.setPumplocation_distance(cur.getString(cur.getColumnIndex("Pumplocation_distance")));
+                info.setMotor_Pump_Power(cur.getString(cur.getColumnIndex("Motor_Pump_Power")));
+                info.setMotor_Pump_PowerName(cur.getString(cur.getColumnIndex("Motor_Pump_PowerName")));
+                info.setDistributionChannelLength(cur.getString(cur.getColumnIndex("DistributionChannelLength")));
+                info.setDistributionpipelngth_inch(cur.getString(cur.getColumnIndex("DistributionPipeDiamater")));
+                info.setDistributionpipelngth_mtr(cur.getString(cur.getColumnIndex("DistributionPipeLength_meter")));
+                info.setApproxCommandArea(cur.getString(cur.getColumnIndex("ApproxCommandArea")));
+                info.setSchemeApproxAmt(cur.getString(cur.getColumnIndex("SchemeApproxAmt")));
+                info.setEntry_By(cur.getString(cur.getColumnIndex("Entry_by")));
+                goatSurveyEntities.add(info);
+
+            }
+
+            cur.close();
+            sqLiteDatabase.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+
+        }
+        return goatSurveyEntities ;
     }
 }

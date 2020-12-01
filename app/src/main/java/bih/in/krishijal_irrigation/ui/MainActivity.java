@@ -19,7 +19,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     TextView nalkup_edit,nalkup_upload,udvah_edit,udvah_upload,aahar_edit,aahar_upload,tv_username,tv_district,tv_block;
     String DistName="",BlockName="",UserName="";
     DataBaseHelper dataBaseHelper;
-    long AaharCount;
+    long udhavCount,AaharCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         rl_nalkup_new.setOnClickListener(this);
         rl_udvah_new.setOnClickListener(this);
         rl_aahar_new.setOnClickListener(this);
+        rl_aahar_edit.setOnClickListener(this);
+        rl_udvah_edit.setOnClickListener(this);
     }
 
     @Override
@@ -77,10 +79,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }else  if (view.getId()==R.id.rl_aahar_new){
             Intent intent=new Intent(getApplicationContext(),Aahar_Sinchaai_YojyaActivity.class);
             startActivity(intent);
+        }else  if (view.getId()==R.id.rl_aahar_edit){
+            Intent intent=new Intent(getApplicationContext(),Edit_Aahar_SinchaiActivity.class);
+            startActivity(intent);
+        }
+        else  if (view.getId()==R.id.rl_udvah_edit){
+            Intent intent=new Intent(getApplicationContext(),Edit_Udvah_SinchaiActivity.class);
+            startActivity(intent);
         }
     }
     private void showPending() {
+        udhavCount = dataBaseHelper.countUdvahDetail(MainActivity.this,CommonPref.getUserDetails(MainActivity.this).getUserID());
         AaharCount = dataBaseHelper.countAaharDetail(MainActivity.this,CommonPref.getUserDetails(MainActivity.this).getUserID());
+
+        if (udhavCount > 0) {
+            udvah_edit.setText(String.valueOf(udhavCount));
+            udvah_upload.setText(String.valueOf(udhavCount));
+        }else {
+            udvah_edit.setText("0");
+            udvah_upload.setText("0");
+        }
 
         if (AaharCount > 0) {
             aahar_edit.setText(String.valueOf(AaharCount));
