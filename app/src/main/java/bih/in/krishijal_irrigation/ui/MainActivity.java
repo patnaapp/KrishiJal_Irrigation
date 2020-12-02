@@ -22,7 +22,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import bih.in.krishijal_irrigation.R;
-import bih.in.krishijal_irrigation.database.DataBaseHelper;
+
 import bih.in.krishijal_irrigation.entity.InspectionDetailsModel;
 import bih.in.krishijal_irrigation.utility.CommonPref;
 import bih.in.krishijal_irrigation.web_services.WebServiceHelper;
