@@ -52,6 +52,7 @@ public class Nalkup_Sinchaai_YojyaActivity extends AppCompatActivity implements 
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
     ArrayList<GpsMasterModel>GpsMasterList=new ArrayList<>();
     DataBaseHelper dataBaseHelper;
+    DataBaseHelper dataBaseHelper1;
     InspectionDetailsModel inspectionDetailsModel;
     String Dist_Id="",BlockId="";
     private GpsTracker gpsTracker;
