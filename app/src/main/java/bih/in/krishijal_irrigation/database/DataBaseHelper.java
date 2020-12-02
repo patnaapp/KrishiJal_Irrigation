@@ -676,6 +676,40 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
   // new tables
 
+    public ArrayList<GpsMasterModel> getGpsList(String scheme) {
+        ArrayList<GpsMasterModel> GpsList = new ArrayList<GpsMasterModel>();
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            String[] params = new String[] { scheme };
+
+            Cursor cur = db
+                    .rawQuery(
+                            "SELECT * from GpsMaster WHERE SchemeCode= ?", params);
+            int x = cur.getCount();
+
+            while (cur.moveToNext()) {
+
+                GpsMasterModel dept = new GpsMasterModel();
+                dept.setGpsTypeId(cur.getString(cur.getColumnIndex("GPSTypeId")));
+                dept.setGpsDesc(cur.getString(cur.getColumnIndex("GPSDesc")));
+                dept.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+
+
+                GpsList.add(dept);
+            }
+
+            cur.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+
+        }
+        return GpsList;
+    }
+
 
 
     public long InsertInspectionDetail(InspectionDetailsModel vdata) {
@@ -733,6 +767,73 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return c;
     }
+
+    public long InsertGpsDetail(InspectionDetailsModel vdata) {
+
+        long c = -1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        //c = db.delete("VillageList", null, null);
+        ContentValues values = new ContentValues();
+        try {
+
+            values.put("SchemeCode", vdata.getSchemeCode());
+            values.put("InspectionId", vdata.getInspectionId());
+            values.put("GPSTypeId", vdata.getGPSTypeId());
+            values.put("Latitude", vdata.getLatitude());
+            values.put("Longitude", vdata.getLongitude());
+            values.put("GPSTypeName", vdata.getGPSTypeName());
+            values.put("ChannelName", vdata.getChannelName());
+            values.put("PlotNo", vdata.getPlotNo());
+                c = db.insert("InspectionGPSLocation", null, values);
+
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return c;
+        }
+
+        return c;
+    }
+    public ArrayList<InspectionDetailsModel> getInsGpslocationList(String inspId,String schemeId) {
+        ArrayList<InspectionDetailsModel> InsGpsList = new ArrayList<InspectionDetailsModel>();
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            String[] params = new String[] { inspId,schemeId };
+
+            Cursor cur = db
+                    .rawQuery(
+                            "SELECT * from InspectionGPSLocation WHERE InspectionId = ? AND SchemeCode=?",
+                            params);
+            int x = cur.getCount();
+
+            while (cur.moveToNext()) {
+
+                InspectionDetailsModel panchayat = new InspectionDetailsModel();
+                panchayat.setInspectionId(cur.getString(cur.getColumnIndex("InspectionId")));
+                panchayat.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+                panchayat.setGPSTypeId(cur.getString(cur.getColumnIndex("GPSTypeId")));
+                panchayat.setGPSTypeName(cur.getString(cur.getColumnIndex("GPSTypeName")));
+                panchayat.setChannelName(cur.getString(cur.getColumnIndex("ChannelName")));
+                panchayat.setPlotNo(cur.getString(cur.getColumnIndex("PlotNo")));
+                panchayat.setLatitude(cur.getString(cur.getColumnIndex("Latitude")));
+                panchayat.setLongitude(cur.getString(cur.getColumnIndex("Longitude")));
+
+                InsGpsList.add(panchayat);
+            }
+
+            cur.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+
+        }
+        return InsGpsList;
+    }
+
 
     public long InsertInspectionDetailAahar(InspectionDetailsModel vdata) {
 
@@ -876,29 +977,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("ApproxCommandArea", vdata.getApproxCommandArea());
             values.put("SchemeApproxAmt", vdata.getSchemeApproxAmt());
             values.put("Entry_by", vdata.getEntry_By());
-
-
-
-
-
-
-
-
-//            values.put("NoofNalkup", vdata.getNoofNalkup());
-//            values.put("NoOfPole", vdata.getNoOfPole());
-//            values.put("Motor_Pump_Power", vdata.getMotor_Pump_Power());
-//            values.put("DistributionChannelLength", vdata.getDistributionChannelLength());
-//            values.put("DistributionPipeDiamater", vdata.getDistributionpipelngth_inch());
-//            values.put("DistributionPipeLength", vdata.getDistributionChannelLength());
-//            values.put("ApproxCommandArea", vdata.getApproxCommandArea());
-//            values.put("SchemeApproxAmt", vdata.getSchemeApproxAmt());
-//            values.put("WaterSourceId", vdata.getWaterSourceId());
-//            values.put("WaterAvailable_Kharif", vdata.getWaterAvailable_Kharif());
-//            values.put("WaterAvailable_Rabi", vdata.getWaterAvailable_Rabi());
-//            values.put("WaterAvailable_Garma", vdata.getWaterAvailable_Garma());
-//            values.put("DistributionPaenLength", vdata.getDistributionPaenLength());
-//            values.put("EnergyTypeName", vdata.getEnergyTypeName());
-//            values.put("Photo", vdata.getPhoto());
 
             String[] whereArgs = new String[]{vdata.getInspectionId()};
             c = db.update("Inspection_Aahar", values, "InspectionId=?", whereArgs);

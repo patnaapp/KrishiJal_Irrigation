@@ -1,10 +1,24 @@
 package bih.in.krishijal_irrigation.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,6 +31,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,19 +40,23 @@ import java.util.ArrayList;
 
 import bih.in.krishijal_irrigation.R;
 import bih.in.krishijal_irrigation.database.DataBaseHelper;
+import bih.in.krishijal_irrigation.entity.GpsMasterModel;
 import bih.in.krishijal_irrigation.entity.InspectionDetailsModel;
 import bih.in.krishijal_irrigation.entity.PanchayatData;
 import bih.in.krishijal_irrigation.entity.VillageListEntity;
 import bih.in.krishijal_irrigation.utility.CommonPref;
+import bih.in.krishijal_irrigation.utility.GpsTracker;
+import bih.in.krishijal_irrigation.utility.Utiilties;
 import bih.in.krishijal_irrigation.web_services.WebServiceHelper;
 
-public class Udvah_Sinchaai_YojnaActivity extends Activity {
+public class Udvah_Sinchaai_YojnaActivity extends Activity implements View.OnClickListener{
     Spinner sp_panchayat,sp_village,spn_jalshrot,spn_jalshrot_available,spn_motarpump_sanchalan,spn_motarpump_power;
     EditText edt_pump_loc_dist,edt_motor_power_hp,edt_distribution_length,edt_distribution_pipe_inch,edt_distribution_pipe_meter,edt_apporx_command_area_hec,edt_yojna_lagat;
     ArrayList<VillageListEntity> VillageList=new ArrayList<>();
     ArrayList<PanchayatData>PanchayatList=new ArrayList<>();
     DataBaseHelper dataBaseHelper;
     ArrayList<InspectionDetailsModel>EntryList=new ArrayList<>();
+    ArrayList<GpsMasterModel>GpsMasterList=new ArrayList<>();
     InspectionDetailsModel inspectionDetailsModel;
     String jalshrot[] = {"--चयन करे--","नदी","तालाब","आहर","झील","अन्य"};
     String water_facility[] = {"--चयन करे--","खरीफ","रबी","गरमा"};
@@ -50,7 +70,27 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
     CheckBox chk_kharif,chk_rabi,chk_garma;
     String userid="",dist_id="",dist_name="",blk_id="",block_name="";
     String motarpump_power_code="",motarpump_power_name="",_water_avlbl_kharif="N",_water_avlbl_rabi="N",_water_avlbl_garma="N",chk_string="N";
-
+    String str_cap_gps_id="",str_cap_gps_name="";
+    String str_chaneelNo="",str_plot_No="";
+    RecyclerView recyclerView;
+    LinearLayout lin_plotno,lin_chaneelname;
+    Spinner sp_choose_channel,sp_choose_plot;
+    Spinner sp_gpsType;
+    Button take_loc;
+    ArrayList<String>Selectchannel=new ArrayList<>();
+    ArrayList<String>Selectplot=new ArrayList<>();
+    private final static int CAMERA_PIC = 99;
+    byte[] img,imgnew;
+    Bitmap bmp,bmp1;
+    ImageView take_photo;
+    private GpsTracker gpsTracker;
+    double take_latitude=0.00;
+    double take_longitude=0.00;
+    long id=0;
+    takegpsListAdaptor mAdapter;
+    LinearLayout ll_lat_long;
+    Intent imageData1;
+    int ThumbnailSize = 500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,14 +100,124 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         dataBaseHelper= new DataBaseHelper(Udvah_Sinchaai_YojnaActivity.this);
 
         initialization();
+        setChannelNo();
+        setGpsMaster();
+        setplotNo();
+        try {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         userid=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getUserID();
         dist_id=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getDistrictCode();
         dist_name=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getDistName();
         blk_id=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getBlockCode();
         block_name=CommonPref.getUserDetails(Udvah_Sinchaai_YojnaActivity.this).getBlockName();
+
+        take_loc.setOnClickListener(this);
+        take_photo.setOnClickListener(this);
+
+        sp_choose_channel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+
+
+                    str_chaneelNo = Selectchannel.get(arg2);
+
+                }else {
+                    str_chaneelNo = "";
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                str_chaneelNo = "";
+            }
+        });
+        sp_choose_plot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+
+
+                    str_plot_No = Selectplot.get(arg2);
+
+                }else {
+                    str_plot_No = "";
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                str_plot_No = "";
+            }
+        });
+        sp_gpsType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (arg2 > 0) {
+                    lin_chaneelname.setVisibility(View.GONE);
+                    lin_plotno.setVisibility(View.GONE);
+
+                    GpsMasterModel gpsMasterModel = GpsMasterList.get(arg2 - 1);
+                    str_cap_gps_id = gpsMasterModel.getGpsTypeId();
+                    str_cap_gps_name = gpsMasterModel.getGpsDesc();
+
+                    if(str_cap_gps_name.equalsIgnoreCase("Distribution Pipe")){
+                        lin_chaneelname.setVisibility(View.VISIBLE);
+
+                    }else {
+
+                    }
+                    if(str_cap_gps_name.equalsIgnoreCase("Command Area Boundary")){
+                        lin_plotno.setVisibility(View.VISIBLE);
+
+                    }else {
+
+                    }
+
+                }else {
+                    str_cap_gps_id = "";
+                    str_cap_gps_name = "";
+                    lin_chaneelname.setVisibility(View.GONE);
+                    lin_plotno.setVisibility(View.GONE);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                str_cap_gps_id = "";
+                str_cap_gps_name = "";
+                lin_chaneelname.setVisibility(View.GONE);
+                lin_plotno.setVisibility(View.GONE);
+            }
+        });
+
+
+
+
     }
     public void initialization()
     {
+        ll_lat_long=(LinearLayout)findViewById(R.id.ll_lat_long);
+        take_photo=(ImageView)findViewById(R.id.take_photo);
+        sp_choose_channel=(Spinner)findViewById(R.id.sp_choose_channel);
+        sp_choose_plot=(Spinner)findViewById(R.id.sp_choose_plot);
+        lin_plotno=(LinearLayout)findViewById(R.id.lin_plotno);
+        lin_chaneelname=(LinearLayout)findViewById(R.id.lin_chaneelname);
+        recyclerView=(RecyclerView)findViewById(R.id.list_gps_taken);
+        sp_gpsType=(Spinner)findViewById(R.id.sp_gpsType);
+        take_loc=(Button) findViewById(R.id.take_loc);
+
         sp_panchayat=(Spinner)findViewById(R.id.sp_panchayat);
         sp_village=(Spinner)findViewById(R.id.sp_village);
         spn_jalshrot=(Spinner)findViewById(R.id.spn_jalshrot);
@@ -104,6 +254,8 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         ArrayAdapter adapter3 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, motarpump_hp);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn_motarpump_power.setAdapter(adapter3);
+
+        ll_lat_long.setVisibility(View.GONE);
 
         try {
             if(keyid.equalsIgnoreCase("")) {
@@ -300,10 +452,8 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
     }
     private void InsertData()
     {
-//        String userid= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uid", "");
-//        String dist_id= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("dist_id", "");
-//        String blk_id= PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("blk_id", "");
-        long id = 0;
+
+
         setvalue();
         InspectionDetailsModel inspectionDetailsModel=new InspectionDetailsModel();
         inspectionDetailsModel.setSchemeCode("2");
@@ -336,9 +486,10 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
 
         if (id > 0)
         {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
+            ll_lat_long.setVisibility(View.VISIBLE);
+           // Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+           // startActivity(intent);
+          //  finish();
             Toast.makeText(getApplicationContext(), "डेटा सफलतापूर्वक सहेजा गया", Toast.LENGTH_LONG).show();
         }
         else
@@ -461,6 +612,8 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
         }
 
     }
+
+
     private class SyncVillageData extends AsyncTask<String, Void, ArrayList<VillageListEntity>>
     {
         String PanCode="";
@@ -605,6 +758,7 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
 
         return isvalid;
     }
+
     public void ShowEditEntry(String keyid) {
         DataBaseHelper helper = new DataBaseHelper(getApplicationContext());
         userid = (CommonPref.getUserDetails(this).getUserID());
@@ -660,8 +814,294 @@ public class Udvah_Sinchaai_YojnaActivity extends Activity {
             edt_apporx_command_area_hec.setText(goatSurveyEntity.getApproxCommandArea());
             edt_yojna_lagat.setText(goatSurveyEntity.getSchemeApproxAmt());
 
-
+            setImage(keyid);
+            setrecyclerviewaction(keyid);
         }
     }
+
+    private void setChannelNo()
+    {
+        Selectchannel.add("--चयन करे--");
+        Selectchannel.add("1");
+        Selectchannel.add("2");
+        Selectchannel.add("3");
+        Selectchannel.add("4");
+        Selectchannel.add("6");
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, Selectchannel);
+
+        sp_choose_channel.setAdapter(spinnerAdapter);
+        String Village_code = "";
+        Village_code = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("Spin_Vill_Code", "");
+
+        if (!Village_code.equalsIgnoreCase(""))
+        {
+
+            sp_choose_channel.setSelection(((ArrayAdapter<String>)spinnerAdapter).getPosition(Village_code)); }
+    }
+    private void setplotNo()
+    {
+        Selectplot.add("--चयन करे--");
+        Selectplot.add("1");
+        Selectplot.add("2");
+        Selectplot.add("3");
+        Selectplot.add("4");
+        Selectplot.add("6");
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, Selectplot);
+
+        sp_choose_plot.setAdapter(spinnerAdapter);
+        String Village_code = "";
+        Village_code = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("Spin_Vill_Code", "");
+
+        if (!Village_code.equalsIgnoreCase(""))
+        {
+
+            sp_choose_plot.setSelection(((ArrayAdapter<String>)spinnerAdapter).getPosition(Village_code)); }
+    }
+    private void setGpsMaster()
+    {
+        GpsMasterList = dataBaseHelper.getGpsList("2");
+        ArrayList<String> GpsMasterListString = new ArrayList<>();
+        ArrayList<String> GpsMasterListint = new ArrayList<>();
+
+        if (GpsMasterList.size() > 0)
+        {
+            GpsMasterListString.add("--चयन करे--");
+            GpsMasterListint.add("--चयन करे--");
+        }
+
+        for (int i = 0; i < GpsMasterList.size(); i++)
+        {
+            GpsMasterListString.add(GpsMasterList.get(i).getGpsDesc());
+            GpsMasterListint.add(GpsMasterList.get(i).getGpsTypeId());
+        }
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, GpsMasterListString);
+        ArrayAdapter<String> spinnerAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, GpsMasterListint);
+        sp_gpsType.setAdapter(spinnerAdapter);
+        String Village_code = "";
+        Village_code = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("Spin_Vill_Code", "");
+
+        if (!Village_code.equalsIgnoreCase(""))
+        {
+
+            sp_gpsType.setSelection(((ArrayAdapter<String>)spinnerAdapter1).getPosition(Village_code));
+
+        }
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case CAMERA_PIC:
+                if (resultCode == RESULT_OK) {
+                    byte[] imgData = data.getByteArrayExtra("CapturedImage");
+                    // byte[] imgData = data.getByteArrayExtra("CapturedImage");
+
+                    DataBaseHelper placeData = new DataBaseHelper(getApplicationContext());
+
+                    switch (data.getIntExtra("KEY_PIC", 0)) {
+                        case 1:
+                            imageData1=data;
+                             bmp = BitmapFactory.decodeByteArray(imgData, 0,
+                                    imgData.length);
+                            take_photo.setScaleType(ImageView.ScaleType.FIT_XY);
+                            take_photo.setImageBitmap(Utiilties.GenerateThumbnail(bmp,
+                                    500, 500));
+                            saveImage();
+
+                          /*  img = imgData;
+                            Bitmap bmpImg = BitmapFactory.decodeByteArray(imgData, 0, imgData.length);
+                            bmp = bmpImg;
+                            take_photo.setImageBitmap(bmpImg);*/
+
+                            break;
+                    }
+                }
+        }
+    }
+
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.bihgov);
+        builder.setTitle("GPS ?");
+        builder.setMessage("(GPS)जीपीएस बंद है\nस्थान के अक्षांश और देशांतर प्राप्त करने के लिए कृपया जीपीएस चालू करें")
+//		builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("[(GPS) जीपीएस चालू करे ]", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("[ बंद करें ]", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+    @Override
+    public void onClick(View view) {
+        if(view.getId()== R.id.take_photo){
+            final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+
+                buildAlertMessageNoGps();
+            }
+            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER) == true) {
+
+                Intent iCamera = new Intent(getApplicationContext(), CameraActivity.class);
+                iCamera.putExtra("KEY_PIC", "1");
+
+
+                startActivityForResult(iCamera, CAMERA_PIC);
+
+            }
+        }
+        if(view.getId()== R.id.take_loc){
+            getLocation();
+            long idnew = 0;
+            InspectionDetailsModel detailsModel=new InspectionDetailsModel();
+            if(edit){
+                detailsModel.setInspectionId(String.valueOf(keyid));
+            }else {
+                detailsModel.setInspectionId(String.valueOf(id));
+            }
+
+            detailsModel.setSchemeCode("2");
+            detailsModel.setGPSTypeId(str_cap_gps_id);
+            detailsModel.setGPSTypeName(str_cap_gps_name);
+            detailsModel.setLatitude(String.valueOf(take_latitude));
+            detailsModel.setLongitude(String.valueOf(take_longitude));
+            detailsModel.setChannelName(str_chaneelNo);
+            detailsModel.setPlotNo(str_plot_No);
+            idnew= dataBaseHelper.InsertGpsDetail(detailsModel);
+            if (idnew > 0) {
+                Toast.makeText(getApplicationContext(), "डेटा सफलतापूर्वक सहेजा गया", Toast.LENGTH_LONG).show();
+
+            } else {
+                Toast.makeText(getApplicationContext(), "डेटा सहेजा नहीं गया", Toast.LENGTH_LONG).show();
+            }
+            ArrayList<InspectionDetailsModel>listgps=new ArrayList<>();
+            listgps=dataBaseHelper.getInsGpslocationList(String.valueOf(id),"2");
+            mAdapter = new takegpsListAdaptor(Udvah_Sinchaai_YojnaActivity.this,listgps);
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            //mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            recyclerView.setLayoutManager(mLayoutManager);
+            //   recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(mAdapter);
+
+
+        }
+
+    }
+    //Gps
+    public String getLocation(){
+        gpsTracker = new GpsTracker(Udvah_Sinchaai_YojnaActivity.this);
+        String location="";
+        double latitude=0.00;
+        double longitude=0.00;
+        if(gpsTracker.canGetLocation()){
+            latitude = gpsTracker.getLatitude();
+            longitude = gpsTracker.getLongitude();
+        }else{
+            gpsTracker.showSettingsAlert();
+        }
+        location= String.valueOf((latitude)+","+String.valueOf(longitude));
+        take_latitude=latitude;
+        take_longitude=longitude;
+
+
+        return location;
+    }
+    private void saveImage() {
+
+        int i = 0;
+        DataBaseHelper placeData = new DataBaseHelper(
+                Udvah_Sinchaai_YojnaActivity.this);
+        SQLiteDatabase db = placeData.getWritableDatabase();
+        for (i = 0; i < 5; i++) {
+            ContentValues values = new ContentValues();
+            String[] whereArgs;
+            byte[] imgData;
+            switch (i) {
+                case 0:
+                    //GPSTime
+                    if (imageData1!=null) {
+
+                        imgData = imageData1.getByteArrayExtra("CapturedImage");
+                        values.put("photo", imgData);
+                       /* values.put("EntryDate",
+                                imageData1.getStringExtra("CapturedTime"));
+                        values.put("Latitude",
+                                String.valueOf(imageData1.getStringExtra("Lat")));
+                        values.put("Longitude",
+                                String.valueOf(imageData1.getStringExtra("Lng")));
+                        values.put("UploadDate",
+                                String.valueOf(imageData1.getStringExtra("GPSTime")));*/
+                        if (edit) {
+                            whereArgs = new String[]{String.valueOf(keyid)};
+                        } else {
+                            whereArgs = new String[]{String.valueOf(id)};
+                        }
+
+
+                        db.update("Inspection_Aahar", values, "InspectionId=?", whereArgs);
+                    }
+                    break;
+            }
+        }
+
+        db.close();
+    }
+
+    private void setImage(String insId){
+        DataBaseHelper placeData = new DataBaseHelper(this);
+        SQLiteDatabase db = placeData.getReadableDatabase();
+        //int HIDID = getIntent().getIntExtra("KEY_HIDID", 0);
+
+        Cursor cursor = db
+                .rawQuery(
+                        "SELECT photo FROM Inspection_Aahar where InspectionId =?",
+                        new String[]{String.valueOf(insId)});
+
+        Log.e("PID  ", insId);
+
+
+        if (cursor.moveToNext()) {
+
+            if (!cursor.isNull(0)) {
+                ll_lat_long.setVisibility(View.VISIBLE);
+                byte[] imgData = cursor.getBlob(cursor.getColumnIndex("photo"));
+                Log.d("vdhbhbh",imgData.toString());
+                Bitmap bmp = BitmapFactory.decodeByteArray(imgData, 0,
+                        imgData.length);
+                take_photo.setScaleType(ImageView.ScaleType.FIT_XY);
+                take_photo.setImageBitmap(Utiilties.GenerateThumbnail(bmp,
+                        500, 500));
+            }
+        }
+        cursor.close();
+        db.close();
+
+    }
+
+    private void setrecyclerviewaction(String keyid){
+        ArrayList<InspectionDetailsModel>listgps=new ArrayList<>();
+        listgps=dataBaseHelper.getInsGpslocationList(String.valueOf(keyid),"2");
+        mAdapter = new takegpsListAdaptor(Udvah_Sinchaai_YojnaActivity.this,listgps);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        recyclerView.setAdapter(mAdapter);
+    }
+
 
 }
