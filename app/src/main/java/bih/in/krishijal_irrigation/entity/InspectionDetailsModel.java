@@ -40,6 +40,7 @@ public class InspectionDetailsModel {
     private String EntryDate;
     private String ChannelName;
     private String PlotNo;
+    private String Motor_Pump_PowerName;
 
     public String getInspectionId() {
         return InspectionId;
@@ -343,5 +344,13 @@ public class InspectionDetailsModel {
 
     public void setPlotNo(String plotNo) {
         PlotNo = plotNo;
+    }
+
+    public String getMotor_Pump_PowerName() {
+        return Motor_Pump_PowerName;
+    }
+
+    public void setMotor_Pump_PowerName(String motor_Pump_PowerName) {
+        Motor_Pump_PowerName = motor_Pump_PowerName;
     }
 }

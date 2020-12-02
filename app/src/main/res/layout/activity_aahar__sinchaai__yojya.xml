@@ -302,134 +302,27 @@
 
 
                 </LinearLayout>
+                <Button
+                    android:textColor="#ffffff"
+                    android:background="@drawable/buttonbackshape"
+                    android:layout_gravity="right"
+                    android:textAllCaps="false"
+                    android:text="Save Basic Detail"
+                    android:id="@+id/save_basic_detail_aahar"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp">
+
+                </Button>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/ll_lat_long"
+
                     android:layout_margin="8dp"
                     android:background="@drawable/rectangle_dassl_ine"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:weightSum="1"
-                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_niji11"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.3"
-                            android:gravity="center_vertical"
-                            android:text="आहर का लोकेशन (क्रिटिकल बिन्दुओ पर)"
-                            android:textColor="#000000"
-                            android:textSize="15sp"
-                            android:textStyle="normal" />
-
-                        <Button
-                            android:id="@+id/btn_aahar_location"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_weight="0.7"
-                            android:background="@drawable/greenbuttonshape"
-                            android:text="लोकेशन ले"
-                            android:textColor="#FFFFFF" />
-
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:weightSum="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_niji11111"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.3"
-                            android:gravity="center_vertical"
-                            android:text="डिस्ट्रीब्यूशन पाइन (क्रिटिकल बिन्दुओ पर)"
-                            android:textColor="#000000"
-                            android:textSize="15sp"
-                            android:textStyle="normal" />
-
-                        <Button
-                            android:id="@+id/btn_distribution_paien"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_weight="0.7"
-                            android:background="@drawable/greenbuttonshape"
-                            android:text="लोकेशन ले"
-                            android:textColor="#FFFFFF" />
-
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_niji11111111"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_weight="0.3"
-                            android:layout_gravity="center"
-                            android:gravity="center_vertical"
-                            android:text="डिस्ट्रीब्यूशन पाइप "
-                            android:textColor="#000000"
-                            android:textSize="15sp"
-                            android:textStyle="normal" />
-
-                        <Button
-                            android:id="@+id/btn_distribution_pipe"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_weight="0.7"
-                            android:background="@drawable/greenbuttonshape"
-                            android:text="लोकेशन ले"
-                            android:textColor="#FFFFFF" />
-
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:weightSum="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_niji111111111111"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.3"
-                            android:gravity="center_vertical"
-                            android:text="कमांड एरिया बाउंड्री (क्रिटिकल बिन्दुओ पर) "
-                            android:textColor="#000000"
-                            android:textSize="15sp"
-                            android:textStyle="normal" />
-
-                        <Button
-                            android:id="@+id/btn_location_lnr_111111"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_weight="0.7"
-                            android:background="@drawable/greenbuttonshape"
-                            android:text="लोकेशन ले"
-                            android:textColor="#FFFFFF" />
-
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -441,7 +334,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="180dp">
                             <ImageView
-
+                                android:id="@+id/take_photo"
                                 android:layout_width="match_parent"
                                 android:layout_height="180dp">
 
@@ -457,8 +350,95 @@
                         </FrameLayout>
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textColor="#000000"
+                            android:textStyle="normal"
+                            android:text="जीपीएस प्रकार चुनें"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></TextView>
+                        <Spinner
+                            android:layout_marginTop="4dp"
+                            android:id="@+id/sp_gpsType"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_bg1"
+                            android:imeOptions="actionUnspecified"
+                            android:paddingRight="20dp"
+                            android:textAppearance="?android:textAppearanceSmall"
+                            android:textColor="#43D305"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lin_chaneelname"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:id="@+id/txt_chaneelname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:text="चैनल का नाम चुनें "
+                            android:textColor="#000000"
+                            android:textStyle="normal" />
+                        <Spinner
+                            android:background="@drawable/spinner_bg1"
+                            android:id="@+id/sp_choose_channel"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp">
+
+                        </Spinner>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lin_plotno"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txt_plotNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:text="प्लॉट नंबर चुनें "
+                            android:textColor="#000000"
+                            android:textStyle="normal" />
+                        <Spinner
+                            android:background="@drawable/spinner_bg1"
+                            android:id="@+id/sp_choose_plot"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp">
+
+                        </Spinner>
+                    </LinearLayout>
+                    <Button
+                        android:layout_gravity="right"
+                        android:textAllCaps="false"
+                        android:text="Take Location"
+                        android:id="@+id/take_loc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp">
+
+                    </Button>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_gps_taken"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
                 </LinearLayout>
+
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/lin_btn"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
