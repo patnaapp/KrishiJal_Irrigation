@@ -137,7 +137,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:text=" 4. छिछला नलकूप की संख्या  :-"
+                    android:text=" 4. पिछला नलकूप की संख्या  :-"
                     android:textColor="#000000"
                     android:textStyle="normal" />
 
@@ -146,6 +146,9 @@
                     android:id="@+id/edt_no_of_nalkup"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:hint="कृपया पिछला नलकूप की संख्या डाले "
                     android:background="@drawable/textboxshape3"
                     android:imeOptions="actionUnspecified"
                     android:paddingRight="20dp"
@@ -175,12 +178,12 @@
                     <EditText
                         android:inputType="number"
                         android:paddingLeft="8dp"
-                        android:hint=""
+                        android:hint="कृपया पम्प के लोकेशन की दुरी (Pole Length) डाले"
                         android:layout_marginTop="4dp"
                         android:id="@+id/edt_pole_length"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:maxLength="3"
+                        android:maxLength="2"
                         android:layout_height="40dp"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/textboxshape3"
@@ -222,7 +225,7 @@
 
                 <Spinner
                     android:layout_marginTop="4dp"
-                    android:id="@+id/sp_dist_khatakhesra"
+                    android:id="@+id/sp_motor_power"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/spinner_bg1"
@@ -259,7 +262,7 @@
                     android:id="@+id/edt_pipe_Perimeter_inch"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
-                    android:maxLength="3"
+                    android:maxLength="2"
                     android:layout_height="40dp"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/textboxshape3"
@@ -269,7 +272,7 @@
                     android:textColor="#43D305"/>
 
                 <EditText
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:paddingLeft="8dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="4dp"
@@ -304,8 +307,11 @@
                 <EditText
                     android:id="@+id/edt_apporx_command_area_hec"
                     android:layout_width="match_parent"
+                    android:inputType="number"
+                    android:maxLength="2"
                     android:layout_height="40dp"
                     android:layout_marginTop="4dp"
+                    android:hint="कृपया अनुमानित  कमाण्ड एरिया (हेक्टेर में ) डाले"
                     android:background="@drawable/textboxshape3"
                     android:imeOptions="actionUnspecified"
                     android:paddingRight="20dp"
@@ -331,7 +337,9 @@
                     android:id="@+id/edt_yojna_price"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:inputType="number"
                     android:layout_marginTop="4dp"
+                    android:hint="कृपया योजना अनुमानित लागत (लाख में ) में डाले"
                     android:background="@drawable/textboxshape3"
                     android:imeOptions="actionUnspecified"
                     android:paddingRight="20dp"
@@ -359,6 +367,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
@@ -388,6 +397,7 @@
 
             </LinearLayout>
             <TextView
+                android:visibility="gone"
                 android:text="loc"
                 android:id="@+id/txt_location_Agri"
                 android:layout_width="match_parent"
@@ -395,6 +405,7 @@
 
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
@@ -425,11 +436,53 @@
 
             </LinearLayout>
             <TextView
+                android:visibility="gone"
                 android:text="loc"
                 android:id="@+id/txt_location_nalkup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></TextView>
+
             <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:weightSum="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_niji111111111111"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:gravity="center_vertical"
+                    android:text="कमांड एरिया बाउंड्री (क्रिटिकल बिन्दुओ पर) "
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="normal" />
+
+                <Button
+                    android:id="@+id/btn_location_command"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="0.7"
+                    android:background="@drawable/greenbuttonshape"
+                    android:text="लोकेशन ले"
+                    android:textColor="#FFFFFF" />
+
+
+            </LinearLayout>
+            <TextView
+                android:visibility="gone"
+                android:text="loc"
+                android:id="@+id/txt_location_command"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TextView>
+
+            <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
@@ -460,43 +513,9 @@
 
             </LinearLayout>
             <TextView
+                android:visibility="gone"
                 android:text="loc"
                 android:id="@+id/txt_location_dist_pipe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></TextView>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:weightSum="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_niji111111111111"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.3"
-                    android:gravity="center_vertical"
-                    android:text="कमांड एरिया बाउंड्री (क्रिटिकल बिन्दुओ पर) "
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:textStyle="normal" />
-
-                <Button
-                    android:id="@+id/btn_location_command"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_weight="0.7"
-                    android:background="@drawable/greenbuttonshape"
-                    android:text="लोकेशन ले"
-                    android:textColor="#FFFFFF" />
-
-
-            </LinearLayout>
-            <TextView
-                android:text="loc"
-                android:id="@+id/txt_location_command"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></TextView>
             <LinearLayout
@@ -527,7 +546,95 @@
 
             </LinearLayout>
 
+           <LinearLayout
+               android:id="@+id/linGpsType"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
+               <LinearLayout
+                   android:orientation="vertical"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+               <TextView
+                   android:textColor="#000000"
+                   android:textStyle="normal"
+                   android:text="जीपीएस प्रकार चुनें"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"></TextView>
+               <Spinner
+                   android:layout_marginTop="4dp"
+                   android:id="@+id/sp_gpsType"
+                   android:layout_width="match_parent"
+                   android:layout_height="40dp"
+                   android:background="@drawable/spinner_bg1"
+                   android:imeOptions="actionUnspecified"
+                   android:paddingRight="20dp"
+                   android:textAppearance="?android:textAppearanceSmall"
+                   android:textColor="#43D305"/>
+           </LinearLayout>
+               <LinearLayout
+                   android:id="@+id/lin_chaneelname"
+                   android:layout_marginTop="8dp"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical">
 
+                   <TextView
+
+                       android:id="@+id/txt_chaneelname"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:textSize="13sp"
+                       android:text="चैनल का नाम चुनें "
+                       android:textColor="#000000"
+                       android:textStyle="normal" />
+                   <Spinner
+                       android:background="@drawable/spinner_bg1"
+                       android:id="@+id/sp_choose_channel"
+                       android:layout_width="match_parent"
+                       android:layout_height="40dp">
+
+                   </Spinner>
+               </LinearLayout>
+               <LinearLayout
+                   android:id="@+id/lin_plotno"
+                   android:layout_marginTop="8dp"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical">
+
+                   <TextView
+                       android:id="@+id/txt_plotNumber"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:textSize="13sp"
+                       android:text="प्लॉट नंबर चुनें "
+                       android:textColor="#000000"
+                       android:textStyle="normal" />
+                   <Spinner
+                       android:background="@drawable/spinner_bg1"
+                       android:id="@+id/sp_choose_plot"
+                       android:layout_width="match_parent"
+                       android:layout_height="40dp">
+
+                   </Spinner>
+               </LinearLayout>
+               <Button
+                   android:layout_gravity="right"
+                   android:textAllCaps="false"
+                   android:text="Take Location"
+                   android:id="@+id/take_loc"
+                   android:layout_width="wrap_content"
+                   android:layout_height="50dp">
+
+               </Button>
+               <androidx.recyclerview.widget.RecyclerView
+                   android:id="@+id/list_gps_taken"
+                   android:layout_width="match_parent"
+                   android:layout_height="300dp">
+
+               </androidx.recyclerview.widget.RecyclerView>
+           </LinearLayout>
         </LinearLayout>
 
 
@@ -535,6 +642,7 @@
 
     </androidx.core.widget.NestedScrollView>
         <LinearLayout
+            android:visibility="gone"
             android:layout_weight="0.1"
             android:id="@+id/lin_btn"
             android:layout_marginTop="10dp"

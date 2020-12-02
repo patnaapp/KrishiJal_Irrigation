@@ -293,7 +293,7 @@ public class SplashActivity extends Activity {
                 if (versioninfo != null) {
                     Toast.makeText(getApplicationContext(), "ok" ,Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "null response" ,Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "null response" ,Toast.LENGTH_LONG).show();
                     start();
                 }
             }

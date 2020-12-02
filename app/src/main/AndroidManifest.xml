@@ -56,6 +56,7 @@
         <activity android:name=".ui.Aahar_Sinchaai_YojyaActivity" />
         <activity android:name=".ui.Nalkup_Sinchaai_YojyaActivity" />
         <activity android:name=".ui.Edit_Udvah_SinchaiActivity" />
+        <activity android:name=".ui.CameraActivity" />
         <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

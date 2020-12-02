@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+        app:cardCornerRadius="8dp"
+        android:id="@+id/rl_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/themeBlue"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Gps Type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView
+                android:id="@+id/lbl_txt_plotno"
+                android:textStyle="bold"
+                android:textColor="@color/themeBlue"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="PlotNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView
+                android:id="@+id/lbl_txt_channelNo"
+                android:textStyle="bold"
+                android:textColor="@color/themeBlue"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Channel No"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+
+                android:gravity="center"
+                android:id="@+id/ad_txt_gpstype"
+                android:layout_weight="1"
+                android:text="Gps Type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView
+
+
+                android:gravity="center"
+                android:id="@+id/ad_txt_plotno"
+                android:layout_weight="1"
+                android:text="PlotNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView
+
+
+                android:gravity="center"
+                android:id="@+id/ad_txt_channelNo"
+                android:layout_weight="1"
+                android:text="Channel No"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/themeBlue"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Latitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/themeBlue"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+
+                android:gravity="center"
+                android:id="@+id/ad_txt_lat"
+                android:layout_weight="1"
+                android:text="Gps Type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView
+
+                android:gravity="center"
+                android:id="@+id/ad_txt_long"
+                android:layout_weight="1"
+                android:text="PlotNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

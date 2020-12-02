@@ -46,6 +46,7 @@ public class Edit_Aahar_SinchaiActivity extends Activity {
     public void loadAdapter(){
         data=dataBaseHelper.getAaharDetail(CommonPref.getUserDetails(Edit_Aahar_SinchaiActivity.this).getUserID());
 
+
         if(data.size()> 0){
             tv_Norecord.setVisibility(View.GONE);
             rv_data.setVisibility(View.VISIBLE);

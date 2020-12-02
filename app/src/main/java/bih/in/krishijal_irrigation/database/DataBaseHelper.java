@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import bih.in.krishijal_irrigation.entity.GpsMasterModel;
 import bih.in.krishijal_irrigation.entity.InspectionDetailsModel;
 import bih.in.krishijal_irrigation.entity.PanchayatData;
 import bih.in.krishijal_irrigation.entity.UserDetails;
@@ -699,8 +700,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("WaterAvailable_Rabi", vdata.getWaterAvailable_Rabi());
             values.put("WaterAvailable_Garma", vdata.getWaterAvailable_Garma());
             values.put("DistributionChannelLength", vdata.getDistributionChannelLength());
-            values.put("DistributionPipeDiamater", vdata.getDistributionPipeDiamater());
-            values.put("DistributionPipeLength", vdata.getDistributionPipeLength());
+            values.put("DistributionPipeDiamater_inch", vdata.getDistributionPipeDiamater());
+            values.put("DistributionPipeLength_meter", vdata.getDistributionPipeLength());
             values.put("ApproxCommandArea", vdata.getApproxCommandArea());
             values.put("SchemeApproxAmt", vdata.getSchemeApproxAmt());
 
@@ -711,15 +712,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("NoOfPole", vdata.getNoOfPole());
             values.put("Motor_Pump_Power", vdata.getMotor_Pump_Power());
             values.put("WaterSourceId", vdata.getWaterSourceId());
-            values.put("EnergyTypeName", vdata.getEnergyTypeName());
+            //values.put("EnergyTypeName", vdata.getEnergyTypeName());
             values.put("Photo", vdata.getPhoto());
+            values.put("EntryBy", vdata.getEntry_By());
+            values.put("EntryDate", vdata.getEntryDate());
 
             String[] whereArgs = new String[]{vdata.getInspectionId()};
-            c = db.update("tbl_InspectionDetails", values, "InspectionId=?", whereArgs);
+            c = db.update("InsetionTable", values, "InspectionId=?", whereArgs);
 
             if (!(c > 0)) {
 
-                c = db.insert("tbl_InspectionDetails", null, values);
+                c = db.insert("InsetionTable", null, values);
             }
         }
 
@@ -1257,4 +1260,221 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return goatSurveyEntities ;
     }
+
+
+
+    public long InsertGpsDetail(InspectionDetailsModel vdata) {
+
+        long c = -1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        //c = db.delete("VillageList", null, null);
+        ContentValues values = new ContentValues();
+        try {
+
+            values.put("SchemeCode", vdata.getSchemeCode());
+            values.put("InspectionId", vdata.getInspectionId());
+            values.put("GPSTypeId", vdata.getGPSTypeId());
+            values.put("Latitude", vdata.getLatitude());
+            values.put("Longitude", vdata.getLongitude());
+            values.put("GPSTypeName", vdata.getGPSTypeName());
+            values.put("ChannelName", vdata.getChannelName());
+            values.put("PlotNo", vdata.getPlotNo());
+            c = db.insert("InspectionGPSLocation", null, values);
+
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return c;
+        }
+
+        return c;
+    }
+    public ArrayList<InspectionDetailsModel> getInsGpslocationList(String inspId,String schemeId) {
+        ArrayList<InspectionDetailsModel> InsGpsList = new ArrayList<InspectionDetailsModel>();
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            String[] params = new String[] { inspId,schemeId };
+
+            Cursor cur = db
+                    .rawQuery(
+                            "SELECT * from InspectionGPSLocation WHERE InspectionId = ? AND SchemeCode=?",
+                            params);
+            int x = cur.getCount();
+
+            while (cur.moveToNext()) {
+
+                InspectionDetailsModel panchayat = new InspectionDetailsModel();
+                panchayat.setInspectionId(cur.getString(cur.getColumnIndex("InspectionId")));
+                panchayat.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+                panchayat.setGPSTypeId(cur.getString(cur.getColumnIndex("GPSTypeId")));
+                panchayat.setGPSTypeName(cur.getString(cur.getColumnIndex("GPSTypeName")));
+                panchayat.setChannelName(cur.getString(cur.getColumnIndex("ChannelName")));
+                panchayat.setPlotNo(cur.getString(cur.getColumnIndex("PlotNo")));
+                panchayat.setLatitude(cur.getString(cur.getColumnIndex("Latitude")));
+                panchayat.setLongitude(cur.getString(cur.getColumnIndex("Longitude")));
+
+                InsGpsList.add(panchayat);
+            }
+
+            cur.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+
+        }
+        return InsGpsList;
+    }
+    public ArrayList<GpsMasterModel> getGpsList(String scheme) {
+        ArrayList<GpsMasterModel> GpsList = new ArrayList<GpsMasterModel>();
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            String[] params = new String[] { scheme };
+
+            Cursor cur = db
+                    .rawQuery(
+                            "SELECT * from GpsMaster WHERE SchemeCode= ?", params);
+            int x = cur.getCount();
+
+            while (cur.moveToNext()) {
+
+                GpsMasterModel dept = new GpsMasterModel();
+                dept.setGpsTypeId(cur.getString(cur.getColumnIndex("GPSTypeId")));
+                dept.setGpsDesc(cur.getString(cur.getColumnIndex("GPSDesc")));
+                dept.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+
+
+                GpsList.add(dept);
+            }
+
+            cur.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO: handle exception
+
+        }
+        return GpsList;
+    }
+
+    public InspectionDetailsModel getNalkupDetails(String userId, String SchemeCode) {
+
+        InspectionDetailsModel inspectionDetailsModel = null;
+
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            String[] params = new String[]{userId.trim()};
+
+            Cursor cur = db.rawQuery(
+                    "Select * from InsetionTable WHERE EntryBy=? and SchemeCode=1",
+                    params);
+            int x = cur.getCount();
+
+            while (cur.moveToNext()) {
+
+
+                inspectionDetailsModel = new InspectionDetailsModel();
+                inspectionDetailsModel.setInspectionId(cur.getString(cur.getColumnIndex("InspectionId")));
+                inspectionDetailsModel.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+                inspectionDetailsModel.setDistCode(cur.getString(cur.getColumnIndex("DistCode")));
+                inspectionDetailsModel.setBlockCode(cur.getString(cur.getColumnIndex("BlockCode")));
+                inspectionDetailsModel.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
+                inspectionDetailsModel.setVILLCODE(cur.getString(cur.getColumnIndex("VILLCODE")));
+                inspectionDetailsModel.setWaterAvailable_Kharif(cur.getString(cur.getColumnIndex("WaterAvailable_Kharif")));
+                inspectionDetailsModel.setWaterAvailable_Rabi(cur.getString(cur.getColumnIndex("WaterAvailable_Rabi")));
+                inspectionDetailsModel.setWaterAvailable_Garma(cur.getString(cur.getColumnIndex("WaterAvailable_Garma")));
+                inspectionDetailsModel.setDistributionChannelLength(cur.getString(cur.getColumnIndex("DistributionChannelLength")));
+                inspectionDetailsModel.setDistributionPipeDiamater(cur.getString(cur.getColumnIndex("DistributionPipeDiamater_inch")));
+                inspectionDetailsModel.setDistributionPipeLength(cur.getString(cur.getColumnIndex("DistributionPipeLength_meter")));
+                inspectionDetailsModel.setApproxCommandArea(cur.getString(cur.getColumnIndex("ApproxCommandArea")));
+                inspectionDetailsModel.setSchemeApproxAmt(cur.getString(cur.getColumnIndex("SchemeApproxAmt")));
+                inspectionDetailsModel.setEnergyTypeId(cur.getString(cur.getColumnIndex("EnergyTypeId")));
+                inspectionDetailsModel.setNoofNalkup(cur.getString(cur.getColumnIndex("NoofNalkup")));
+                inspectionDetailsModel.setNoOfPole(cur.getString(cur.getColumnIndex("NoOfPole")));
+                inspectionDetailsModel.setMotor_Pump_Power(cur.getString(cur.getColumnIndex("Motor_Pump_Power")));
+                inspectionDetailsModel.setWaterSourceId(cur.getString(cur.getColumnIndex("WaterSourceId")));
+                //inspectionDetailsModel.setPhoto(cur.getString(cur.getColumnIndex("Photo")));
+                inspectionDetailsModel.setPhoto(cur.isNull(cur.getColumnIndex("photo")) == false ? Base64
+                        .encodeToString(cur.getBlob(cur.getColumnIndex("photo")), Base64.NO_WRAP) : "");
+                inspectionDetailsModel.setEntry_By(cur.getString(cur.getColumnIndex("EntryBy")));
+                inspectionDetailsModel.setEntryDate(cur.getString(cur.getColumnIndex("EntryDate")));
+            }
+
+            cur.close();
+            db.close();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            inspectionDetailsModel = null;
+        }
+        return inspectionDetailsModel;
+    }
+    public InspectionDetailsModel getUdvahDetails(String userId, String SchemeCode) {
+
+        InspectionDetailsModel inspectionDetailsModel = null;
+
+        try {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            String[] params = new String[]{userId.trim()};
+
+            Cursor cur = db.rawQuery(
+                    "Select * from Inspection_Aahar WHERE Entry_by=? and SchemeCode=2",
+                    params);
+            int x = cur.getCount();
+
+            while (cur.moveToNext()) {
+
+
+                InspectionDetailsModel info = new InspectionDetailsModel();
+                info.setInspectionId(cur.getString(cur.getColumnIndex("InspectionId")));
+                //info.setSchemeCode(cur.getInt(cur.getColumnIndex("SchemeCode")));
+                info.setSchemeCode(cur.getString(cur.getColumnIndex("SchemeCode")));
+                info.setDistCode(cur.getString(cur.getColumnIndex("DistCode")));
+                info.setDistName(cur.getString(cur.getColumnIndex("DistName")));
+                info.setBlockCode(cur.getString(cur.getColumnIndex("BlockCode")));
+                info.setBlockName(cur.getString(cur.getColumnIndex("BlockName")));
+                info.setPanchayatCode(cur.getString(cur.getColumnIndex("PanchayatCode")));
+                info.setPanchayatName(cur.getString(cur.getColumnIndex("PanchayatName")));
+                info.setVILLCODE(cur.getString(cur.getColumnIndex("VILLCODE")));
+                info.setVillageName(cur.getString(cur.getColumnIndex("VillageName")));
+                info.setWaterSourceId(cur.getString(cur.getColumnIndex("VILLCODE")));
+                info.setWaterSourceName(cur.getString(cur.getColumnIndex("VILLCODE")));
+                info.setWaterAvailable_Kharif(cur.getString(cur.getColumnIndex("WaterAvailable_Kharif")));
+                info.setWaterAvailable_Rabi(cur.getString(cur.getColumnIndex("WaterAvailable_Rabi")));
+                info.setWaterAvailable_Garma(cur.getString(cur.getColumnIndex("WaterAvailable_Garma")));
+                info.setEnergyTypeId(cur.getString(cur.getColumnIndex("EnergyTypeId")));
+                info.setEnergyTypeName(cur.getString(cur.getColumnIndex("EnergyTypeName")));
+                info.setPumplocation_distance(cur.getString(cur.getColumnIndex("Pumplocation_distance")));
+                info.setMotor_Pump_Power(cur.getString(cur.getColumnIndex("Motor_Pump_Power")));
+                info.setMotor_Pump_PowerName(cur.getString(cur.getColumnIndex("Motor_Pump_PowerName")));
+                info.setDistributionChannelLength(cur.getString(cur.getColumnIndex("DistributionChannelLength")));
+                info.setDistributionpipelngth_inch(cur.getString(cur.getColumnIndex("DistributionPipeDiamater")));
+                info.setDistributionpipelngth_mtr(cur.getString(cur.getColumnIndex("DistributionPipeLength_meter")));
+                info.setApproxCommandArea(cur.getString(cur.getColumnIndex("ApproxCommandArea")));
+                info.setSchemeApproxAmt(cur.getString(cur.getColumnIndex("SchemeApproxAmt")));
+                info.setEntry_By(cur.getString(cur.getColumnIndex("Entry_by")));
+                inspectionDetailsModel.setPhoto(cur.isNull(cur.getColumnIndex("photo")) == false ? Base64
+                        .encodeToString(cur.getBlob(cur.getColumnIndex("photo")), Base64.NO_WRAP) : "");
+
+            }
+
+            cur.close();
+            db.close();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            inspectionDetailsModel = null;
+        }
+        return inspectionDetailsModel;
+    }
+
 }
